@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DAL\Entity" />
+    <ProjectReference Include="..\BLL\Repository" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
 
