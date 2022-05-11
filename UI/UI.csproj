@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\Entity" />
-    <ProjectReference Include="..\BLL\Repository" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\BLL\BLL.csproj" />
   </ItemGroup>
   
   <ItemGroup>
