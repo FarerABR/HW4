@@ -6,8 +6,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="500" Width="700" WindowStartupLocation="CenterScreen"
-        x:Name="SignUpPage" >
+        Title="Virtual Store" Height="500" Width="700" WindowStartupLocation="CenterScreen"
+        x:Name="MainPage" FontFamily="{StaticResource MaterialDesignFont}">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF6274DA" Offset="0"/>
@@ -15,55 +15,100 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
-        <materialDesign:Card
+        <Grid Name="WelcomeGrid" Visibility="Visible">
+            <materialDesign:Card Width="320" Height="400"
+            Margin="20" Background="#FFC6EBFF">
+                <Border BorderBrush="{StaticResource MaterialDesignChipBackground}" BorderThickness="1.5" Padding="15">
+                    <StackPanel>
+                        <TextBlock FontSize="26" FontWeight="DemiBold" HorizontalAlignment="Center"
+                                   Margin="10 20 10 20" Foreground="#FF15D1A2" >
+                        Welcome
+                        </TextBlock>
+                        <Separator Style="{StaticResource MaterialDesignLightSeparator}"
+                                   Background="LightSlateGray"/>
+                        <materialDesign:Badged
+                        Badge="{materialDesign:PackIcon AccountPlus}"
+                        BadgeColorZoneMode="SecondaryMid"
+                        HorizontalAlignment="Center" Margin="0 60 0 0">
+                            <Button Name="SignUpOptBtn"  Click="SignUpOptBtn_Click"
+                            MinHeight="40" MinWidth="160" FontSize="23" 
+                            Content="Sign up" IsEnabled="{Binding DataContext.ControlsEnabled,
+                            RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"
+                            Padding="0 0 0 2" Background="#FFE9742B" Foreground="#DDF3F3F3"/>
+                        </materialDesign:Badged>
+                        <materialDesign:Badged
+                        Badge="{materialDesign:PackIcon Login}"
+                        BadgeColorZoneMode="SecondaryMid"
+                        HorizontalAlignment="Center" Margin="0 30 0 0">
+                            <Button Name="LogInOptBtn"  Click="LogInOptBtn_Click"
+                            MinHeight="40" MinWidth="160" FontSize="23" 
+                            Content="Log in" IsEnabled="{Binding DataContext.ControlsEnabled,
+                            RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"
+                            Padding="0 0 0 2" Background="#FF09A4F6" Foreground="#DDFFFFFF"/>
+                        </materialDesign:Badged>
+                        <Button Name="QuitBtn" Click="QuitBtn_Click"
+                                Style="{StaticResource MaterialDesignFlatLightButton}"
+                                IsEnabled="{Binding DataContext.ControlsEnabled,
+                                RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                                Content="Quit" ToolTip="Close the app"
+                                Margin="100 60 100 0" FontSize="14" Foreground="Black"/>
+                    </StackPanel>
+                </Border>
+            </materialDesign:Card>
+        </Grid>
+        <Grid Name="SignUpGrid" Visibility="Hidden">
+            <materialDesign:Card
             Width="400" Height="375"
             Padding="19" Margin="0 20 0 0">
-            <StackPanel>
-                <TextBlock 
+                <StackPanel>
+                    <TextBlock 
                     Margin="16 5 12 14"
                     FontSize="18" FontWeight="DemiBold">
                     Create your account
-                </TextBlock>
-                <Separator
+                    </TextBlock>
+                    <Separator
                     Style="{StaticResource MaterialDesignLightSeparator}" Background="LightGray"
                     />
-                <StackPanel Margin="0 20 0 0">
-                    <TextBox
+                    <StackPanel Margin="0 20 0 0">
+                        <TextBox Name="UsernameTextBox"
                         Margin="0 -15 0 0"
                         materialDesign:HintAssist.Hint="Username"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                    <PasswordBox Name="NewUserPassBox" Margin="0 15 0 0"
+                        <PasswordBox Name="NewUserPassBox" Margin="0 15 0 0"
                              materialDesign:HintAssist.Hint="Password"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
-                    <PasswordBox Name="NewUserConfirmPassBox" Margin="0 15 0 0"
+                        <PasswordBox Name="NewUserConfirmPassBox" Margin="0 15 0 0"
                              materialDesign:HintAssist.Hint="Confirm"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
-                    <TextBox
+                        <TextBox
                         materialDesign:HintAssist.Hint="Email" Margin="0 15 0 0"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                    <Separator
+                        <Separator
                         Style="{StaticResource MaterialDesignLightSeparator}" />
-                    <Button Name="SignUpBtn" IsDefault="True"
+                        <Button Name="SignUpBtn" IsDefault="True"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="13"
                         ToolTip="Advance to create your account"
                         
                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
                         Margin="270,20,0,10" Background="#FF61ABF3" Click="SignUpBtn_Click">
-                        <TextBlock>
+                            <TextBlock>
                         Sign Up
-                        </TextBlock>
-                    </Button>
-                    <Button Name="SignUpBack" Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            </TextBlock>
+                        </Button>
+                        <Button Name="SignUpBack" Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                             Margin="-10 -54 280 0" Background="#FF8E8B90"
-                            materialDesign:ButtonAssist.CornerRadius="5"
+                            materialDesign:ButtonAssist.CornerRadius="5" Click="SignUpBack_Click"
                             Height="25" Width="60" ToolTip="Back to previous page">
-                        <TextBlock FontSize="12">
+                            <TextBlock FontSize="12">
                             Back
-                        </TextBlock>
-                    </Button>
+                            </TextBlock>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </materialDesign:Card>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
 </Window>
