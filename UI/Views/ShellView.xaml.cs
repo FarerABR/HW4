@@ -14,14 +14,19 @@ using System.Windows.Shapes;
 
 namespace UI.Views
 {
-    /// <summary>
-    /// Interaction logic for ShwellView.xaml
-    /// </summary>
-    public partial class ShwellView : Window
-    {
-        public ShwellView()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for ShellView.xaml
+	/// </summary>
+	public partial class ShellView : Window
+	{
+		public ShellView()
+		{
+			InitializeComponent();
+		}
+
+		private void SignUpBtn_Click(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
+	}
 }

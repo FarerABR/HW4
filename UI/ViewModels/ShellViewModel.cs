@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UI.ViewModels
 {
-    public class ShellViewModel : Screen
-    {
-    }
+	public class ShellViewModel : Screen
+	{
+	}
 }

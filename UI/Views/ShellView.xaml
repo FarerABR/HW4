@@ -1,12 +1,69 @@
-﻿<Window x:Class="UI.Views.ShwellView"
+﻿<Window x:Class="UI.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI.Views"
         mc:Ignorable="d"
-        Title="ShwellView" Height="450" Width="800">
+        Title="ShellView" Height="500" Width="700" WindowStartupLocation="CenterScreen"
+        x:Name="SignUpPage" >
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF6274DA" Offset="0"/>
+            <GradientStop Color="#FF61EBCF" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
     <Grid>
-        
+        <materialDesign:Card
+            Width="400" Height="375"
+            Padding="19" Margin="0 20 0 0">
+            <StackPanel>
+                <TextBlock 
+                    Margin="16 5 12 14"
+                    FontSize="18" FontWeight="DemiBold">
+                    Create your account
+                </TextBlock>
+                <Separator
+                    Style="{StaticResource MaterialDesignLightSeparator}" Background="LightGray"
+                    />
+                <StackPanel Margin="0 20 0 0">
+                    <TextBox
+                        Margin="0 -15 0 0"
+                        materialDesign:HintAssist.Hint="Username"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <PasswordBox Name="NewUserPassBox" Margin="0 15 0 0"
+                             materialDesign:HintAssist.Hint="Password"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                    <PasswordBox Name="NewUserConfirmPassBox" Margin="0 15 0 0"
+                             materialDesign:HintAssist.Hint="Confirm"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Email" Margin="0 15 0 0"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                    <Separator
+                        Style="{StaticResource MaterialDesignLightSeparator}" />
+                    <Button Name="SignUpBtn" IsDefault="True"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="13"
+                        ToolTip="Advance to create your account"
+                        
+                        materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
+                        Margin="270,20,0,10" Background="#FF61ABF3" Click="SignUpBtn_Click">
+                        <TextBlock>
+                        Sign Up
+                        </TextBlock>
+                    </Button>
+                    <Button Name="SignUpBack" Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                            Margin="-10 -54 280 0" Background="#FF8E8B90"
+                            materialDesign:ButtonAssist.CornerRadius="5"
+                            Height="25" Width="60" ToolTip="Back to previous page">
+                        <TextBlock FontSize="12">
+                            Back
+                        </TextBlock>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </materialDesign:Card>
     </Grid>
 </Window>
