@@ -31,15 +31,16 @@ namespace UI.Views
 
 		private void SignUpOptBtn_Click(object sender, RoutedEventArgs e)
 		{
-			WelcomeGrid.Visibility = Visibility.Collapsed;
+			WelcomeGrid.Visibility = Visibility.Hidden;
 			SignUpGrid.Visibility = Visibility.Visible;
 			UsernameTextBox.Focus();
 		}
 
 		private void SignUpBack_Click(object sender, RoutedEventArgs e)
 		{
-			SignUpGrid.Visibility = Visibility.Collapsed;
+			SignUpGrid.Visibility = Visibility.Hidden;
 			WelcomeGrid.Visibility = Visibility.Visible;
+			SignUpOptBtn.Focus();
 		}
 
 		private void LogInOptBtn_Click(object sender, RoutedEventArgs e)
@@ -50,6 +51,11 @@ namespace UI.Views
 		private void QuitBtn_Click(object sender, RoutedEventArgs e)
 		{
 			Close();
+		}
+
+		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			SignUpOptBtn.Focus();
 		}
 	}
 }
