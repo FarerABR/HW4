@@ -22,11 +22,11 @@ namespace UI.Views
 		public ShellView()
 		{
 			InitializeComponent();
-		} 
+		}
 
-		private void SignUpBtn_Click(object sender, RoutedEventArgs e)
+		private void MainPage_Loaded(object sender, RoutedEventArgs e)
 		{
-			Close();
+			SignUpOptBtn.Focus();
 		}
 
 		private void SignUpOptBtn_Click(object sender, RoutedEventArgs e)
@@ -36,16 +36,11 @@ namespace UI.Views
 			UsernameTextBox.Focus();
 		}
 
-		private void SignUpBack_Click(object sender, RoutedEventArgs e)
-		{
-			SignUpGrid.Visibility = Visibility.Hidden;
-			WelcomeGrid.Visibility = Visibility.Visible;
-			SignUpOptBtn.Focus();
-		}
-
 		private void LogInOptBtn_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("Loggen in successfuly!");
+			WelcomeGrid.Visibility = Visibility.Hidden;
+			LogInGrid.Visibility = Visibility.Visible;
+			LogInTextBox.Focus();
 		}
 
 		private void QuitBtn_Click(object sender, RoutedEventArgs e)
@@ -53,8 +48,51 @@ namespace UI.Views
 			Close();
 		}
 
-		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		private void TempBtn_Click(object sender, RoutedEventArgs e)
 		{
+			if (!AgreeMentCheckBox.IsFocused)
+			{
+				if (SignUpBtn.IsEnabled)
+					SignUpBtn_Click(sender, e);
+			}
+			else
+			{
+				AgreeMentCheckBox.IsChecked = (bool)(!AgreeMentCheckBox.IsChecked);
+				AgreeMentCheckBox_Click(sender, e);
+			}
+		}
+
+		private void AgreeMentCheckBox_Click(object sender, RoutedEventArgs e)
+		{
+			SignUpBtn.IsEnabled = (bool)(AgreeMentCheckBox.IsChecked);
+		}
+
+		private void SignUpBtn_Click(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
+
+		private void SignUpBack_Click(object sender, RoutedEventArgs e)
+		{
+			SignUpGrid.Visibility = Visibility.Hidden;
+			WelcomeGrid.Visibility = Visibility.Visible;
+			SignUpOptBtn.Focus();
+		}
+
+		private void LogInBtn_Click(object sender, RoutedEventArgs e)
+		{
+			if (KeepSignCheckBox.IsFocused == false)
+				Close();
+			else if (KeepSignCheckBox.IsChecked == true)
+				KeepSignCheckBox.IsChecked = false;
+			else
+				KeepSignCheckBox.IsChecked = true;
+		}
+
+		private void LogInBack_Click(object sender, RoutedEventArgs e)
+		{
+			LogInGrid.Visibility = Visibility.Hidden;
+			WelcomeGrid.Visibility = Visibility.Visible;
 			SignUpOptBtn.Focus();
 		}
 	}
