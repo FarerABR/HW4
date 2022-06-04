@@ -8,7 +8,7 @@ namespace BLL.Repository
         /// user repository
         /// </summary>
         /// <value></value>
-        public static List<User> User_List { get; set; }
+        public static List<User> User_List { get; set; } = new List<User>();
 
         /// <summary>
         /// creates new user
@@ -42,20 +42,30 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>List<User></returns>
-        public static List<User> SearchUser(string userName)
+        public static List<User> SearchUsers(string userName)
         {
             return User_List.Where(x => x.Username == userName).ToList();
         }
 
         /// <summary>
-        /// returns true if a user with specified properties exists
+        /// returns the user with given properties
         /// </summary>
         /// <param name="userName"></param>
         /// <returns>List<User></returns>
-        public static bool UserExists(string userName)
+        public static User SearchUser(string userName)
         {
-            return User_List.Exists(x => x.Username == userName);
+            return User_List.Find(x => x.Username == userName);
         }
+
+		/// <summary>
+		/// returns true if a user with specified properties exists
+		/// </summary>
+		/// <param name="userName"></param>
+		/// <returns>bool</returns>
+		public static bool UserExists(string userName)
+        {
+			return User_List.Any(x => x.Username == userName);
+		}
 
         /// <summary>
         /// updates the user

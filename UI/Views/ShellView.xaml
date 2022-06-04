@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d"
+        xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d" Loaded="WelcomePage_Loaded"
         Title="  Virtual Store" Height="500" Width="700" WindowStartupLocation="CenterScreen"
         x:Name="WelcomePage" FontFamily="Comic Sans MS" ResizeMode="NoResize">
     <Window.Background>
@@ -14,7 +14,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
-        <Grid Name="WelcomeGrid" Visibility="Visible">
+        <Grid Name="WelcomeGrid" Visibility="Hidden">
             <Border Width="320" Height="400" BorderThickness="1.5" 
             Margin="20" Background="#FF18FFFA" Padding="15"
             BorderBrush="{StaticResource MaterialDesignChipBackground}"
@@ -26,7 +26,7 @@
                     </TextBlock>
                     
                     <Separator Style="{StaticResource MaterialDesignLightSeparator}"
-                        Background="LightSlateGray"/>
+                        Background="LightSlateGray" />
                     
                     <materialDesign:Badged
                         Badge="{materialDesign:PackIcon AccountPlus}"
@@ -81,19 +81,21 @@
                         Margin="0 -15 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:HintAssist.Hint="Username"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBlock Text="* Field is required" Name="UserNameError"
-                            FontSize="8" Foreground="Red"  Margin="0 2 0 -12" Visibility="Hidden"/>
+                        <TextBlock Text="" Name="UserNameError" FontSize="8"
+                            Foreground="Red"  Margin="0 2 0 -12" Visibility="Visible"/>
 
                         <PasswordBox Name="NewUserPassBox" Margin="0 25 200 0"
                             materialDesign:HintAssist.Hint="Password"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
                         </PasswordBox>
 
-                        <TextBlock Text="* Field is required" Name="PassError"
+                        <TextBlock Text="* must be 8 or more long" Name="PassError"
                             FontSize="8" Foreground="Red"  Margin="0 2 0 -12" Visibility="Hidden"/>
 
                         <PasswordBox Name="NewUserConfirmPassBox" Margin="185 -40 0 0"
                             materialDesign:HintAssist.Hint="Confirm"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
                         <TextBlock Text="* Doesn't match" Name="ConfrimPassError"
                             FontSize="8" Foreground="Red"  Margin="185 2 0 -12" Visibility="Hidden"/>
@@ -133,7 +135,7 @@
                 </StackPanel>
             </materialDesign:Card>
         </Grid>
-        <Grid Name="LogInGrid" Visibility="Hidden">
+        <Grid Name="LogInGrid" Visibility="Visible">
             <materialDesign:Card
             Width="400" Height="320"
             Padding="19" Margin="0 20 0 0">
@@ -152,22 +154,35 @@
                         materialDesign:HintAssist.Hint="Email or Username"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                        <PasswordBox Name="LogInPassBox" Margin="0 20 0 0"
-                             materialDesign:HintAssist.Hint="Password"
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                        <PasswordBox Name="LogInPassBox" Margin="0 20 20 0"
+                            materialDesign:HintAssist.Hint="Password"
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+
+                        <materialDesign:PackIcon Kind="Eye" Margin="0 -22 0 -20" Visibility="Visible"
+                            HorizontalAlignment="Right" Opacity="0.6" Name="ShowHideIcon" />
+
+                        <Button Background="White" Height="12" Width="16" Name="LogInShowHideBtn"
+                            HorizontalAlignment="Right" Margin="0 -27.7 0 0"
+                            materialDesign:ButtonAssist.CornerRadius="8" Opacity="0"
+                            Click="LogInShowHideBtn_Click" ClickMode="Press" IsTabStop="False"
+                            IsEnabled="{Binding DataContext.ControlsEnabled,
+                            RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                             />
+
+                        <TextBlock Name="LogInPassBlock"  Margin="0 -20 20 1" Visibility="Hidden"
+                            FontSize="11" Background="White" />
 
                         <CheckBox Content="Keep me signed in" FontWeight="Medium"
                                 Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
                                 Margin="0 30 0 -45" Name="KeepSignCheckBox" 
-                                IsChecked="{Binding Source=UI.Views, Path=KeepSignedIn,
-                                Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+                                 />
 
                         <StackPanel>
                             <TextBlock Name="LogInError" Text="Credentials don't match" Visibility="Hidden"
                             HorizontalAlignment="Right" FontSize="9" Margin="0 30 0 -40" Foreground="Red">
                             <StackPanel>
                                 <materialDesign:PackIcon Kind="CloseBold" Width="10"
-                                    Margin="0 5 2 -5" />
+                                    Margin="-112 5 2 -5" />
                             </StackPanel>
                             </TextBlock>
 
@@ -176,7 +191,7 @@
                                 Margin="0 28 0 -40" Foreground="Red">
                             <StackPanel>
                                 <materialDesign:PackIcon Kind="CloseBold" Width="10"
-                                     Margin="0 -4 1 -5" />
+                                     Margin="-117 -4 1 -5" />
                             </StackPanel>
                             </TextBlock>
                         </StackPanel>

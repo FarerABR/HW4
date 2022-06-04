@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-	public class TestClass
+	public class TestModel
 	{
 
 	}
