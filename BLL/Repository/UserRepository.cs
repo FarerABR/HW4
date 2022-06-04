@@ -1,4 +1,6 @@
 using DAL.Entity.User;
+using DAL.Enum.User;
+using BLL.Repository;
 
 namespace BLL.Repository
 {
@@ -15,14 +17,16 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newUser"></param>
         /// <returns>created user</returns>
-        public static User CreateUser(string username, string password, string email)
+        public static User CreateUser(string username, string password, string email, UserRole role)
         {
             if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
             {
                 throw new Exception($"User already exists");
             }
 
-            var newUser = new User(username, password, email);
+            password = PasswordRepository.HashPassword(password);
+
+            var newUser = new User(username, password, email, role);
             User_List.Add(newUser);
             return newUser;
         }
@@ -40,21 +44,21 @@ namespace BLL.Repository
         /// <summary>
         /// returns all the users with given 
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="username"></param>
         /// <returns>List<User></returns>
-        public static List<User> SearchUsers(string userName)
+        public static List<User> SearchUsers(string username)
         {
-            return User_List.Where(x => x.Username == userName).ToList();
+            return User_List.Where(x => x.Username == username).ToList();
         }
 
         /// <summary>
         /// returns the user with given properties
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="username"></param>
         /// <returns>List<User></returns>
-        public static User SearchUser(string userName)
+        public static User SearchUser(string username)
         {
-            return User_List.Find(x => x.Username == userName);
+            return User_List.Find(x => x.Username == username);
         }
 
 		/// <summary>
@@ -87,7 +91,7 @@ namespace BLL.Repository
         /// deletes the user from User_List
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteUser(int id)
+        public static void DeleteUser(int id)
         {
             if (!User_List.Exists(x => x.Id == id))
             {

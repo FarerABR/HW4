@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using BLL.Repository;
+using DAL.Enum.User;
 using UI.ViewModels;
 
 namespace UI.Views
@@ -88,7 +89,7 @@ namespace UI.Views
 				LogInWrongUserNameError.Visibility = Visibility.Visible;
 				return false;
 			}
-			else if (LogInPassBox.Password.Length == 0 || UserRepository.SearchUser(LogInTextBox.Text).Password != LogInPassBox.Password)
+			else if (LogInPassBox.Password.Length == 0 || !PasswordRepository.CheckPassword(LogInTextBox.Text, LogInPassBox.Password))
 			{
 				LogInWrongUserNameError.Visibility = Visibility.Hidden;
 				LogInError.Visibility = Visibility.Visible;
@@ -100,7 +101,7 @@ namespace UI.Views
 		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
 		{
 			SignUpOptBtn.Focus();
-			UserRepository.CreateUser("Amir", "XD", "a@Gmail.com");
+			UserRepository.CreateUser("Amir", "XD", "AmirAdmin@Gmail.com", UserRole.admin);
 			if (KeepSignedIn)
 			{
 				//WelcomePage.Hide();

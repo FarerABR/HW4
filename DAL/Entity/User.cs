@@ -4,11 +4,13 @@ namespace DAL.Entity.User
 {
     public class User
     {
-		public User(string username, string password, string email)
+		public User(string username, string password, string email, UserRole role)
 		{
             Username = username;
             Password = password;
             Email = email;
+            Role = role;
+            Balance = 1000;
 		}
 
         public bool IsDeleted { get; set; } = false;
@@ -31,6 +33,6 @@ namespace DAL.Entity.User
 
         public decimal Balance { get; set; }
 
-        public static int Id_Seed { get; set; } = 100;
+        private static int Id_Seed { get; set; } = 100;
     }
 }
