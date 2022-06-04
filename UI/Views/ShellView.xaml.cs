@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,20 +12,71 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.CompilerServices;
+using Caliburn.Micro;
+using UI.ViewModels;
 
 namespace UI.Views
 {
-	/// <summary>
-	/// Interaction logic for ShellView.xaml
-	/// </summary>
-	public partial class ShellView : Window
+	public partial class ShellView
 	{
 		public ShellView()
 		{
 			InitializeComponent();
 		}
 
-		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		private bool ValidEmail(string email)
+		{
+			var trimmedEmail = email.Trim();
+
+			if (trimmedEmail.EndsWith("."))
+			{
+				return false;
+			}
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(email);
+				return addr.Address == trimmedEmail;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private bool ValidateSignUp()
+		{
+			bool res = true;
+			if(UsernameTextBox.Text == "")
+			{
+				UserNameError.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				UserNameError.Visibility = Visibility.Hidden;
+			}
+			if (NewUserPassBox.Password.Length == 0)
+			{
+				ConfrimPassError.Visibility = Visibility.Hidden;
+				PassError.Visibility = Visibility.Visible;
+			}
+			else if(NewUserConfirmPassBox.Password != NewUserPassBox.Password)
+			{
+				PassError.Visibility = Visibility.Hidden;
+				ConfrimPassError.Visibility = Visibility.Visible;
+			}
+			if(!ValidEmail(NewUserEmail.Text))
+			{
+				EmailError.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				EmailError.Visibility = Visibility.Hidden;
+			}
+			return res;
+		}
+
+		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
 		{
 			SignUpOptBtn.Focus();
 		}
@@ -69,7 +121,11 @@ namespace UI.Views
 
 		private void SignUpBtn_Click(object sender, RoutedEventArgs e)
 		{
-			Close();
+			if (ValidateSignUp())
+			{
+				//ShopView ShopViewWindow = new ShopView();
+				//ShopViewWindow.Show();
+			}
 		}
 
 		private void SignUpBack_Click(object sender, RoutedEventArgs e)
@@ -82,7 +138,10 @@ namespace UI.Views
 		private void LogInBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (KeepSignCheckBox.IsFocused == false)
-				Close();
+			{
+				//ShopView ShopViewWindow = new ShopView();
+				//ShopViewWindow.Show();
+			}
 			else if (KeepSignCheckBox.IsChecked == true)
 				KeepSignCheckBox.IsChecked = false;
 			else

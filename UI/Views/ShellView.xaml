@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:UI.Views"
-        mc:Ignorable="d" Loaded="MainPage_Loaded"
-        Title="Virtual Store" Height="500" Width="700" WindowStartupLocation="CenterScreen"
-        x:Name="MainPage" FontFamily="Comic Sans MS" >
+        xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d"
+        Title="  Virtual Store" Height="500" Width="700" WindowStartupLocation="CenterScreen"
+        x:Name="WelcomePage" FontFamily="Comic Sans MS" ResizeMode="NoResize">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF6274DA" Offset="0"/>
@@ -15,7 +14,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
-        <Grid Name="WelcomeGrid" Visibility="Visible">
+        <Grid Name="WelcomeGrid" Visibility="Hidden">
             <Border Width="320" Height="400" BorderThickness="1.5" 
             Margin="20" Background="#FF18FFFA" Padding="15"
             BorderBrush="{StaticResource MaterialDesignChipBackground}"
@@ -60,8 +59,8 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <Grid Name="SignUpGrid" Visibility="Hidden">
-            <materialDesign:Card
+        <Grid Name="SignUpGrid" Visibility="Visible">
+            <materialDesign:Card UniformCornerRadius="0"
             Width="400" Height="385"
             Padding="19" Margin="0 0 0 0">
                 <StackPanel>
@@ -75,21 +74,36 @@
                     />
                     <StackPanel Margin="0 20 0 0">
                         <TextBox Name="UsernameTextBox"
-                        Margin="0 -15 0 0"
+                        Margin="0 -15 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:HintAssist.Hint="Username"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <PasswordBox Name="NewUserPassBox" Margin="0 15 205 0"
-                             materialDesign:HintAssist.Hint="Password"
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
-                        <PasswordBox Name="NewUserConfirmPassBox" Margin="180 -40 0 0"
-                             materialDesign:HintAssist.Hint="Confirm"
-                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
-                        <TextBox
-                        materialDesign:HintAssist.Hint="Email" Margin="0 25 0 0"
+                        <TextBlock Text="* Field is required" Name="UserNameError"
+                            FontSize="8" Foreground="Red"  Margin="0 2 0 -12" Visibility="Hidden"/>
+
+                        <PasswordBox Name="NewUserPassBox" Margin="0 25 200 0"
+                            materialDesign:HintAssist.Hint="Password"
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                        </PasswordBox>
+
+                        <TextBlock Text="* Field is required" Name="PassError"
+                            FontSize="8" Foreground="Red"  Margin="0 2 0 -12" Visibility="Hidden"/>
+                        
+                        <PasswordBox Name="NewUserConfirmPassBox" Margin="185 -40 0 0"
+                            materialDesign:HintAssist.Hint="Confirm"
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
+                        <TextBlock Text="* Doesn't match" Name="ConfrimPassError"
+                            FontSize="8" Foreground="Red"  Margin="185 2 0 -12" Visibility="Hidden"/>
+
+                        <TextBox Name="NewUserEmail"
+                        materialDesign:HintAssist.Hint="Email" Margin="0 20 0 0"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                        <TextBlock Text="* Invalid email" Name="EmailError"
+                            FontSize="8" Foreground="Red"  Margin="0 2 0 0" Visibility="Hidden"/>
+
                         <CheckBox Name="AgreeMentCheckBox" FontWeight="Medium"
                                 Style="{StaticResource MaterialDesignUserForegroundCheckBox}"
-                                Margin="0 40 0 -45" FontSize="10" Click="AgreeMentCheckBox_Click"
+                                Margin="0 30 0 -45" FontSize="10" Click="AgreeMentCheckBox_Click"
                                 Content="I have read and agree to the terms of service"/>
                         <Button Name="TempBtn" IsDefault="True" Click="TempBtn_Click"
                                 Height="0" Width="0" IsTabStop="False"/>
