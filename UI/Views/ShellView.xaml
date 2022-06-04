@@ -14,7 +14,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
-        <Grid Name="WelcomeGrid" Visibility="Hidden">
+        <Grid Name="WelcomeGrid" Visibility="Visible">
             <Border Width="320" Height="400" BorderThickness="1.5" 
             Margin="20" Background="#FF18FFFA" Padding="15"
             BorderBrush="{StaticResource MaterialDesignChipBackground}"
@@ -135,7 +135,7 @@
                 </StackPanel>
             </materialDesign:Card>
         </Grid>
-        <Grid Name="LogInGrid" Visibility="Visible">
+        <Grid Name="LogInGrid" Visibility="Hidden">
             <materialDesign:Card
             Width="400" Height="320"
             Padding="19" Margin="0 20 0 0">
