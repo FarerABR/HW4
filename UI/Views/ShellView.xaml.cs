@@ -9,11 +9,11 @@ namespace UI.Views
 		{
 			InitializeComponent();
 			UserRepository.CreateUser("Amir", "XD", "a@Gmail.com").Role = DAL.Enum.User.UserRole.admin;
-			if(KeepSignedIn)
-			{
-				WelcomePage.Hide();
-				//ShopPage.Active();
-			}
+			//if(KeepSignedIn)
+			//{
+			//	WelcomePage.Hide();
+			//	ShopPage.Active();
+			//}
 		}
 
 		bool KeepSignedIn = false;
@@ -75,18 +75,18 @@ namespace UI.Views
 
 		private bool ValidateLogIn()
 		{
-			if(!UserRepository.UserExists(LogInTextBox.Text))
-			{
-				LogInError.Visibility = Visibility.Hidden;
-				LogInWrongUserNameError.Visibility = Visibility.Visible;
-				return false;
-			}
-			else if (UserRepository.SearchUser(LogInTextBox.Text)[0].Password != LogInPassBox.Password)
-			{
-				LogInWrongUserNameError.Visibility = Visibility.Hidden;
-				LogInError.Visibility = Visibility.Visible;
-				return false;
-			}
+			//if(!UserRepository.UserExists(LogInTextBox.Text))
+			//{
+			//	LogInError.Visibility = Visibility.Hidden;
+			//	LogInWrongUserNameError.Visibility = Visibility.Visible;
+			//	return false;
+			//}
+			//else if (UserRepository.SearchUser(LogInTextBox.Text)[0].Password != LogInPassBox.Password)
+			//{
+			//	LogInWrongUserNameError.Visibility = Visibility.Hidden;
+			//	LogInError.Visibility = Visibility.Visible;
+			//	return false;
+			//}
 			return true;
 		}
 
@@ -153,11 +153,11 @@ namespace UI.Views
 		{
 			if (KeepSignCheckBox.IsFocused == false)
 			{
-				if (ValidateLogIn())
-				{
-					//ShopView ShopViewWindow = new ShopView();
-					//ShopViewWindow.Show();
-				}
+				//if (ValidateLogIn())
+				//{
+				//	//ShopView ShopViewWindow = new ShopView();
+				//	//ShopViewWindow.Show();
+				//}
 			}
 			else if (KeepSignCheckBox.IsChecked == true)
 				KeepSignCheckBox.IsChecked = false;

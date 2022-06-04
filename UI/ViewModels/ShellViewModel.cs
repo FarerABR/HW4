@@ -9,11 +9,6 @@ namespace UI.ViewModels
 {
 	public class ShellViewModel : Conductor<object>
 	{
-		private static string _textContent = "";
-		public static string TextContent
-		{
-			get { return _textContent; }
-			set { _textContent = value; }
-		}
+
 	}
 }
