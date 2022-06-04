@@ -8,20 +8,21 @@ namespace BLL.Repository
         /// user repository
         /// </summary>
         /// <value></value>
-        public List<User> User_List { get; set; }
+        public static List<User> User_List { get; set; }
 
         /// <summary>
         /// creates new user
         /// </summary>
         /// <param name="newUser"></param>
-        /// <returns>input</returns>
-        public User CreateUser(User newUser)
+        /// <returns>created user</returns>
+        public static User CreateUser(string username, string password, string email)
         {
-            if (User_List.Where(x => x.Username == newUser.Username).Any() || User_List.Where(x => x.Email == newUser.Email).Any())
+            if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
             {
-                throw new Exception($"User already exist");
+                throw new Exception($"User already exists");
             }
 
+            var newUser = new User(username, password, email);
             User_List.Add(newUser);
             return newUser;
         }
@@ -31,7 +32,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>User</returns>
-        public User GetUserById(int id)
+        public static User GetUserById(int id)
         {
             return User_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -39,11 +40,21 @@ namespace BLL.Repository
         /// <summary>
         /// returns all the users with given 
         /// </summary>
-        /// <param name="inputUser"></param>
+        /// <param name="userName"></param>
         /// <returns>List<User></returns>
-        public List<User> SearchUser(User inputUser)
+        public static List<User> SearchUser(string userName)
         {
-            return User_List.Where(x => x == inputUser).ToList();
+            return User_List.Where(x => x.Username == userName).ToList();
+        }
+
+        /// <summary>
+        /// returns true if a user with specified properties exists
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>List<User></returns>
+        public static bool UserExists(string userName)
+        {
+            return User_List.Exists(x => x.Username == userName);
         }
 
         /// <summary>
@@ -51,7 +62,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputUser"></param>
         /// <returns>input</returns>
-        public User UpdateUser(User inputUser)
+        public static User UpdateUser(User inputUser)
         {
             if (!User_List.Exists(x => x.Id == inputUser.Id))
             {

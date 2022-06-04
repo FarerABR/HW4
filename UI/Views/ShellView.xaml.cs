@@ -1,29 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Runtime.CompilerServices;
-using Caliburn.Micro;
-using UI.ViewModels;
+﻿using System.Windows;
+using BLL.Repository;
 
 namespace UI.Views
 {
-	public partial class ShellView
+	public partial class ShellView : Window
 	{
 		public ShellView()
 		{
 			InitializeComponent();
+			UserRepository.CreateUser("Amir", "XD", "a@Gmail.com").Role = DAL.Enum.User.UserRole.admin;
+			if(KeepSignedIn)
+			{
+				WelcomePage.Hide();
+				//ShopPage.Active();
+			}
 		}
+
+		bool KeepSignedIn = false;
 
 		private bool ValidEmail(string email)
 		{
@@ -47,9 +40,10 @@ namespace UI.Views
 		private bool ValidateSignUp()
 		{
 			bool res = true;
-			if(UsernameTextBox.Text == "")
+			if (UsernameTextBox.Text == "")
 			{
 				UserNameError.Visibility = Visibility.Visible;
+				res = false;
 			}
 			else
 			{
@@ -59,21 +53,41 @@ namespace UI.Views
 			{
 				ConfrimPassError.Visibility = Visibility.Hidden;
 				PassError.Visibility = Visibility.Visible;
+				res = false;
 			}
-			else if(NewUserConfirmPassBox.Password != NewUserPassBox.Password)
+			else if (NewUserConfirmPassBox.Password != NewUserPassBox.Password)
 			{
 				PassError.Visibility = Visibility.Hidden;
 				ConfrimPassError.Visibility = Visibility.Visible;
+				res = false;
 			}
-			if(!ValidEmail(NewUserEmail.Text))
+			if (!ValidEmail(NewUserEmail.Text))
 			{
 				EmailError.Visibility = Visibility.Visible;
+				res = false;
 			}
 			else
 			{
 				EmailError.Visibility = Visibility.Hidden;
 			}
 			return res;
+		}
+
+		private bool ValidateLogIn()
+		{
+			if(!UserRepository.UserExists(LogInTextBox.Text))
+			{
+				LogInError.Visibility = Visibility.Hidden;
+				LogInWrongUserNameError.Visibility = Visibility.Visible;
+				return false;
+			}
+			else if (UserRepository.SearchUser(LogInTextBox.Text)[0].Password != LogInPassBox.Password)
+			{
+				LogInWrongUserNameError.Visibility = Visibility.Hidden;
+				LogInError.Visibility = Visibility.Visible;
+				return false;
+			}
+			return true;
 		}
 
 		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
@@ -139,8 +153,11 @@ namespace UI.Views
 		{
 			if (KeepSignCheckBox.IsFocused == false)
 			{
-				//ShopView ShopViewWindow = new ShopView();
-				//ShopViewWindow.Show();
+				if (ValidateLogIn())
+				{
+					//ShopView ShopViewWindow = new ShopView();
+					//ShopViewWindow.Show();
+				}
 			}
 			else if (KeepSignCheckBox.IsChecked == true)
 				KeepSignCheckBox.IsChecked = false;

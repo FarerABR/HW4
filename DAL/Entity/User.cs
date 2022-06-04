@@ -4,6 +4,13 @@ namespace DAL.Entity.User
 {
     public class User
     {
+		public User(string username, string password, string email)
+		{
+            Username = username;
+            Password = password;
+            Email = email;
+		}
+
         public bool IsDeleted { get; set; } = false;
         public UserRole Role { get; set; }
 
@@ -17,20 +24,13 @@ namespace DAL.Entity.User
             }
         }
 
-        public string First_Name { get; set; }
-        public string last_Name { get; set; }
-        public Gender Gender { get; set; }
-
         public string Username { get; set; }
         public string Password { get; set; }
-        public DateTime Date_Of_Account { get; set; }
-        public string Email { get; set; }
 
+        public string Email { get; set; }
 
         public decimal Balance { get; set; }
 
-        public static int Id_Seed { get; set; } = 0;
-
-
+        public static int Id_Seed { get; set; } = 100;
     }
 }
