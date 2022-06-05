@@ -19,6 +19,8 @@ namespace BLL.Repository
         /// <returns>created user</returns>
         public static User CreateUser(string username, string password, string email, UserRole role)
         {
+            username = username.ToLower();
+            email = email.ToLower();
             if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
             {
                 throw new Exception($"User already exists");
@@ -64,12 +66,17 @@ namespace BLL.Repository
 		/// <summary>
 		/// returns true if a user with specified properties exists
 		/// </summary>
-		/// <param name="userName"></param>
+		/// <param name="username"></param>
 		/// <returns>bool</returns>
-		public static bool UserExists(string userName)
+		public static bool UsernameExists(string username)
         {
-			return User_List.Any(x => x.Username == userName);
+			return User_List.Any(x => x.Username == username);
 		}
+        public static bool UserEmailExists(string email)
+        {
+            email = email.ToLower();
+            return User_List.Any(x => x.Email == email);
+        }
 
         /// <summary>
         /// updates the user
