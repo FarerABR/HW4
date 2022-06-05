@@ -1,13 +1,14 @@
 ﻿using System.Windows;
 using BLL.Repository;
 using DAL.Enum.User;
-using UI.ViewModels;
+using DAL.Entity.User;
 
 namespace UI.Views
 {
-	public partial class ShellView : Window
+	public partial class ShellView
 	{
-		bool KeepSignedIn = false;
+		User? CurrentUser;
+		private bool KeepSignedIn = false;
 
 		public ShellView()
 		{
@@ -138,23 +139,24 @@ namespace UI.Views
 			}
 			else
 			{
-				AgreeMentCheckBox.IsChecked = (bool)(!AgreeMentCheckBox.IsChecked);
+				AgreeMentCheckBox.IsChecked = (bool)!AgreeMentCheckBox.IsChecked;
 				AgreeMentCheckBox_Click(sender, e);
 			}
 		}
 
 		private void AgreeMentCheckBox_Click(object sender, RoutedEventArgs e)
 		{
-			SignUpBtn.IsEnabled = (bool)(AgreeMentCheckBox.IsChecked);
+			SignUpBtn.IsEnabled = (bool)AgreeMentCheckBox.IsChecked;
 		}
 
 		private void SignUpBtn_Click(object sender, RoutedEventArgs e)
 		{
 			if (ValidateSignUp())
 			{
-				//ShopView ShopViewWindow = new ShopView();
-				//ShopViewWindow.Show();
-				MessageBox.Show("Seccessfully signed up! ♥");
+				CurrentUser = UserRepository.CreateUser(UsernameTextBox.Text, NewUserPassBox.Password, NewUserEmail.Text, UserRole.customer);
+				StoreView StoreViewWindow = new StoreView(CurrentUser);
+				Close();
+				StoreViewWindow.Show();
 			}
 		}
 
@@ -172,8 +174,11 @@ namespace UI.Views
 			{
 				if (ValidateLogIn())
 				{
-					//ShopView ShopViewWindow = new ShopView();
-					//ShopViewWindow.Show();
+					CurrentUser = UserRepository.SearchUser(LogInTextBox.Text);
+					KeepSignedIn = (bool)KeepSignCheckBox.IsChecked;
+					StoreView StoreViewWindow = new StoreView(CurrentUser);
+					Close();
+					StoreViewWindow.Show();
 					MessageBox.Show("Seccessfully logged in! ♥");
 				}
 			}
@@ -195,15 +200,18 @@ namespace UI.Views
 		{
 			if(LogInPassBlock.Visibility == Visibility.Hidden)
 			{
+				LogInShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Release;
 				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
 				LogInPassBlock.Text = LogInPassBox.Password;
-				LogInPassBox.Password += " ";
+				if (LogInPassBlock.Text == string.Empty)
+					LogInPassBlock.Opacity = 0;
 				LogInPassBlock.Visibility = Visibility.Visible;
 			}
 			else
 			{
+				LogInShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Press;
 				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
-				LogInPassBox.Password = LogInPassBox.Password.Substring(0, LogInPassBox.Password.Length - 1);
+				LogInPassBlock.Opacity = 1;
 				LogInPassBlock.Visibility = Visibility.Hidden;
 			}
 		}

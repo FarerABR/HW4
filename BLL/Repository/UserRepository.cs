@@ -57,7 +57,7 @@ namespace BLL.Repository
         /// returns the user with given properties
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>List<User></returns>
+        /// <returns>User</returns>
         public static User SearchUser(string username)
         {
             return User_List.Find(x => x.Username == username);

@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using Caliburn.Micro;
+using DAL.Entity.User;
+using DAL.Entity.Product;
+using UI.Views;
 
 namespace UI.Views
 {
@@ -19,7 +10,7 @@ namespace UI.Views
 	/// </summary>
 	public partial class StoreView : Window
 	{
-		public StoreView()
+		public StoreView(User CurrentUser)
 		{
 			InitializeComponent();
 		}
