@@ -2,16 +2,21 @@
 using BLL.Repository;
 using DAL.Enum.User;
 using DAL.Entity.User;
+using System.Windows.Media;
+using System;
 
 namespace UI.Views
 {
 	public partial class ShellView
 	{
-		User? CurrentUser;
+		#region Properties
+		private static User? CurrentUser = UserRepository.LastLoggedIn();
 		private bool KeepSignedIn = false;
+		#endregion
 
 		public ShellView()
 		{
+			UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin);
 			InitializeComponent();
 		}
 
@@ -40,19 +45,31 @@ namespace UI.Views
 			if (UsernameTextBox.Text == "")
 			{
 				UserNameError.Text = "* Field is required";
-				UserNameError.Visibility = Visibility.Visible;
+				UserNameError.Foreground = Brushes.Red;
+				UserNameError.Opacity = 1;
 				res = false;
 			}
 			else if(UsernameTextBox.Text.Length < 5)
 			{
 				UserNameError.Text = "* at least 5 characters";
-				UserNameError.Visibility = Visibility.Visible;
+				UserNameError.Foreground = Brushes.Red;
+				UserNameError.Opacity = 1;
+				res = false;
+			}
+			else if(UserRepository.UsernameExists(UsernameTextBox.Text))
+			{
+				UserNameError.Text = "* username already taken";
+				UserNameError.Foreground = Brushes.Red;
+				UserNameError.Opacity = 1;
 				res = false;
 			}
 			else
 			{
-				UserNameError.Visibility = Visibility.Hidden;
+				UserNameError.Opacity = 0.5;
+				UserNameError.Foreground = Brushes.Black;
+				UserNameError.Text = "at least 5 characters";
 			}
+
 			if (NewUserPassBox.Password.Length == 0)
 			{
 				ConfrimPassError.Visibility = Visibility.Hidden;
@@ -72,6 +89,13 @@ namespace UI.Views
 			}
 			if (!ValidEmail(NewUserEmail.Text))
 			{
+				EmailError.Text = "* Invalid email";
+				EmailError.Visibility = Visibility.Visible;
+				res = false;
+			}
+			else if (UserRepository.UserEmailExists(NewUserEmail.Text))
+			{
+				EmailError.Text = "* another account is using this email";
 				EmailError.Visibility = Visibility.Visible;
 				res = false;
 			}
@@ -84,7 +108,7 @@ namespace UI.Views
 
 		private bool ValidateLogIn()
 		{
-			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text)) && (!UserRepository.UserEmailExists(LogInTextBox.Text)))
+			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text) && !UserRepository.UserEmailExists(LogInTextBox.Text)))
 			{
 				LogInError.Visibility = Visibility.Hidden;
 				LogInWrongUserNameError.Visibility = Visibility.Visible;
@@ -102,11 +126,19 @@ namespace UI.Views
 		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
 		{
 			SignUpOptBtn.Focus();
-			UserRepository.CreateUser("Amir", "XD", "AmirAdmin@Gmail.com", UserRole.admin);
 			if (KeepSignedIn)
 			{
-				//WelcomePage.Hide();
-				//ShopPage.Active();
+				StoreView StoreViewWindow = new StoreView(CurrentUser);
+				Close();
+				StoreViewWindow.Show();
+			}
+		}
+
+		private void WelcomePage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			if(e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+			{
+				DragMove();
 			}
 		}
 
@@ -127,7 +159,7 @@ namespace UI.Views
 
 		private void QuitBtn_Click(object sender, RoutedEventArgs e)
 		{
-			Close();
+			Application.Current.Shutdown();
 		}
 
 		private void TempBtn_Click(object sender, RoutedEventArgs e)
@@ -139,7 +171,7 @@ namespace UI.Views
 			}
 			else
 			{
-				AgreeMentCheckBox.IsChecked = (bool)!AgreeMentCheckBox.IsChecked;
+				AgreeMentCheckBox.IsChecked = !AgreeMentCheckBox.IsChecked;
 				AgreeMentCheckBox_Click(sender, e);
 			}
 		}
@@ -153,10 +185,17 @@ namespace UI.Views
 		{
 			if (ValidateSignUp())
 			{
-				CurrentUser = UserRepository.CreateUser(UsernameTextBox.Text, NewUserPassBox.Password, NewUserEmail.Text, UserRole.customer);
-				StoreView StoreViewWindow = new StoreView(CurrentUser);
-				Close();
-				StoreViewWindow.Show();
+				try
+				{
+					CurrentUser = UserRepository.CreateUser(UsernameTextBox.Text, NewUserPassBox.Password, NewUserEmail.Text, UserRole.customer);
+					StoreView StoreViewWindow = new StoreView(CurrentUser);
+					Close();
+					StoreViewWindow.Show();
+				}
+				catch
+				{
+					MessageBox.Show("Sign-Up failed, please try again");
+				}
 			}
 		}
 
@@ -169,17 +208,28 @@ namespace UI.Views
 		}
 
 		private void LogInBtn_Click(object sender, RoutedEventArgs e)
-		{
+			{
 			if (KeepSignCheckBox.IsFocused == false)
 			{
 				if (ValidateLogIn())
 				{
-					CurrentUser = UserRepository.SearchUser(LogInTextBox.Text);
-					KeepSignedIn = (bool)KeepSignCheckBox.IsChecked;
-					StoreView StoreViewWindow = new StoreView(CurrentUser);
-					Close();
-					StoreViewWindow.Show();
-					MessageBox.Show("Seccessfully logged in! ♥");
+					try
+					{
+						CurrentUser = UserRepository.SearchUser(LogInTextBox.Text);
+						KeepSignedIn = (bool)KeepSignCheckBox.IsChecked;
+						if (KeepSignedIn)
+						{
+
+							CurrentUser.IsLastLoggedIn = true;
+						}
+						StoreView StoreViewWindow = new(CurrentUser);
+						Close();
+						StoreViewWindow.Show();
+					}
+					catch
+					{
+						MessageBox.Show("Login failed, please try again");
+					}
 				}
 			}
 			else if (KeepSignCheckBox.IsChecked == true)
@@ -218,7 +268,9 @@ namespace UI.Views
 
 		private void Fresh()
 		{
-			UserNameError.Visibility = Visibility.Hidden;
+			UserNameError.Opacity = 0.5;
+			UserNameError.Foreground = Brushes.Black;
+			UserNameError.Text = "at least 5 characters";
 			PassError.Visibility = Visibility.Hidden;
 			ConfrimPassError.Visibility = Visibility.Hidden;
 			EmailError.Visibility = Visibility.Hidden;

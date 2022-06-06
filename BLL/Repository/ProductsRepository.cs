@@ -3,13 +3,13 @@ using System;
 
 namespace BLL.Repository
 {
-    public class ProductRepository
+    public class ProductsRepository
     {
 
-        public List<GraphicsCard> GraphicsCard_List { get; set; }
-        public List<Processor> Processor_List { get; set; }
-        public List<Ram> Ram_List { get; set; }
-        public List<Motherboard> Motherboard_List { get; set; }
+        public static List<GraphicsCard> GraphicsCard_List { get; set; } = new List<GraphicsCard>();
+        public static List<Processor> Processor_List { get; set; } = new List<Processor>();
+        public static List<Ram> Ram_List { get; set; } = new List<Ram>();
+        public static List<Motherboard> Motherboard_List { get; set; } = new List<Motherboard>();
 
         #region GraphicsCard
         /// <summary>
@@ -17,12 +17,29 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public GraphicsCard CreateGraphicsCard(GraphicsCard newGraphicsCard)
+        public static GraphicsCard CreateGraphicsCard(string name, string off, string price, int rating, string image)
         {
-            if (GraphicsCard_List.Where(x => x == newGraphicsCard).Any())
+            if (Ram_List.Where(x => x.Name == name).Any())
             {
-                throw new Exception("GraphicsCard already exist");
+                throw new Exception("Ram already exist");
             }
+            var newGraphicsCard = new GraphicsCard(name, off, price, rating, image);
+            GraphicsCard_List.Add(newGraphicsCard);
+            return newGraphicsCard;
+        }
+
+        /// <summary>
+        /// creates new GraphicsCard
+        /// </summary>
+        /// <param name="newGraphicsCard"></param>
+        /// <returns>input</returns>
+        public static GraphicsCard CreateGraphicsCard(string name, string off, string price, int rating)
+        {
+            if (Ram_List.Where(x => x.Name == name).Any())
+            {
+                throw new Exception("Ram already exist");
+            }
+            var newGraphicsCard = new GraphicsCard(name, off, price, rating, "../../UI/Images/GPU.jpg");
             GraphicsCard_List.Add(newGraphicsCard);
             return newGraphicsCard;
         }
@@ -32,7 +49,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>GraphicsCard</returns>
-        public GraphicsCard GetGraphicsCardById(int id)
+        public static GraphicsCard GetGraphicsCardById(int id)
         {
             return GraphicsCard_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -42,7 +59,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputGraphicsCard"></param>
         /// <returns>List<GraphicsCard></returns>
-        public List<GraphicsCard> SearchGraphicsCard(GraphicsCard inputGraphicsCard)
+        public static List<GraphicsCard> SearchGraphicsCard(GraphicsCard inputGraphicsCard)
         {
             return GraphicsCard_List.Where(x => x == inputGraphicsCard).ToList();
         }
@@ -52,7 +69,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputGraphicsCard"></param>
         /// <returns>input</returns>
-        public GraphicsCard UpdateGraphicsCard(GraphicsCard inputGraphicsCard)
+        public static GraphicsCard UpdateGraphicsCard(GraphicsCard inputGraphicsCard)
         {
             if (!GraphicsCard_List.Exists(x => x.Id == inputGraphicsCard.Id))
             {
@@ -67,21 +84,16 @@ namespace BLL.Repository
         /// deletes the GraphicsCard from GraphicsCard_List
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteGraphicsCard(int id)
+        public static bool DeleteGraphicsCard(int id)
         {
             if (!GraphicsCard_List.Exists(x => x.Id == id))
             {
-                throw new Exception("GraphicsCard doesn't exist");
+                return false;
             }
 
             var graphicsCard = GraphicsCard_List.SingleOrDefault(x => x.Id == id);
-            if (graphicsCard.IsDeleted == true)
-            {
-                throw new Exception("GraphicsCard is already deleted");
-            }
-
-            graphicsCard.IsDeleted = true;
-
+            GraphicsCard_List.Remove(graphicsCard);
+            return true;
         }
         #endregion
         #region Processor
@@ -90,12 +102,29 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newProcessor"></param>
         /// <returns>input</returns>
-        public Processor CreateProcessor(Processor newProcessor)
+        public static Processor CreateProcessor(string name, string off, string price, int rating, string image)
         {
-            if (Processor_List.Where(x => x == newProcessor).Any())
+            if (Ram_List.Where(x => x.Name == name).Any())
             {
-                throw new Exception("Processor already exist");
+                throw new Exception("Ram already exist");
             }
+            var newProcessor = new Processor(name, off, price, rating, image);
+            Processor_List.Add(newProcessor);
+            return newProcessor;
+        }
+
+        /// <summary>
+        /// creates new GraphicsCard
+        /// </summary>
+        /// <param name="newProcessor"></param>
+        /// <returns>input</returns>
+        public static Processor CreateProcessor(string name, string off, string price, int rating)
+        {
+            if (Ram_List.Where(x => x.Name == name).Any())
+            {
+                throw new Exception("Ram already exist");
+            }
+            var newProcessor = new Processor(name, off, price, rating, "../../UI/Images/CPU.jpg");
             Processor_List.Add(newProcessor);
             return newProcessor;
         }
@@ -105,7 +134,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Processor</returns>
-        public Processor GetProcessorById(int id)
+        public static Processor GetProcessorById(int id)
         {
             return Processor_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -115,7 +144,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputProcessor"></param>
         /// <returns>List<Processor></returns>
-        public List<Processor> SearchProcessor(Processor inputProcessor)
+        public static List<Processor> SearchProcessor(Processor inputProcessor)
         {
             return Processor_List.Where(x => x == inputProcessor).ToList();
         }
@@ -125,7 +154,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputProcessor"></param>
         /// <returns>input</returns>
-        public Processor UpdateProcessor(Processor inputProcessor)
+        public static Processor UpdateProcessor(Processor inputProcessor)
         {
             if (!Processor_List.Exists(x => x.Id == inputProcessor.Id))
             {
@@ -140,20 +169,16 @@ namespace BLL.Repository
         /// deletes the Processor from Processor_List
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteProcessor(int id)
+        public static bool DeleteProcessor(int id)
         {
             if (!Processor_List.Exists(x => x.Id == id))
             {
-                throw new Exception("Processor doesn't exist");
+                return false;
             }
 
             var processor = Processor_List.SingleOrDefault(x => x.Id == id);
-            if (processor.IsDeleted == true)
-            {
-                throw new Exception("Processor is already deleted");
-            }
-
-            processor.IsDeleted = true;
+            Processor_List.Remove(processor);
+            return true;
 
         }
         #endregion
@@ -163,12 +188,29 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newRam"></param>
         /// <returns>input</returns>
-        public Ram CreateRam(Ram newRam)
+        public static Ram CreateRam(string name, string off, string price, int rating, string image)
         {
-            if (Ram_List.Where(x => x == newRam).Any())
+            if (Ram_List.Where(x => x.Name == name).Any())
+            {
+                throw new Exception("Ram already exists");
+            }
+            var newRam = new Ram(name, off, price, rating, image);
+			Ram_List.Add(newRam);
+            return newRam;
+        }
+
+        /// <summary>
+        /// creates new GraphicsCard
+        /// </summary>
+        /// <param name="newRam"></param>
+        /// <returns>input</returns>
+        public static Ram CreateRam(string name, string off, string price, int rating)
+        {
+            if (Ram_List.Where(x => x.Name == name).Any())
             {
                 throw new Exception("Ram already exist");
             }
+            var newRam = new Ram(name, off, price, rating, "../Images/RAM.jpg");
             Ram_List.Add(newRam);
             return newRam;
         }
@@ -178,7 +220,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Ram</returns>
-        public Ram GetRamById(int id)
+        public static Ram GetRamById(int id)
         {
             return Ram_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -188,7 +230,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputRam"></param>
         /// <returns>List<Ram></returns>
-        public List<Ram> SearchRam(Ram inputRam)
+        public static List<Ram> SearchRam(Ram inputRam)
         {
             return Ram_List.Where(x => x == inputRam).ToList();
         }
@@ -198,7 +240,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputRam"></param>
         /// <returns>input</returns>
-        public Ram UpdateRam(Ram inputRam)
+        public static Ram UpdateRam(Ram inputRam)
         {
             if (!Ram_List.Exists(x => x.Id == inputRam.Id))
             {
@@ -213,21 +255,16 @@ namespace BLL.Repository
         /// deletes the Ram from Ram_List
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteRam(int id)
+        public static bool DeleteRam(int id)
         {
             if (!Ram_List.Exists(x => x.Id == id))
             {
-                throw new Exception("Ram doesn't exist");
+                return false;
             }
 
             var ram = Ram_List.SingleOrDefault(x => x.Id == id);
-            if (ram.IsDeleted == true)
-            {
-                throw new Exception("Ram is already deleted");
-            }
-
-            ram.IsDeleted = true;
-
+            Ram_List.Remove(ram);
+            return true;
         }
         #endregion
         #region Motherboard
@@ -236,12 +273,29 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public Motherboard CreateMotherboard(Motherboard newMotherboard)
+        public static Motherboard CreateMotherboard(string name, string off, string price, int rating, string image)
         {
-            if (Motherboard_List.Where(x => x == newMotherboard).Any())
+            if (Ram_List.Where(x => x.Name == name).Any())
             {
-                throw new Exception("Motherboard already exist");
+                throw new Exception("Ram already exist");
             }
+            var newMotherboard = new Motherboard(name, off, price, rating, image);
+            Motherboard_List.Add(newMotherboard);
+            return newMotherboard;
+        }
+
+        /// <summary>
+        /// creates new GraphicsCard
+        /// </summary>
+        /// <param name="newGraphicsCard"></param>
+        /// <returns>input</returns>
+        public static Motherboard CreateMotherboard(string name, string off, string price, int rating)
+        {
+            if (Ram_List.Where(x => x.Name == name).Any())
+            {
+                throw new Exception("Ram already exist");
+            }
+            var newMotherboard = new Motherboard(name, off, price, rating, "../../UI/Images/Motherboard.jpg");
             Motherboard_List.Add(newMotherboard);
             return newMotherboard;
         }
@@ -251,7 +305,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Motherboard</returns>
-        public Motherboard GetMotherboardById(int id)
+        public static Motherboard GetMotherboardById(int id)
         {
             return Motherboard_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -261,7 +315,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputMotherboard"></param>
         /// <returns>List<Motherboard></returns>
-        public List<Motherboard> SearchMotherboard(Motherboard inputMotherboard)
+        public static List<Motherboard> SearchMotherboard(Motherboard inputMotherboard)
         {
             return Motherboard_List.Where(x => x == inputMotherboard).ToList();
         }
@@ -271,7 +325,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="inputMotherboard"></param>
         /// <returns>input</returns>
-        public Motherboard UpdateMotherboard(Motherboard inputMotherboard)
+        public static Motherboard UpdateMotherboard(Motherboard inputMotherboard)
         {
             if (!Motherboard_List.Exists(x => x.Id == inputMotherboard.Id))
             {
@@ -286,20 +340,16 @@ namespace BLL.Repository
         /// deletes the Motherboard from Motherboard_List
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteMotherboard(int id)
+        public static bool DeleteMotherboard(int id)
         {
             if (!Motherboard_List.Exists(x => x.Id == id))
             {
-                throw new Exception("Motherboard doesn't exist");
+                return false;
             }
 
             var motherboard = Motherboard_List.SingleOrDefault(x => x.Id == id);
-            if (motherboard.IsDeleted == true)
-            {
-                throw new Exception("Motherboard is already deleted");
-            }
-
-            motherboard.IsDeleted = true;
+            Motherboard_List.Remove(motherboard);
+            return true;
 
         }
         #endregion

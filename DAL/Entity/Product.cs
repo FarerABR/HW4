@@ -5,7 +5,13 @@ namespace DAL.Entity.Product
 {
     public class Product
     {
-        public bool IsDeleted { get; set; } = false;
+		public Product(string name, string discount, string price, int rating)
+		{
+            Name = name;
+            Discount = discount;
+            Price = price;
+            Rating = rating;
+		}
 
         private int _Id { get; set; }
         public int Id
@@ -13,26 +19,25 @@ namespace DAL.Entity.Product
             get { return _Id; }
             set
             {
-                _Id = Id_Seed++;
+                _Id = ++Id_Seed;
             }
         }
         public string Name { get; set; }
 
         public Brand Brand { get; set; }
-        public decimal Price { get; set; }
+        public string Price { get; set; }
 
-
-        public decimal Discount { get; set; }
+        public string Discount { get; set; }
 
         public bool In_Stock { get; set; }
 
-        public uint Score { get; set; }
+        public int Rating { get; set; }
         public DateTime Date_Of_Registration { get; set; }
         public ViewStatus ViewStatus { get; set; }
 
-        public string[] Photos { get; set; }
+        public string Image { get; set; }
 
 
-        public static int Id_Seed { get; set; } = 0;
+        private static int Id_Seed { get; set; } = 0;
     }
 }

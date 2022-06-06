@@ -14,6 +14,9 @@ namespace DAL.Entity.User
 		}
 
         public bool IsDeleted { get; set; } = false;
+
+        public bool IsLastLoggedIn { get; set; } = false;
+
         public UserRole Role { get; set; }
 
         private int _Id { get; set; }
@@ -26,10 +29,15 @@ namespace DAL.Entity.User
             }
         }
 
+        public string FirstName { get; set; } = "not set";
+        public string LastName { get; set; } = "not set";
+
         public string Username { get; set; }
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public UserGender Gender { get; set; }
 
         public decimal Balance { get; set; }
 

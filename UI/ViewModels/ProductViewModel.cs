@@ -7,7 +7,7 @@ using Caliburn.Micro;
 
 namespace UI.ViewModels
 {
-	public class ShellViewModel : Conductor<object>
+	public class ProductViewModel : Screen
 	{
 
 	}

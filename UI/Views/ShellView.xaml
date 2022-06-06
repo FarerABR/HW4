@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d" Loaded="WelcomePage_Loaded"
-        Title="  Suff Store" Height="500" Width="700" WindowStartupLocation="CenterScreen"
-        x:Name="WelcomePage" FontFamily="Comic Sans MS" ResizeMode="NoResize">
+        Title="  Suff Store" Height="520" Width="700" WindowStartupLocation="CenterScreen"
+        FontFamily="Comic Sans MS" ResizeMode="NoResize"
+        WindowStyle="None" MouseDown="WelcomePage_MouseDown" >
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF6274DA" Offset="0"/>
             <GradientStop Color="#FF61EBCF" Offset="1"/>
         </LinearGradientBrush>
     </Window.Background>
-    <Grid>
+    <Grid Margin="0 0 0 -10">
         <Grid Name="WelcomeGrid" Visibility="Visible">
             <Border Width="320" Height="400" BorderThickness="1.5" 
             Margin="20" Background="#FF18FFFA" Padding="15"
@@ -79,10 +80,10 @@
                     <StackPanel Margin="0 20 0 0">
                         <TextBox Name="UsernameTextBox"
                         Margin="0 -15 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
-                        materialDesign:HintAssist.Hint="Username"
+                        materialDesign:HintAssist.Hint="Username" materialDesign:HintAssist.HelperTextFontSize="8"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                        <TextBlock Text="" Name="UserNameError" FontSize="8"
-                            Foreground="Red"  Margin="0 2 0 -12" Visibility="Visible"/>
+                        <TextBlock Name="UserNameError" FontSize="8" Foreground="Red" 
+                            Margin="0 2 0 -12" Visibility="Visible" Text=""/>
 
                         <PasswordBox Name="NewUserPassBox" Margin="0 25 200 0"
                             materialDesign:HintAssist.Hint="Password"
@@ -118,7 +119,7 @@
                         materialDesign:ButtonAssist.CornerRadius="13"
                         ToolTip="Advance to create your account"
                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
-                        Margin="270 60 0 10" Background="#FF61ABF3" Click="SignUpBtn_Click">
+                        Margin="270 60 0 10" Background="OrangeRed" Click="SignUpBtn_Click">
                             <TextBlock>
                             Sign up
                             </TextBlock>
@@ -170,7 +171,7 @@
                              />
 
                         <TextBlock Name="LogInPassBlock"  Margin="-1 -20 20 1" Visibility="Hidden"
-                            FontSize="11" Background="White" Padding="1 0 0 0"/>
+                            FontSize="13" Background="White" Padding="1 0 0 0"/>
 
                         <CheckBox Content="Keep me signed in" FontWeight="Medium"
                                 Style="{StaticResource MaterialDesignUserForegroundCheckBox}"

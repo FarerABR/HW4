@@ -1,6 +1,5 @@
 using DAL.Entity.User;
 using DAL.Enum.User;
-using BLL.Repository;
 
 namespace BLL.Repository
 {
@@ -13,17 +12,17 @@ namespace BLL.Repository
         public static List<User> User_List { get; set; } = new List<User>();
 
         /// <summary>
-        /// creates new user
+        /// creates a new user
         /// </summary>
         /// <param name="newUser"></param>
-        /// <returns>created user</returns>
+        /// <returns>created user, and returns null if user already exists</returns>
         public static User CreateUser(string username, string password, string email, UserRole role)
         {
             username = username.ToLower();
             email = email.ToLower();
             if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
             {
-                throw new Exception($"User already exists");
+                return null;
             }
 
             password = PasswordRepository.HashPassword(password);
@@ -50,32 +49,47 @@ namespace BLL.Repository
         /// <returns>List<User></returns>
         public static List<User> SearchUsers(string username)
         {
-            return User_List.Where(x => x.Username == username).ToList();
+            return User_List.Where(x => x.Username.ToLower() == username.ToLower()).ToList();
         }
 
         /// <summary>
-        /// returns the user with given properties
+        /// seraches for any user with given properties
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>User</returns>
+        /// <returns>user if found, and null of none found</returns>
         public static User SearchUser(string username)
         {
-            return User_List.Find(x => x.Username == username);
+            return User_List.Find(x => x.Username.ToLower() == username.ToLower());
         }
 
-		/// <summary>
-		/// returns true if a user with specified properties exists
-		/// </summary>
-		/// <param name="username"></param>
-		/// <returns>bool</returns>
-		public static bool UsernameExists(string username)
+        /// <summary>
+        /// returns the last user logged in
+        /// </summary>
+        /// <returns>User</returns>
+        /// public static User SearchUser(string username)
+        public static User LastLoggedIn()
         {
-			return User_List.Any(x => x.Username == username);
+            return User_List.Find(x => x.IsLastLoggedIn == true);
+        }
+
+        /// <summary>
+        /// returns true if any user with specified Username exists
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>boolean</returns>
+        public static bool UsernameExists(string username)
+        {
+			return User_List.Any(x => x.Username.ToLower() == username.ToLower());
 		}
+
+        /// <summary>
+		/// returns true if a user with specified Email addess exists
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns>boolean</returns>
         public static bool UserEmailExists(string email)
         {
-            email = email.ToLower();
-            return User_List.Any(x => x.Email == email);
+            return User_List.Any(x => x.Email.ToLower() == email.ToLower());
         }
 
         /// <summary>
@@ -98,20 +112,11 @@ namespace BLL.Repository
         /// deletes the user from User_List
         /// </summary>
         /// <param name="id"></param>
-        public static void DeleteUser(int id)
+        public static bool DeleteUser(int id)
         {
-            if (!User_List.Exists(x => x.Id == id))
-            {
-                throw new Exception("User doesn't exist");
-            }
-
             var user = User_List.SingleOrDefault(x => x.Id == id);
-            if (user.IsDeleted == true)
-            {
-                throw new Exception("User is already deleted");
-            }
 
-            user.IsDeleted = true;
+            return User_List.Remove(user);
         }
     }
 }

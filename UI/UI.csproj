@@ -6,11 +6,18 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <StartupObject>UI.App</StartupObject>
-    <ApplicationIcon>Shopping Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Online Shop Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Shopping Icon.ico" />
+    <None Remove="Images\CPU.jpg" />
+    <None Remove="Images\GPU.jpg" />
+    <None Remove="Images\Motherboard.jpg" />
+    <None Remove="Images\RAM.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Online Shop Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +30,21 @@
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
     <PackageReference Include="MaterialDesignColors" Version="2.0.6" />
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\CPU.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\GPU.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Motherboard.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\RAM.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
