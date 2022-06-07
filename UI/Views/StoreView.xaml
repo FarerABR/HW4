@@ -1,226 +1,305 @@
 ﻿<Window x:Class="UI.Views.StoreView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:UI.Views" Name="StoreWindow" Loaded="StoreWindow_Loaded"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Name="StoreWindow" Loaded="StoreWindow_Loaded"
         mc:Ignorable="d" Background="{StaticResource MaterialDesignBackground}"
-        Title=" Suff Store" Height="500" Width="850" WindowStartupLocation="CenterScreen"
+        Title=" Suff Store" Height="570" Width="1000" WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource MaterialDesignFont}">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <ScrollViewer>
-            <Grid Name="LeftSidePanel" Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
+        <Grid Name="MainPage">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <DockPanel DockPanel.Dock="Left" Grid.Column="0"
+            <Grid Name="AboutGrid" Background="White" Grid.Column="2"
+                    Visibility="Collapsed">
+                <MediaElement Margin="-100" Name="MediaPlayer">
+                    <MediaElement.Triggers>
+                        <EventTrigger RoutedEvent="MediaElement.Loaded">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <MediaTimeline Source="D:\Edu\HW4\UI\Images\Coding.wmv"
+                                                Storyboard.TargetName="MediaPlayer" RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </MediaElement.Triggers>
+                </MediaElement>
+                <TextBlock Margin="0 0 0 300" Foreground="#FFFBAEFF" VerticalAlignment="Center"
+                           TextAlignment="Center" FontSize="22" FontWeight="Bold">
+                                This is an offline virtual store which is created and licensed
+                </TextBlock>
+                <TextBlock Foreground="#FFFBAEFF" Margin="0 0 0 125" VerticalAlignment="Center"
+                           TextAlignment="Center" FontSize="22" FontWeight="Bold" >
+                    by Constant Suffering team consisted of:(alphabetic order)
+                </TextBlock>
+                <TextBlock Foreground="#FFFBAEFF" Margin="0 50 0 0" VerticalAlignment="Center"
+                           TextAlignment="Center" FontSize="22" FontWeight="Bold">
+                    Ali Adlyar, Ali Baghaee Ravari, Arman Moqimi
+                </TextBlock>
+                <TextBlock Foreground="#FFFBAEFF" Margin="0 225 0 0" VerticalAlignment="Center"
+                           TextAlignment="Center" FontSize="22" FontWeight="Bold">
+                    ♥
+                </TextBlock>
+
+                <Button Name="AboutOk" Margin="0 350 160 0" MaxWidth="150"
+                        HorizontalAlignment="Right" MaxHeight="100" FontSize="25"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Click="AboutOk_Click">
+                    <TextBlock Text="OK" Margin="0 -3 0 0"/>
+                </Button>
+            </Grid>
+
+            <ScrollViewer>
+                <Grid Name="LeftSidePanel" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel DockPanel.Dock="Left" Grid.Column="0"
             
             Grid.RowSpan="12" Grid.ColumnSpan="1" Background="#FF4B55FF" />
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
 
-                    <materialDesign:PackIcon Kind="Account" Foreground="White"
+                        <materialDesign:PackIcon Kind="Account" Foreground="White"
 
-            MinHeight="30" MinWidth="30" Margin="4 7 0 0" />
-                    <StackPanel Margin="0 0 10 0">
-                        <TextBlock Name="UsernameTextBox" Text="Username" Margin="7 7 0 0"
-                Foreground="White"
-                FontSize="18"/>
-                        <TextBlock Name="IdTextBox" HorizontalAlignment="Center"
-                VerticalAlignment="Center" Text="#id" Opacity="0.6"/>
+            MinHeight="30" MinWidth="30" Margin="4 10 0 0" />
+                        <StackPanel Margin="0 0 10 0" HorizontalAlignment="Center">
+                            <TextBlock Name="UsernameTextBlock" Text="Username" Margin="7 9 3 3"
+                Foreground="White" FontSize="18" MaxWidth="90" VerticalAlignment="Center"
+                                   MinWidth="70" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Name="IDTextBlock" HorizontalAlignment="Center" Margin="0 0 2 0"
+                VerticalAlignment="Center" Text="#id" Opacity="0.6" TextAlignment="Center"/>
+                        </StackPanel>
+
                     </StackPanel>
 
-                </StackPanel>
-
-                <!--#region Buttons-->
-                <Separator Background="Black" Grid.Row="1"
+                    <Separator Background="Black" Grid.Row="1"
             Style="{StaticResource MaterialDesignDarkSeparator}"
-            Margin="2 5 2 -5" />
+            Margin="2 0 2 -5" />
 
-                <!--#region Products button-->
-                <Button Name="ProductsBtn" Click="ProductsBtn_Click"
+                    <!--#region Buttons-->
+
+                    <!--#region Products button-->
+                    <Button Name="ProductsBtn" Click="ProductsBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource=
             {RelativeSource FindAncestor, AncestorType=Window}}" Grid.Row="2"
             VerticalAlignment="Center" Foreground="#FFD3FF44" MinHeight="50">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ShoppingMusic" Margin="0 0 5 0"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ShoppingMusic" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="Products"
+                            <TextBlock Text="Products"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </Button>
-                <!--#endregion-->
+                        </StackPanel>
+                    </Button>
+                    <!--#endregion-->
 
-                <Separator Background="Black" Grid.Row="3" Opacity="0.5"
+                    <Separator Background="Black" Grid.Row="3" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="12 -7" />
 
-                <!--#region Cart button-->
-                <Button Name="CartBtn" Click="CartBtn_Click"
+                    <!--#region Cart button-->
+                    <Button Name="CartBtn" Click="CartBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="4" VerticalAlignment="Center"
             Foreground="#FFD3FF44" MinHeight="50">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="Cart"
+                            <TextBlock Text="Cart"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </Button>
-                <!--#endregion-->
+                        </StackPanel>
+                    </Button>
+                    <!--#endregion-->
 
-                <Separator Background="Black" Grid.Row="5" Opacity="0.5"
+                    <Separator Background="Black" Grid.Row="5" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="12 -7" />
 
-                <!--#region Account button-->
-                <Button Name="AccountBtn" Click="AccountBtn_Click"
+                    <!--#region Account button-->
+                    <Button Name="AccountBtn" Click="AccountBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="6" VerticalAlignment="Center"
             Foreground="#FFD3FF44" MinHeight="50">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="AccountEdit" Margin="0 0 5 0"
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountEdit" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="Account"
+                            <TextBlock Text="Account"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </Button>
-                <!--#endregion-->
+                        </StackPanel>
+                    </Button>
+                    <!--#endregion-->
 
-                <Separator Background="Black" Grid.Row="7" Opacity="0.5"
+                    <Separator Background="Black" Grid.Row="7" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
-            Margin="12 -7" />
+            Margin="12 -7" Name="ManageSep" Visibility="Collapsed"/>
 
-                <!--#region Manage button-->
-                <Button Name="ManageBtn" Click="ManageBtn_Click"
+                    <!--#region Manage button-->
+                    <Button Name="ManageBtn" Click="ManageBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="8" VerticalAlignment="Center"
-            Foreground="#FFD3FF44" MinHeight="50" Visibility="Visible">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="AccountTie" Margin="0 0 5 0"
+            Foreground="#FFD3FF44" MinHeight="50" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountTie" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="Manage"
+                            <TextBlock Text="Manage"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    </StackPanel>
-                </Button>
-                <!--#endregion-->
+                        </StackPanel>
+                    </Button>
+                    <!--#endregion-->
 
-                <StackPanel Grid.Row="10">
-                    <TextBlock Text="About" FontSize="10" Margin="10 10 0 -15"
+                    <StackPanel Grid.Row="10">
+
+                        <TextBlock Text="About" FontSize="10" Margin="10 10 0 -15"
                     Foreground="White" HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
-                    <materialDesign:PackIcon Kind="Information" HorizontalAlignment="Center"
+                        <materialDesign:PackIcon Kind="Information" HorizontalAlignment="Center"
                             Margin="0 0 40 -20" Foreground="White"/>
-                    <Button Name="AboutBtn" Grid.Row="10" Opacity="0"
-                    Margin="30 0 30 10" Height="20" Click="AboutBtn_Click"/>
-                </StackPanel>
 
+                        <Button Name="AboutBtn" Grid.Row="10" Opacity="0"
+                    Margin="30 0 30 10" Height="20" Click="AboutBtn_Click">
+                        </Button>
 
-                <Button Name="LogOutBtn" Click="LogOutBtn_Click"
+                    </StackPanel>
+
+                    <Button Name="LogOutBtn" Click="LogOutBtn_Click"
             Style="{StaticResource MaterialDesignFlatSecondaryLightBgButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Grid.Row="11" VerticalAlignment="Center" MinHeight="50"
             Content="Log out" Background="#FFFF3737" Foreground="White"
             materialDesign:RippleAssist.Feedback="#DD000000" BorderBrush="#FFF40303"/>
-                <!--#endregion-->
+                    <!--#endregion-->
 
-            </Grid>
-        </ScrollViewer>
+                </Grid>
+            </ScrollViewer>
 
-        <Grid  Name="ProductsPage"  Grid.Column="1" Grid.RowSpan="8" Background="AliceBlue">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="13" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="13" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="13" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="13" />
-            </Grid.RowDefinitions>
+            <Grid  Name="ProductsPage"  Grid.Column="1" Grid.RowSpan="8" Background="AliceBlue"
+                   Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="13" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="13" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="13" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="13" />
+                </Grid.RowDefinitions>
 
-            <Border Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
+                <Border Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
                 BorderBrush="{StaticResource MaterialDesignToolForeground}" Margin="-10 0 0 0">
-                <ScrollViewer>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3">
+                    <ScrollViewer>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3">
 
-                            <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:HintAssist.IsFloating="False" materialDesign:HintAssist.Hint="Search" Grid.Row="1"
                     Width="110" FontSize="10" AllowDrop="True" Padding="10" Margin="0 5 5 0" MinWidth="145"/>
 
-                            <CheckBox Name="GPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                <CheckBox Name="GPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         IsChecked="True" Margin="0 25 0 0" Grid.Row="0">
-                                GPU
-                            </CheckBox>
-                            <CheckBox Name="CPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                    GPU
+                                </CheckBox>
+                                <CheckBox Name="CPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
-                                CPU
-                            </CheckBox>
-                            <CheckBox Name="MotherboardCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                    CPU
+                                </CheckBox>
+                                <CheckBox Name="MotherboardCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
-                                Motherboard
-                            </CheckBox>
-                            <CheckBox Name="RAMCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                    Motherboard
+                                </CheckBox>
+                                <CheckBox Name="RAMCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
-                                RAM
-                            </CheckBox>
+                                    RAM
+                                </CheckBox>
 
-                        </StackPanel>
+                            </StackPanel>
 
-                        <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11" Background="#FFFEDC52"
+                            <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11" Background="#FFFEDC52"
                         Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"
                                 Grid.Row="2" Click="AddNewProductBtn_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ArchivePlus" Margin="0 1 5 0"/>
-                                <TextBlock Text="add new product" Margin="0 3 0 0"/>
-                            </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ArchivePlus" Margin="0 1 5 0"/>
+                                    <TextBlock Text="add new product" Margin="0 3 0 0"/>
+                                </StackPanel>
                             </Button>
 
-                        <Button Name="Temp" Width="0" Height="0" Opacity="0" Click="Temp_Click"
+                            <Button Name="Temp" Width="0" Height="0" Opacity="0" Click="Temp_Click"
                                     IsDefault="True" Grid.Row="1"/>
-                    </Grid>
-                </ScrollViewer>
-            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
 
-            <ScrollViewer Grid.Column="2" Grid.Row="1" Margin="15 0 0 0">
-                <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
+                <ScrollViewer Grid.Column="2" Grid.Row="1" Margin="0 0 0 0">
+                    <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Top">
 
-                </WrapPanel>
-            </ScrollViewer>
+                    </WrapPanel>
+                </ScrollViewer>
+
+                <Grid Name="AddProductPage" Visibility="Visible" VerticalAlignment="Center"
+              HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
+                    <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40">
+                        <StackPanel>
+                            <ComboBox
+                                materialDesign:HintAssist.Hint="Designation" 
+                                IsEditable="True" Margin="0 20 0 0"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBoxItem
+                                    IsSelected="True">
+                                    Software Engineer
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    HR
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    Finance
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    Accountant
+                                </ComboBoxItem>
+                            </ComboBox>
+                            <TextBox FontSize="15">
+                                dafh
+                            </TextBox>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </Grid>
+
+            </Grid>
 
         </Grid>
     </Grid>

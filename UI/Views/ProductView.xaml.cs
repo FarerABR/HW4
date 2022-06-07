@@ -1,38 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BLL.Repository;
 using DAL.Entity.Product;
 
 namespace UI.Views
 {
 	public partial class ProductView : UserControl
 	{
-		public ProductView(Ram ram)
+		public ProductView(Product product)
 		{
 			InitializeComponent();
-			NameTextBlock.Text = ram.Name;
-			NameTextBlock.ToolTip = ram.Name;
-			RatingBar.Value = ram.Rating;
-			PriceTextBlock.Text = ram.Price;
-			OffTextBlock.Text = ram.Discount;
-			SetImageSource(ram);
+			NameTextBlock.Text = product.Name;
+			NameTextBlock.ToolTip = product.Name;
+			RatingBar.Value = product.Rating;
+			PriceTextBlock.Text = product.Price;
+			OffTextBlock.Text = product.Discount;
+			SetImageSource(product);
+
+			if (product.Discount == "0%")
+				OffBorder.Visibility = Visibility.Collapsed;
+			else if (product.Discount == "100%")
+				OffTextBlock.Text = "Free";
 		}
 
-		private void SetImageSource(Ram ram)
+		private void SetImageSource(Product product)
 		{
-			var uriSource = new Uri(ram.Image, UriKind.Relative);
+			var uriSource = new Uri(product.Image, UriKind.Relative);
 			BitmapImage Path = new(uriSource);
 			Image.Source = Path;
 		}

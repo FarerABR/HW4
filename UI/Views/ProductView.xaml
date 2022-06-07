@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:UI.Views"
-             mc:Ignorable="d" Background="Azure"
-             Height="210" Width="160">
-    <Grid>
+             mc:Ignorable="d" Background="AliceBlue"
+             Height="240" Width="180">
+    <Grid Margin="10 15 10 15" >
         <materialDesign:Card FlowDirection="LeftToRight" Margin="5 5 5 5">
             <StackPanel>
-                
+
                 <Image Name="Image" Source="../Images/RAM.jpg"
                     Height="100" VerticalAlignment="Top"/>
 
@@ -18,7 +18,7 @@
                     VerticalAlignment="Center" TextAlignment="Center"/>
 
                 <materialDesign:RatingBar Height="21" HorizontalAlignment="Center"
-                    Margin="0 1 0 2" Name="RatingBar" Value="3"/>
+                    Margin="0 1 0 2" Name="RatingBar" Value="3" IsReadOnly="True"/>
 
                 <TextBlock Name="PriceTextBlock" VerticalAlignment="Center" Margin="0 1 0 -1"
                     TextAlignment="Center" Text="250$" Foreground="#FF727272" FontFamily="Segoe Script"/>
@@ -28,19 +28,19 @@
                     Background="#FF00FFAC" BorderBrush="White"
                     Margin="0 4 0 0" />
 
-            </StackPanel>  
+            </StackPanel>
         </materialDesign:Card>
-        <Border Margin="0 0 0 0" Height="20" Width="20" CornerRadius="10"
-                        Background="#FFFF1E1E" VerticalAlignment="Top"
+        <Border Margin="-7 -9 -7 -7" Height="30" Width="30" CornerRadius="15"
+                Name="OffBorder" Background="#FFFF1E1E" VerticalAlignment="Top"
                 HorizontalAlignment="Right">
-            <TextBlock Name="OffTextBlock" FontSize="9" VerticalAlignment="Center" Text="50%"
-                        HorizontalAlignment="Center" Foreground="White" Margin="1 0 0 2"
-                               RenderTransformOrigin="0.5,0.5">
+            <TextBlock Name="OffTextBlock" FontSize="11" VerticalAlignment="Center" Text="70%"
+                        HorizontalAlignment="Center" Foreground="White" Margin="1 2 0 2"
+                               RenderTransformOrigin="0.5,0.5" FontFamily="Arial Black" >
                 <TextBlock.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
-                        <RotateTransform Angle="35"/>
+                        <RotateTransform Angle="25"/>
                         <TranslateTransform/>
                     </TransformGroup>
                 </TextBlock.RenderTransform>

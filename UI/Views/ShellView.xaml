@@ -22,7 +22,7 @@
             CornerRadius="35" >
                 <StackPanel>
                     <TextBlock FontSize="26" FontWeight="DemiBold" HorizontalAlignment="Center"
-                        Margin="10 20 10 20" Foreground="#FF001CFF" >
+                        Margin="10 20 10 20" Foreground="#FFFF4949" >
                         Welcome
                     </TextBlock>
                     
@@ -114,12 +114,12 @@
                                 Content="I have read and agree to the terms of service"/>
                         <Button Name="TempBtn" IsDefault="True" Click="TempBtn_Click"
                                 Height="0" Width="0" IsTabStop="False"/>
-                        <Button Name="SignUpBtn" IsEnabled="False"
+                        <Button Name="SignUpBtn" IsEnabled="false"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="13"
-                        ToolTip="Advance to create your account"
+                        ToolTip="Advance to create your account" Foreground="#DDFFFFFF"
                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
-                        Margin="270 60 0 10" Background="OrangeRed" Click="SignUpBtn_Click">
+                        Margin="270 60 0 10" Background="#FFFF7545" Click="SignUpBtn_Click">
                             <TextBlock>
                             Sign up
                             </TextBlock>
@@ -200,7 +200,7 @@
                         <Button Name="LogInBtn" IsDefault="True"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="13"
-                        ToolTip="Advance to log into your account"
+                        ToolTip="Advance to log into your account" Foreground="#DDFFFFFF"
                         materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
                         Margin="270 55 0 10" Background="#FF61ABF3" Click="LogInBtn_Click">
                             <TextBlock>

@@ -3,7 +3,6 @@ using BLL.Repository;
 using DAL.Enum.User;
 using DAL.Entity.User;
 using System.Windows.Media;
-using System;
 
 namespace UI.Views
 {
@@ -16,7 +15,8 @@ namespace UI.Views
 
 		public ShellView()
 		{
-			UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin);
+			try { UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin); } catch { }
+
 			InitializeComponent();
 		}
 

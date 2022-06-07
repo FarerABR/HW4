@@ -1,5 +1,6 @@
 using DAL.Entity.Product;
-using System;
+using System.Windows;
+
 
 namespace BLL.Repository
 {
@@ -19,9 +20,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static GraphicsCard CreateGraphicsCard(string name, string off, string price, int rating, string image)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (GraphicsCard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Graphics card already exists");
             }
             var newGraphicsCard = new GraphicsCard(name, off, price, rating, image);
             GraphicsCard_List.Add(newGraphicsCard);
@@ -35,9 +36,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static GraphicsCard CreateGraphicsCard(string name, string off, string price, int rating)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (GraphicsCard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Graphics card already exists");
             }
             var newGraphicsCard = new GraphicsCard(name, off, price, rating, "../../UI/Images/GPU.jpg");
             GraphicsCard_List.Add(newGraphicsCard);
@@ -104,9 +105,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Processor CreateProcessor(string name, string off, string price, int rating, string image)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Processor_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Processor already exists");
             }
             var newProcessor = new Processor(name, off, price, rating, image);
             Processor_List.Add(newProcessor);
@@ -120,9 +121,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Processor CreateProcessor(string name, string off, string price, int rating)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Processor_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Processor already exists");
             }
             var newProcessor = new Processor(name, off, price, rating, "../../UI/Images/CPU.jpg");
             Processor_List.Add(newProcessor);
@@ -190,9 +191,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Ram CreateRam(string name, string off, string price, int rating, string image)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Ram_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exists");
+                throw new Exception("RAM already exists");
             }
             var newRam = new Ram(name, off, price, rating, image);
 			Ram_List.Add(newRam);
@@ -206,9 +207,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Ram CreateRam(string name, string off, string price, int rating)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Ram_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("RAM already exists");
             }
             var newRam = new Ram(name, off, price, rating, "../Images/RAM.jpg");
             Ram_List.Add(newRam);
@@ -275,9 +276,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Motherboard CreateMotherboard(string name, string off, string price, int rating, string image)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Motherboard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Motherboard already exists");
             }
             var newMotherboard = new Motherboard(name, off, price, rating, image);
             Motherboard_List.Add(newMotherboard);
@@ -291,9 +292,9 @@ namespace BLL.Repository
         /// <returns>input</returns>
         public static Motherboard CreateMotherboard(string name, string off, string price, int rating)
         {
-            if (Ram_List.Where(x => x.Name == name).Any())
+            if (Motherboard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
-                throw new Exception("Ram already exist");
+                throw new Exception("Motherboard already exists");
             }
             var newMotherboard = new Motherboard(name, off, price, rating, "../../UI/Images/Motherboard.jpg");
             Motherboard_List.Add(newMotherboard);

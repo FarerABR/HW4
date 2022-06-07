@@ -4,8 +4,8 @@ namespace DAL.Enum.User
 {
     public enum UserRole
     {
-        customer,
         admin,
-        moderator
+        moderator,
+        customer
     }
 }

@@ -22,7 +22,7 @@ namespace BLL.Repository
             email = email.ToLower();
             if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
             {
-                return null;
+                throw new Exception("User already exists");
             }
 
             password = PasswordRepository.HashPassword(password);
