@@ -273,29 +273,63 @@
                 <Grid Name="AddProductPage" Visibility="Visible" VerticalAlignment="Center"
               HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
                     <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40">
-                        <StackPanel>
-                            <ComboBox
-                                materialDesign:HintAssist.Hint="Designation" 
-                                IsEditable="True" Margin="0 20 0 0"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
+                                <TextBlock Text="General inofrmation" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="AddedProductType" FontSize="15"
+                                materialDesign:HintAssist.Hint="Product type" 
+                                IsEditable="True" Margin="0 30 0 0"
+                                DataContextChanged="AddedProductType_DataContextChanged"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                                <ComboBoxItem
-                                    IsSelected="True">
-                                    Software Engineer
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    HR
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Finance
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    Accountant
-                                </ComboBoxItem>
-                            </ComboBox>
-                            <TextBox FontSize="15">
-                                dafh
-                            </TextBox>
-                        </StackPanel>
+                                    <ComboBoxItem IsSelected="True">
+                                        CPU
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        GPU
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        RAM
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Motherboard
+                                    </ComboBoxItem>
+                                </ComboBox>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Name" Margin="0 25 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    MaxLength="40" MaxWidth="215" />
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Price" Margin="0 30 130 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    MaxLength="10" MaxWidth="215" />
+                                <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
+                                            MaxHeight="14" Opacity="0.5"/>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    MaxLength="3" MaxWidth="215" />
+                                <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
+                                            MaxHeight="14" Opacity="0.5"/>
+
+                                <materialDesign:RatingBar Margin="0 50 0 0" Foreground="#FFF358FF"
+                                    Name="RatingBar" HorizontalAlignment="Center" />
+
+                            </StackPanel>
+
+                            <StackPanel Name="ParticularInfo" Margin="20 0 0 0" Grid.Column="1">
+
+                                <TextBox>
+                                    
+                                </TextBox>
+                            </StackPanel>
+                        </Grid>
                     </materialDesign:Card>
                 </Grid>
 
