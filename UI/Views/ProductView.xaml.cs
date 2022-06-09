@@ -8,19 +8,22 @@ namespace UI.Views
 {
 	public partial class ProductView : UserControl
 	{
+		private readonly Product _product;
+
 		public ProductView(Product product)
 		{
 			InitializeComponent();
+			_product = product;
 			NameTextBlock.Text = product.Name;
 			NameTextBlock.ToolTip = product.Name;
 			RatingBar.Value = product.Rating;
-			PriceTextBlock.Text = product.Price;
-			OffTextBlock.Text = product.Discount;
+			PriceTextBlock.Text = product.Price.ToString() + "$";
+			OffTextBlock.Text = product.Discount.ToString() + "%";
 			SetImageSource(product);
 
-			if (product.Discount == "0%")
+			if (product.Discount == 0)
 				OffBorder.Visibility = Visibility.Collapsed;
-			else if (product.Discount == "100%")
+			else if (product.Discount == 100)
 				OffTextBlock.Text = "Free";
 		}
 
@@ -33,7 +36,7 @@ namespace UI.Views
 
 		private void DetailsBtn_Click(object sender, RoutedEventArgs e)
 		{
-
+			StoreView.ShowProductDetails(_product);
 		}
 	}
 }

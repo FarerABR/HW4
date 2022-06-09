@@ -1,36 +1,33 @@
-﻿using DAL.Entity.User;
+﻿using DAL.Entity;
 using DAL.Entity.Product;
-using BLL.Repository;
 using DAL.Enum.User;
-using UI.Views;
+using BLL.Repository;
+using BLL.data_base;
 using System.Windows;
 using System.Windows.Media;
-using System;
-using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
 
 namespace UI.Views
 {
 	public partial class StoreView : Window
 	{
 		#region Properties
-		private readonly User? CurrentUser;
+		private readonly User CurrentUser;
 		#endregion
 
 		public StoreView(User currentUser)
 		{
 			InitializeComponent();
+			CurrentUser = currentUser;
 			try
 			{
-				ProductsRepository.CreateGraphicsCard("RTX 3060", "20%", "500$", 3, "../Images/GPU.jpg");
-				ProductsRepository.CreateRam("DDR4 16G", "50%", "120$", 2, "../Images/RAM.jpg");
-				ProductsRepository.CreateProcessor("Core i9-11370", "15%", "2000$", 5, "../Images/CPU.jpg");
-				ProductsRepository.CreateMotherboard("BTX", "100%", "200$", 1, "../Images/Motherboard.jpg");
-				ProductsRepository.CreateRam("DDR6 64G", "0%", "1000$", 4, "../Images/RAM.jpg");
+				ProductsRepository.CreateGraphicsCard("RTX 3060", 500, 20, 3, CurrentUser);
+				ProductsRepository.CreateRam("DDR4 16G", 120, 50, 2, CurrentUser);
+				ProductsRepository.CreateProcessor("Core i9-11370", 2000, 15, 5, CurrentUser);
+				ProductsRepository.CreateMotherboard("BTX", 200, 100, 1, CurrentUser);
+				ProductsRepository.CreateRam("DDR6 64G", 1000, 0, 4, CurrentUser);
 			}
 			catch { }
 			AddProducts();
-			CurrentUser = currentUser;
 		}
 
 		private void AddProducts()
@@ -57,17 +54,21 @@ namespace UI.Views
 			}
 		}
 
-
 		private void StoreWindow_Loaded(object sender, RoutedEventArgs e)
 		{
-			if (CurrentUser.Role == UserRole.admin)
+			if (CurrentUser.Role == UserRole.customer)
 			{
-				ManageSep.Visibility = Visibility.Visible;
-				ManageBtn.Visibility = Visibility.Visible;
+				ManageSep.Visibility = Visibility.Collapsed;
+				ManageBtn.Visibility = Visibility.Collapsed;
 			}
 			UsernameTextBlock.Text = CurrentUser.Username;
 			IDTextBlock.Text = "#" + CurrentUser.Id.ToString();
 			ProductsBtn_Click(sender, e);
+		}
+
+		private void StoreWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Data_Access.WriteAllData();
 		}
 
 		private void ButtonsRefresh()
@@ -87,7 +88,7 @@ namespace UI.Views
 
 		private void PagesRefresh()
 		{
-			ProductsPage.Visibility = Visibility.Collapsed;
+			ProductsPage.Visibility = Visibility.Hidden;
 		}
 
 		private void ProductsBtn_Click(object sender, RoutedEventArgs e)
@@ -131,8 +132,20 @@ namespace UI.Views
 			AboutGrid.Visibility = Visibility.Visible;
 		}
 
+		private void AboutOk_Click(object sender, RoutedEventArgs e)
+		{
+			LeftSidePanel.IsEnabled = true;
+			AboutGrid.Visibility = Visibility.Collapsed;
+			ProductsBtn_Click(sender, e);
+		}
+
 		private void LogOutBtn_Click(object sender, RoutedEventArgs e)
 		{
+			if(UserRepository.LastLoggedIn() != null)
+			{
+				UserRepository.ClearLastLoggedIn();
+			}
+			Data_Access.WriteAllData();
 			ShellView WelcomeWindow = new();
 			Close();
 			WelcomeWindow.Show();
@@ -145,17 +158,31 @@ namespace UI.Views
 
 		private void AddNewProductBtn_Click(object sender, RoutedEventArgs e)
 		{
-
-		}
-
-		private void AboutOk_Click(object sender, RoutedEventArgs e)
-		{
-			LeftSidePanel.IsEnabled = true;
-			AboutGrid.Visibility = Visibility.Collapsed;
-			ProductsBtn_Click(sender, e);
+			LeftSidePanel.IsEnabled = false;
+			SearchPanel.IsEnabled = false;
+			ProductsPanel.Visibility = Visibility.Collapsed;
+			AddProductPage.Visibility = Visibility.Visible;
 		}
 
 		private void AddedProductType_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+
+		}
+
+		private void AddProductBtn_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void CancelAddProductBtn_Click(object sender, RoutedEventArgs e)
+		{
+			AddProductPage.Visibility = Visibility.Collapsed;
+			LeftSidePanel.IsEnabled = true;
+			SearchPanel.IsEnabled = true;
+			ProductsPanel.Visibility = Visibility.Visible;
+		}
+
+		public static void ShowProductDetails(Product product)
 		{
 
 		}

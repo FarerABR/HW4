@@ -1,23 +1,25 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using BLL.Repository;
+using BLL.data_base;
 using DAL.Enum.User;
-using DAL.Entity.User;
+using DAL.Entity;
 using System.Windows.Media;
 
 namespace UI.Views
 {
-	public partial class ShellView
+	public partial class ShellView : Window
 	{
 		#region Properties
-		private static User? CurrentUser = UserRepository.LastLoggedIn();
+		private User? CurrentUser = UserRepository.LastLoggedIn();
 		private bool KeepSignedIn = false;
 		#endregion
 
 		public ShellView()
 		{
-			try { UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin); } catch { }
-
 			InitializeComponent();
+			Data_Access.ReadAllData();
+			try { UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin); } catch { }
 		}
 
 		private static bool ValidEmail(string email)
@@ -125,13 +127,13 @@ namespace UI.Views
 
 		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
 		{
-			SignUpOptBtn.Focus();
-			if (KeepSignedIn)
+			if (CurrentUser != null)
 			{
-				StoreView StoreViewWindow = new StoreView(CurrentUser);
+				StoreView StoreViewWindow = new(CurrentUser);
 				Close();
 				StoreViewWindow.Show();
 			}
+			SignUpOptBtn.Focus();
 		}
 
 		private void WelcomePage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -190,6 +192,7 @@ namespace UI.Views
 					CurrentUser = UserRepository.CreateUser(UsernameTextBox.Text, NewUserPassBox.Password, NewUserEmail.Text, UserRole.customer);
 					StoreView StoreViewWindow = new StoreView(CurrentUser);
 					Close();
+					StoreViewWindow.ShowActivated = true;
 					StoreViewWindow.Show();
 				}
 				catch
@@ -219,11 +222,11 @@ namespace UI.Views
 						KeepSignedIn = (bool)KeepSignCheckBox.IsChecked;
 						if (KeepSignedIn)
 						{
-
 							CurrentUser.IsLastLoggedIn = true;
 						}
 						StoreView StoreViewWindow = new(CurrentUser);
 						Close();
+						StoreViewWindow.ShowActivated = true;
 						StoreViewWindow.Show();
 					}
 					catch

@@ -1,11 +1,10 @@
 using DAL.Enum.Product;
-using System;
 
 namespace DAL.Entity.Product
 {
     public class Motherboard : Product
     {
-        public Motherboard(string name, string off, string price, int rating, string image) : base(name, off, price, rating)
+        public Motherboard(string name, double price, int off, int rating, string image, User whoHasMade) : base(name, price, off, rating, whoHasMade)
         {
             Image = image;
         }

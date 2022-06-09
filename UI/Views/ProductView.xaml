@@ -26,7 +26,7 @@
                 <Button Name="DetailsBtn" Click="DetailsBtn_Click"
                     ToolTip="Click to view full information" Content="Details"
                     Background="#FF00FFAC" BorderBrush="White"
-                    Margin="0 4 0 0" />
+                    Margin="0 4 0 0"/>
 
             </StackPanel>
         </materialDesign:Card>

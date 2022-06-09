@@ -6,6 +6,7 @@ namespace DAL.Enum.User
     {
         male,
         female,
-        custom
+        custom,
+        miscellaneous
     }
 }

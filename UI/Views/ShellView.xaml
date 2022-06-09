@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d" Loaded="WelcomePage_Loaded"
-        Title="  Suff Store" Height="520" Width="700" WindowStartupLocation="CenterScreen"
-        FontFamily="Comic Sans MS" ResizeMode="NoResize"
-        WindowStyle="None" MouseDown="WelcomePage_MouseDown" >
+        xmlns:local="clr-namespace:UI.Views" mc:Ignorable="d" Name="WelcomePage"
+        Loaded="WelcomePage_Loaded" Title="Suff Store" Height="520" Width="700"
+        WindowStartupLocation="CenterScreen" FontFamily="Comic Sans MS" ResizeMode="NoResize"
+        WindowStyle="None" MouseDown="WelcomePage_MouseDown" ShowInTaskbar="False">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF6274DA" Offset="0"/>

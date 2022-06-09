@@ -1,4 +1,4 @@
-using DAL.Entity.User;
+using DAL.Entity;
 using DAL.Enum.User;
 
 namespace BLL.Repository
@@ -15,19 +15,17 @@ namespace BLL.Repository
         /// creates a new user
         /// </summary>
         /// <param name="newUser"></param>
-        /// <returns>created user, and returns null if user already exists</returns>
+        /// <returns>created user</returns>
         public static User CreateUser(string username, string password, string email, UserRole role)
         {
-            username = username.ToLower();
-            email = email.ToLower();
-            if (User_List.Where(x => x.Username == username).Any() || User_List.Where(x => x.Email == email).Any())
+            if (User_List.Where(x => x.Username.ToLower() == username.ToLower()).Any() || User_List.Where(x => x.Email.ToLower() == email.ToLower()).Any())
             {
                 throw new Exception("User already exists");
             }
 
             password = PasswordRepository.HashPassword(password);
 
-            var newUser = new User(username, password, email, role);
+            User newUser = new(username, password, email, role);
             User_List.Add(newUser);
             return newUser;
         }
@@ -69,7 +67,17 @@ namespace BLL.Repository
         /// public static User SearchUser(string username)
         public static User LastLoggedIn()
         {
-            return User_List.Find(x => x.IsLastLoggedIn == true);
+            if(User_List.Find(x => x.IsLastLoggedIn == true) != default)
+                return User_List.Find(x => x.IsLastLoggedIn == true);
+            return null;
+        }
+
+        public static void ClearLastLoggedIn()
+        {
+            while(User_List.Find(x => x.IsLastLoggedIn == true) != default)
+			{
+                User_List.Find(x => x.IsLastLoggedIn == true).IsLastLoggedIn = false;
+            }
         }
 
         /// <summary>

@@ -1,43 +1,40 @@
 using DAL.Enum.Product;
-using System;
 
 namespace DAL.Entity.Product
 {
     public class Product
     {
-		public Product(string name, string discount, string price, int rating)
+		public Product(string name, double price, int discount, int rating, User whoHasMade)
 		{
             Name = name;
             Discount = discount;
             Price = price;
             Rating = rating;
+            WhoHasMade = whoHasMade;
+            _date_Of_Registration = DateTime.Now;
 		}
 
-        private int _Id { get; set; }
-        public int Id
-        {
-            get { return _Id; }
-            set
-            {
-                _Id = ++Id_Seed;
-            }
-        }
+        private static int Id_Seed { get; set; } = 0;
+
+        private readonly int _id = ++Id_Seed;
+        public int Id { get { return _id; } }
         public string Name { get; set; }
 
         public Brand Brand { get; set; }
-        public string Price { get; set; }
 
-        public string Discount { get; set; }
+        public double Price { get; set; }
 
-        public bool In_Stock { get; set; }
+        public int Discount { get; set; }
 
         public int Rating { get; set; }
-        public DateTime Date_Of_Registration { get; set; }
-        public ViewStatus ViewStatus { get; set; }
 
         public string Image { get; set; }
 
+        private readonly DateTime _date_Of_Registration;
+        public DateTime Date_Of_Registration { get { return _date_Of_Registration; } }
+        public User WhoHasMade { get; set; }
 
-        private static int Id_Seed { get; set; } = 0;
+        public ViewStatus ViewStatus { get; set; } = ViewStatus.visible;
+        public bool In_Stock { get; set; } = false;
     }
 }

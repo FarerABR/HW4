@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Name="StoreWindow" Loaded="StoreWindow_Loaded"
+        Name="StoreWindow" Loaded="StoreWindow_Loaded" Title=" Suff Store" 
         mc:Ignorable="d" Background="{StaticResource MaterialDesignBackground}"
-        Title=" Suff Store" Height="570" Width="1000" WindowStartupLocation="CenterScreen"
-        FontFamily="{StaticResource MaterialDesignFont}">
+        Height="570" Width="1000" WindowStartupLocation="CenterScreen"
+        FontFamily="{StaticResource MaterialDesignFont}" Closing="StoreWindow_Closing">
 
     <Grid>
         <Grid Name="MainPage">
@@ -57,7 +57,8 @@
                 </Button>
             </Grid>
 
-            <ScrollViewer>
+            <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="false"
+                          materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Hidden">
                 <Grid Name="LeftSidePanel" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -156,7 +157,7 @@
 
                     <Separator Background="Black" Grid.Row="7" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
-            Margin="12 -7" Name="ManageSep" Visibility="Collapsed"/>
+            Margin="12 -7" Name="ManageSep"/>
 
                     <!--#region Manage button-->
                     <Button Name="ManageBtn" Click="ManageBtn_Click"
@@ -164,7 +165,7 @@
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="8" VerticalAlignment="Center"
-            Foreground="#FFD3FF44" MinHeight="50" Visibility="Collapsed">
+            Foreground="#FFD3FF44" MinHeight="50">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="AccountTie" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -201,7 +202,7 @@
             </ScrollViewer>
 
             <Grid  Name="ProductsPage"  Grid.Column="1" Grid.RowSpan="8" Background="AliceBlue"
-                   Visibility="Visible">
+                   Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="13" />
                     <ColumnDefinition Width="auto" />
@@ -214,7 +215,7 @@
                     <RowDefinition Height="13" />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
+                <Border Name="SearchPanel" Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
                 BorderBrush="{StaticResource MaterialDesignToolForeground}" Margin="-10 0 0 0">
                     <ScrollViewer>
                         <Grid>
@@ -248,9 +249,9 @@
 
                             </StackPanel>
 
-                            <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11" Background="#FFFEDC52"
+                            <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11"
                         Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"
-                                Grid.Row="2" Click="AddNewProductBtn_Click">
+                                Grid.Row="2" Click="AddNewProductBtn_Click" Background="#FFFEDC52">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="ArchivePlus" Margin="0 1 5 0"/>
                                     <TextBlock Text="add new product" Margin="0 3 0 0"/>
@@ -263,23 +264,26 @@
                     </ScrollViewer>
                 </Border>
 
-                <ScrollViewer Grid.Column="2" Grid.Row="1" Margin="0 0 0 0">
+                <ScrollViewer Name="ProductsPanel" Grid.Column="2" Grid.Row="1" Margin="0 0 0 0">
                     <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Top">
 
                     </WrapPanel>
                 </ScrollViewer>
 
-                <Grid Name="AddProductPage" Visibility="Visible" VerticalAlignment="Center"
+                <Grid Name="AddProductPage" Visibility="Collapsed" VerticalAlignment="Center"
               HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
-                    <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40">
-                        <Grid>
+                    <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40"
+                            Background="{StaticResource MaterialDesignPaper}">
+                        <Grid Margin="0 0 0 -10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+                            
                             <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
-                                <TextBlock Text="General inofrmation" Margin="0" FontSize="15"/>
+                                
+                                <TextBlock Text="General information" Margin="0" FontSize="15"/>
 
                                 <ComboBox Name="AddedProductType" FontSize="15"
                                 materialDesign:HintAssist.Hint="Product type" 
@@ -301,34 +305,67 @@
                                 </ComboBox>
 
                                 <TextBox
-                                  materialDesign:HintAssist.Hint="Name" Margin="0 25 0 0"
+                                  materialDesign:HintAssist.Hint="Name of product" Margin="0 25 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    MaxLength="40" MaxWidth="215" />
+                                  Name="NameTextBox"  MaxLength="40" MaxWidth="215" />
+                                
                                 <TextBox
                                   materialDesign:HintAssist.Hint="Price" Margin="0 30 130 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    MaxLength="10" MaxWidth="215" />
+                                   Name="PriceTextBox" MaxLength="10" MaxWidth="215" />
                                 <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
-                                            MaxHeight="14" Opacity="0.5"/>
+                                    MaxHeight="14" Opacity="0.5"/>
 
                                 <TextBox
                                   materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    MaxLength="3" MaxWidth="215" />
+                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" />
                                 <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
                                             MaxHeight="14" Opacity="0.5"/>
 
-                                <materialDesign:RatingBar Margin="0 50 0 0" Foreground="#FFF358FF"
+                                <materialDesign:RatingBar Margin="0 40 0 0" Foreground="#FFF358FF"
                                     Name="RatingBar" HorizontalAlignment="Center" />
+
+                                <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="120 22 0 0" Foreground="#FF35C495" Width="80" Height="30"
+                                        BorderBrush="#FF32F6BA" Name="AddProductBtn" Click="AddProductBtn_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
+                                        <TextBlock Text="add" Margin="5 0 0 0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="-125 -30 0 0" Foreground="#FFFF1313" Width="80" Height="30"
+                                        BorderBrush="#FFFF876F" Name="CancelAddProductBtn"
+                                        Click="CancelAddProductBtn_Click" Padding="5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ArchiveCancel" Margin="-4 0 0 0"/>
+                                        <TextBlock Text="cancel" Margin="4 0 0 0"/>
+                                    </StackPanel>
+                                </Button>
 
                             </StackPanel>
 
                             <StackPanel Name="ParticularInfo" Margin="20 0 0 0" Grid.Column="1">
 
-                                <TextBox>
-                                    
-                                </TextBox>
+                                <TextBlock Text="Product information" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="CPUSeries" FontSize="15"
+                                materialDesign:HintAssist.Hint="CPU series" 
+                                IsEditable="True" Margin="0 25 0 0"
+                                DataContextChanged="AddedProductType_DataContextChanged"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="CoreCount" Margin="0 20 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="CoreCountTextBox" MaxLength="10" MaxWidth="215" />
+
+                                <WrapPanel/>
+
                             </StackPanel>
+
                         </Grid>
                     </materialDesign:Card>
                 </Grid>

@@ -1,6 +1,6 @@
 using DAL.Enum.User;
 
-namespace DAL.Entity.User
+namespace DAL.Entity
 {
     public class User
     {
@@ -10,7 +10,8 @@ namespace DAL.Entity.User
             Password = password;
             Email = email;
             Role = role;
-            Balance = 1000;
+            if(role == UserRole.admin) { _id = 0; }
+            Date_Created = DateTime.Now;
 		}
 
         public bool IsDeleted { get; set; } = false;
@@ -19,15 +20,8 @@ namespace DAL.Entity.User
 
         public UserRole Role { get; set; }
 
-        private int _Id { get; set; }
-        public int Id
-        {
-            get { return _Id; }
-            set
-            {
-                _Id = Id_Seed++;
-            }
-        }
+        private readonly int _id = Id_Seed++;
+        public int Id { get { return _id; } }
 
         public string FirstName { get; set; } = "not set";
         public string LastName { get; set; } = "not set";
@@ -37,9 +31,11 @@ namespace DAL.Entity.User
 
         public string Email { get; set; }
 
-        public UserGender Gender { get; set; }
+        public UserGender Gender { get; set; } = UserGender.miscellaneous;
 
-        public decimal Balance { get; set; }
+        public decimal Balance { get; set; } = 10000;
+
+        public readonly DateTime Date_Created;
 
         private static int Id_Seed { get; set; } = 100;
     }
