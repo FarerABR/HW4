@@ -202,7 +202,7 @@
             </ScrollViewer>
 
             <Grid  Name="ProductsPage"  Grid.Column="1" Grid.RowSpan="8" Background="AliceBlue"
-                   Visibility="Hidden">
+                   Visibility="Visible">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="13" />
                     <ColumnDefinition Width="auto" />
@@ -271,15 +271,19 @@
                     </WrapPanel>
                 </ScrollViewer>
 
-                <Grid Name="AddProductPage" Visibility="Collapsed" VerticalAlignment="Center"
+                <Grid Name="AddProductPage" Visibility="Visible" VerticalAlignment="Center"
               HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
                     <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40"
-                            Background="{StaticResource MaterialDesignPaper}">
+                            Background="{DynamicResource MaterialDesignBackground}">
                         <Grid Margin="0 0 0 -10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
                             
                             <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
                                 
@@ -287,7 +291,7 @@
 
                                 <ComboBox Name="AddedProductType" FontSize="15"
                                 materialDesign:HintAssist.Hint="Product type" 
-                                IsEditable="True" Margin="0 30 0 0"
+                                IsEditable="False" Margin="0 30 0 0"
                                 DataContextChanged="AddedProductType_DataContextChanged"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}">
                                     <ComboBoxItem IsSelected="True">
@@ -328,7 +332,7 @@
 
                                 <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
                                         Margin="120 22 0 0" Foreground="#FF35C495" Width="80" Height="30"
-                                        BorderBrush="#FF32F6BA" Name="AddProductBtn" Click="AddProductBtn_Click">
+                                        BorderBrush="#FF09D587" Name="AddProductBtn" Click="AddProductBtn_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
                                         <TextBlock Text="add" Margin="5 0 0 0"/>
@@ -347,13 +351,14 @@
 
                             </StackPanel>
 
-                            <StackPanel Name="ParticularInfo" Margin="20 0 0 0" Grid.Column="1">
+                            <StackPanel Name="CPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
 
                                 <TextBlock Text="Product information" Margin="0" FontSize="15"/>
 
                                 <ComboBox Name="CPUSeries" FontSize="15"
                                 materialDesign:HintAssist.Hint="CPU series" 
-                                IsEditable="True" Margin="0 25 0 0"
+                                Margin="0 25 0 0"
                                 DataContextChanged="AddedProductType_DataContextChanged"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
 
@@ -362,9 +367,28 @@
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                    Name="CoreCountTextBox" MaxLength="10" MaxWidth="215" />
 
-                                <WrapPanel/>
+                            </StackPanel>
+
+                            <StackPanel Name="GPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Visible">
+
+                                <TextBlock Text="Product information" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="MemoryType" FontSize="15"
+                                materialDesign:HintAssist.Hint="Memory type" 
+                                Margin="0 25 0 0"
+                                DataContextChanged="AddedProductType_DataContextChanged"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="CoreCount" Margin="0 20 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="HDMICountTextBox" MaxLength="10" MaxWidth="215" />
 
                             </StackPanel>
+
+                            <StackPanel Name="Preview" Grid.Column="1" Margin="0 -160 0 -30"
+                                        Grid.Row="1"/>
 
                         </Grid>
                     </materialDesign:Card>

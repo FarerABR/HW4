@@ -14,10 +14,10 @@ namespace DAL.Entity.Product
             _date_Of_Registration = DateTime.Now;
 		}
 
-        private static int Id_Seed { get; set; } = 0;
+        public static long Id_Seed { get; set; } = 0;
 
-        private readonly int _id = ++Id_Seed;
-        public int Id { get { return _id; } }
+        private readonly long _id = ++Id_Seed;
+        public long Id { get { return _id; } }
         public string Name { get; set; }
 
         public Brand Brand { get; set; }

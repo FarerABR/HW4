@@ -20,8 +20,8 @@ namespace DAL.Entity
 
         public UserRole Role { get; set; }
 
-        private readonly int _id = Id_Seed++;
-        public int Id { get { return _id; } }
+        private readonly long _id = Id_Seed++;
+        public long Id { get { return _id; } }
 
         public string FirstName { get; set; } = "not set";
         public string LastName { get; set; } = "not set";
@@ -37,6 +37,6 @@ namespace DAL.Entity
 
         public readonly DateTime Date_Created;
 
-        private static int Id_Seed { get; set; } = 100;
+        public static long Id_Seed { get; set; } = 100;
     }
 }

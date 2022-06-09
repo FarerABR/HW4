@@ -84,6 +84,40 @@ namespace BLL.data_base
 			List<Motherboard> motherInsertedData = JsonConvert.DeserializeObject<List<Motherboard>>(motherStr);
 			if (motherInsertedData != null)
 				ProductsRepository.Motherboard_List = motherInsertedData;
+
+			// ########## User Id seed data ##########
+			string userIdSeedPath = "../../../../DAL/data/Id/UserIdSeed_datafile.json";
+			if (!File.Exists(userIdSeedPath))
+			{
+				using (FileStream fs = File.Create(userIdSeedPath))
+				{
+					Byte[] text = new UTF8Encoding(true).GetBytes("");
+					fs.Write(text);
+				}
+			}
+			string userIdSeedStr = File.ReadAllText(userIdSeedPath);
+			if(!String.IsNullOrEmpty(userIdSeedStr))
+			{
+				long userIdSeedInsertedData = JsonConvert.DeserializeObject<long>(userIdSeedStr);
+				User.Id_Seed = userIdSeedInsertedData;
+			}
+
+			// ########## Product Id seed data ##########
+			string productIdSeedPath = "../../../../DAL/data/Id/ProductIdSeed_datafile.json";
+			if (!File.Exists(productIdSeedPath))
+			{
+				using (FileStream fs = File.Create(productIdSeedPath))
+				{
+					Byte[] text = new UTF8Encoding(true).GetBytes("");
+					fs.Write(text);
+				}
+			}
+			string productIdSeedStr = File.ReadAllText(productIdSeedPath);
+			if (!String.IsNullOrEmpty(productIdSeedStr))
+			{
+				long productIdSeedInsertedData = JsonConvert.DeserializeObject<long>(productIdSeedStr);
+				Product.Id_Seed = productIdSeedInsertedData;
+			}
 		}
 
 		public static void WriteAllData()
@@ -130,6 +164,24 @@ namespace BLL.data_base
 			using (FileStream fs = File.Create(motherPath))
 			{
 				Byte[] text = new UTF8Encoding(true).GetBytes(motherStr);
+				fs.Write(text);
+			}
+
+			// ########## User Id Seed data ##########
+			string userIdSeedStr = JsonConvert.SerializeObject(User.Id_Seed);
+			string userIdSeedPath = "../../../../DAL/data/Id/UserIdSeed_datafile.json";
+			using (FileStream fs = File.Create(userIdSeedPath))
+			{
+				Byte[] text = new UTF8Encoding(true).GetBytes(userIdSeedStr);
+				fs.Write(text);
+			}
+
+			// ########## User Id Seed data ##########
+			string productIdSeedStr = JsonConvert.SerializeObject(Product.Id_Seed);
+			string productIdSeedPath = "../../../../DAL/data/Id/ProductIdSeed_datafile.json";
+			using (FileStream fs = File.Create(productIdSeedPath))
+			{
+				Byte[] text = new UTF8Encoding(true).GetBytes(productIdSeedStr);
 				fs.Write(text);
 			}
 		}

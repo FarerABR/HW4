@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using BLL.Repository;
 using BLL.data_base;
 using DAL.Enum.User;
@@ -11,7 +10,7 @@ namespace UI.Views
 	public partial class ShellView : Window
 	{
 		#region Properties
-		private User? CurrentUser = UserRepository.LastLoggedIn();
+		private User? CurrentUser;
 		private bool KeepSignedIn = false;
 		#endregion
 
@@ -19,6 +18,13 @@ namespace UI.Views
 		{
 			InitializeComponent();
 			Data_Access.ReadAllData();
+			CurrentUser = UserRepository.LastLoggedIn();
+			if (CurrentUser != null)
+			{
+				StoreView StoreViewWindow = new(CurrentUser);
+				Close();
+				StoreViewWindow.Show();
+			}
 			try { UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin); } catch { }
 		}
 
@@ -127,12 +133,6 @@ namespace UI.Views
 
 		private void WelcomePage_Loaded(object sender, RoutedEventArgs e)
 		{
-			if (CurrentUser != null)
-			{
-				StoreView StoreViewWindow = new(CurrentUser);
-				Close();
-				StoreViewWindow.Show();
-			}
 			SignUpOptBtn.Focus();
 		}
 
@@ -190,7 +190,7 @@ namespace UI.Views
 				try
 				{
 					CurrentUser = UserRepository.CreateUser(UsernameTextBox.Text, NewUserPassBox.Password, NewUserEmail.Text, UserRole.customer);
-					StoreView StoreViewWindow = new StoreView(CurrentUser);
+					StoreView StoreViewWindow = new(CurrentUser);
 					Close();
 					StoreViewWindow.ShowActivated = true;
 					StoreViewWindow.Show();
@@ -223,6 +223,7 @@ namespace UI.Views
 						if (KeepSignedIn)
 						{
 							CurrentUser.IsLastLoggedIn = true;
+							UserRepository.UpdateUser(CurrentUser);
 						}
 						StoreView StoreViewWindow = new(CurrentUser);
 						Close();

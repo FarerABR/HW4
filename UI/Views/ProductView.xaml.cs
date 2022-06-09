@@ -19,7 +19,8 @@ namespace UI.Views
 			RatingBar.Value = product.Rating;
 			PriceTextBlock.Text = product.Price.ToString() + "$";
 			OffTextBlock.Text = product.Discount.ToString() + "%";
-			SetImageSource(product);
+			if(product.Image != null)
+				SetImageSource(product);
 
 			if (product.Discount == 0)
 				OffBorder.Visibility = Visibility.Collapsed;

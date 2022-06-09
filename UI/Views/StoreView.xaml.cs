@@ -20,9 +20,9 @@ namespace UI.Views
 			CurrentUser = currentUser;
 			try
 			{
+				ProductsRepository.CreateProcessor("Core i9-11370", 2000, 15, 5, CurrentUser);
 				ProductsRepository.CreateGraphicsCard("RTX 3060", 500, 20, 3, CurrentUser);
 				ProductsRepository.CreateRam("DDR4 16G", 120, 50, 2, CurrentUser);
-				ProductsRepository.CreateProcessor("Core i9-11370", 2000, 15, 5, CurrentUser);
 				ProductsRepository.CreateMotherboard("BTX", 200, 100, 1, CurrentUser);
 				ProductsRepository.CreateRam("DDR6 64G", 1000, 0, 4, CurrentUser);
 			}
@@ -161,6 +161,10 @@ namespace UI.Views
 			LeftSidePanel.IsEnabled = false;
 			SearchPanel.IsEnabled = false;
 			ProductsPanel.Visibility = Visibility.Collapsed;
+			Preview.Children.Clear();
+			ProductView preview = new(new Product("name", 0, 10, 0, CurrentUser));
+			preview.Background = new SolidColorBrush(Colors.White);
+			Preview.Children.Add(preview);
 			AddProductPage.Visibility = Visibility.Visible;
 		}
 
