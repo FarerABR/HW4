@@ -1,10 +1,13 @@
 ﻿using DAL.Entity;
 using DAL.Entity.Product;
 using DAL.Enum.User;
+using DAL.Enum.Product;
 using BLL.Repository;
 using BLL.data_base;
 using System.Windows;
 using System.Windows.Media;
+using System;
+using Microsoft.Win32;
 
 namespace UI.Views
 {
@@ -12,46 +15,59 @@ namespace UI.Views
 	{
 		#region Properties
 		private readonly User CurrentUser;
+		private ProductView? NewProductPreview;
+		string ImagePath = "";
 		#endregion
 
 		public StoreView(User currentUser)
 		{
 			InitializeComponent();
 			CurrentUser = currentUser;
-			try
-			{
-				ProductsRepository.CreateProcessor("Core i9-11370", 2000, 15, 5, CurrentUser);
-				ProductsRepository.CreateGraphicsCard("RTX 3060", 500, 20, 3, CurrentUser);
-				ProductsRepository.CreateRam("DDR4 16G", 120, 50, 2, CurrentUser);
-				ProductsRepository.CreateMotherboard("BTX", 200, 100, 1, CurrentUser);
-				ProductsRepository.CreateRam("DDR6 64G", 1000, 0, 4, CurrentUser);
-			}
-			catch { }
-			AddProducts();
 		}
 
-		private void AddProducts()
+		private void AddProducts(string types, string search)
 		{
-			foreach (var x in ProductsRepository.Ram_List)
-			{
-				ProductView productView = new(x);
-				ProductsWrapPanel.Children.Add(productView);
-			}
-			foreach (var x in ProductsRepository.Processor_List)
-			{
-				ProductView productView = new(x);
-				ProductsWrapPanel.Children.Add(productView);
-			}
-			foreach (var x in ProductsRepository.GraphicsCard_List)
-			{
-				ProductView productView = new(x);
-				ProductsWrapPanel.Children.Add(productView);
-			}
-			foreach (var x in ProductsRepository.Motherboard_List)
-			{
-				ProductView productView = new(x);
-				ProductsWrapPanel.Children.Add(productView);
-			}
+			ProductsWrapPanel.Children.Clear();
+
+			if(types.Contains('1'))
+				foreach (var x in ProductsRepository.Processor_List)
+				{
+					if (x.ViewStatus != ViewStatus.deleted && x.Name.Contains(search))
+					{
+						ProductView productView = new(x);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('2'))
+				foreach (var x in ProductsRepository.GraphicsCard_List)
+				{
+					if (x.ViewStatus != ViewStatus.deleted && x.Name.Contains(search))
+					{
+						ProductView productView = new(x);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('3'))
+				foreach (var x in ProductsRepository.Ram_List)
+				{
+					if(x.ViewStatus != ViewStatus.deleted && x.Name.Contains(search))
+					{
+						ProductView productView = new(x);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('4'))
+				foreach (var x in ProductsRepository.Motherboard_List)
+				{
+					if (x.ViewStatus != ViewStatus.deleted && x.Name.Contains(search))
+					{
+						ProductView productView = new(x);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
 		}
 
 		private void StoreWindow_Loaded(object sender, RoutedEventArgs e)
@@ -62,8 +78,29 @@ namespace UI.Views
 				ManageBtn.Visibility = Visibility.Collapsed;
 			}
 			UsernameTextBlock.Text = CurrentUser.Username;
+			UsernameTextBlock.ToolTip = CurrentUser.Username;
 			IDTextBlock.Text = "#" + CurrentUser.Id.ToString();
+
+			CPUCheck.IsChecked = true;
+			GPUCheck.IsChecked = true;
+			RAMCheck.IsChecked = true;
+			MotherboardCheck.IsChecked = true;
+			Temp_Click(sender, e);
+
 			ProductsBtn_Click(sender, e);
+
+			CPUSeries.ItemsSource = Enum.GetValues(typeof(ProcessorType));
+			CPUBrand.ItemsSource = Enum.GetValues(typeof(Brand));
+
+			GPUMemoryType.ItemsSource = Enum.GetValues(typeof(GraphMemType));
+			GPUBrand.ItemsSource = Enum.GetValues(typeof(Brand));
+
+			RAMMemoryType.ItemsSource = Enum.GetValues(typeof(RamMemType));
+			RAMBrand.ItemsSource = Enum.GetValues(typeof(Brand));
+
+			MotherBasedOn.ItemsSource = Enum.GetValues(typeof(MotherBased));
+			MotherBrand.ItemsSource = Enum.GetValues(typeof(Brand));
+			MotherRaid.ItemsSource = Enum.GetValues(typeof(RAID));
 		}
 
 		private void StoreWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -153,7 +190,16 @@ namespace UI.Views
 
 		private void Temp_Click(object sender, RoutedEventArgs e)
 		{
-			//start search
+			string mode = "";
+
+			if (string.IsNullOrEmpty(SearchTextBox.Text))
+				SearchTextBox.Text = "";
+			if ((bool)CPUCheck.IsChecked) mode += "1";
+			if ((bool)GPUCheck.IsChecked) mode += "2";
+			if ((bool)RAMCheck.IsChecked) mode += "3";
+			if ((bool)MotherboardCheck.IsChecked) mode += "4";
+
+			AddProducts(mode, SearchTextBox.Text);
 		}
 
 		private void AddNewProductBtn_Click(object sender, RoutedEventArgs e)
@@ -162,33 +208,302 @@ namespace UI.Views
 			SearchPanel.IsEnabled = false;
 			ProductsPanel.Visibility = Visibility.Collapsed;
 			Preview.Children.Clear();
-			ProductView preview = new(new Product("name", 0, 10, 0, CurrentUser));
-			preview.Background = new SolidColorBrush(Colors.White);
-			Preview.Children.Add(preview);
+
+			NewProductPreview = new(new Product("name", 0, 10, 0, CurrentUser));
+			NewProductPreview.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEFFAFF"));
+			Preview.Children.Add(NewProductPreview);
+			RefreshPreview();
+
 			AddProductPage.Visibility = Visibility.Visible;
+			AddedProductType.Focus();
 		}
 
-		private void AddedProductType_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void AddedProductType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-
+			switch (AddedProductType.SelectedItem.ToString())
+			{
+				case "System.Windows.Controls.ComboBoxItem: CPU":
+					{
+						RefreshParticularInfoGrids();
+						CPUParticularInfo.Visibility = Visibility.Visible;
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: GPU":
+					{
+						RefreshParticularInfoGrids();
+						GPUParticularInfo.Visibility = Visibility.Visible;
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: RAM":
+					{
+						RefreshParticularInfoGrids();
+						RAMParticularInfo.Visibility = Visibility.Visible;
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: Motherboard":
+					{
+						RefreshParticularInfoGrids();
+						MotherParticularInfo.Visibility = Visibility.Visible;
+						break;
+					}
+				default: { break; }
+			}
 		}
 
-		private void AddProductBtn_Click(object sender, RoutedEventArgs e)
+		private void RefreshParticularInfoGrids()
 		{
-
+			CPUParticularInfo.Visibility = Visibility.Hidden;
+			GPUParticularInfo.Visibility = Visibility.Hidden;
+			RAMParticularInfo.Visibility = Visibility.Hidden;
+			MotherParticularInfo.Visibility = Visibility.Hidden;
 		}
 
-		private void CancelAddProductBtn_Click(object sender, RoutedEventArgs e)
+		private void RefreshPreview()
 		{
-			AddProductPage.Visibility = Visibility.Collapsed;
-			LeftSidePanel.IsEnabled = true;
-			SearchPanel.IsEnabled = true;
-			ProductsPanel.Visibility = Visibility.Visible;
+			string? name = NameTextBox.Text;
+			string? price = PriceTextBox.Text;
+			string? discount = DiscountTextBox.Text;
+
+			try
+			{
+				if (name == null)
+					name = "";
+				if (string.IsNullOrEmpty(price))
+					price = "0";
+				if (string.IsNullOrEmpty(discount))
+					discount = "0";
+				if (string.IsNullOrEmpty(ImagePath))
+					ImagePath = "";
+
+					Product temp = new(name, double.Parse(price), int.Parse(discount), RatingBar.Value, CurrentUser);
+				{
+					temp.Image = ImagePath;
+				}
+				NewProductPreview.SetProperties(temp);
+			}
+			catch { }
 		}
 
 		public static void ShowProductDetails(Product product)
 		{
 
+		}
+
+		private void NameTextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			RefreshPreview();
+		}
+
+		private void PriceTextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				double.Parse(PriceTextBox.Text);
+				PriceError.Visibility = Visibility.Collapsed;
+				RefreshPreview();
+			}
+			catch
+			{
+				PriceError.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void DiscountTextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				int t = int.Parse(DiscountTextBox.Text);
+				if (0 <= t && t <= 100)
+				{
+					DiscountError.Visibility = Visibility.Collapsed;
+					RefreshPreview();
+				}
+				else throw new Exception();
+			}
+			catch
+			{
+				DiscountError.Visibility = Visibility.Visible;
+			}
+		}
+
+		private void RatingBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+		{
+			RefreshPreview();
+		}
+
+		private void CheckKeyNum(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			e.Handled = !((new System.Text.RegularExpressions.Regex("[0-9]").IsMatch(e.Key.ToString())
+				|| e.Key.ToString() == "Escape" || e.Key.ToString() == "Return"));
+		}
+
+		private void AddImage_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog fileOpen = new();
+			fileOpen.Multiselect = false;
+			fileOpen.Title = "Choose your image";
+			fileOpen.Filter = "JPG Files (*.jpg)| *.jpg|PNG Files (*.png)| *.png";
+
+			if ((bool)fileOpen.ShowDialog())
+				ImagePath = fileOpen.FileName;
+
+			RefreshPreview();
+		}
+
+		private void RemoveImage_Click(object sender, RoutedEventArgs e)
+		{
+			ImagePath = "";
+			RefreshPreview();
+		}
+
+		private void RefreshNewProductPage()
+		{
+			NameTextBox.Text = null;
+			PriceTextBox.Text = null;
+			DiscountTextBox.Text = null;
+
+			CPUSeries.SelectedItem = null;
+			CPUBrand.SelectedItem = null;
+			CoreCountTextBox.Text = null;
+
+			GPUMemoryType.SelectedItem = null;
+			GPUHDMICount.Text = null;
+			GPUBrand.SelectedItem = null;
+
+			RAMMemoryType.SelectedItem = null;
+			RAMBrand.SelectedItem = null;
+			RAMModuleCount.Text = null;
+			RAMModuleCopacity.Text = null;
+
+			MotherBasedOn.SelectedItem = null;
+			MotherBrand.SelectedItem = null;
+			RAMSlots.Text = null;
+			PCISlots.Text = null;
+		}
+
+		private void AddProductBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bool key = false;
+			string productMode = "";
+			if (!string.IsNullOrEmpty(NameTextBox.Text) && PriceError.Visibility != Visibility.Visible && DiscountError.Visibility != Visibility.Visible)
+			{
+				switch (AddedProductType.SelectedItem.ToString())
+				{
+					case "System.Windows.Controls.ComboBoxItem: CPU":
+						{
+							productMode = "CPU";
+							if (CPUSeries.SelectedIndex == -1 || string.IsNullOrEmpty(CoreCountTextBox.Text) || CPUBrand.SelectedIndex == -1)
+								AddError.Text = "* fill the required fields";
+							else
+							{
+								key = true;
+							}
+							break;
+						}
+					case "System.Windows.Controls.ComboBoxItem: GPU":
+						{
+							productMode = "GPU";
+							if (GPUMemoryType.SelectedIndex == -1 || string.IsNullOrEmpty(GPUHDMICount.Text) || GPUBrand.SelectedIndex == -1)
+								AddError.Text = "* fill the required fields";
+							else
+							{
+								key = true;
+							}
+							break;
+						}
+					case "System.Windows.Controls.ComboBoxItem: RAM":
+						{
+							productMode = "RAM";
+							if (RAMMemoryType.SelectedIndex == -1 || RAMBrand.SelectedIndex == -1 || string.IsNullOrEmpty(RAMModuleCount.Text)
+								|| string.IsNullOrEmpty(RAMModuleCopacity.Text))
+								AddError.Text = "* fill the required fields";
+							else
+							{
+								key = true;
+							}
+							break;
+						}
+					case "System.Windows.Controls.ComboBoxItem: Motherboard":
+						{
+							productMode = "Motherboard";
+							if (MotherBasedOn.SelectedIndex == -1 || MotherBrand.SelectedIndex == -1 || string.IsNullOrEmpty(RAMSlots.Text)
+								|| string.IsNullOrEmpty(PCISlots.Text) || MotherRaid.SelectedIndex == -1)
+								AddError.Text = "* fill the required fields";
+							else
+							{
+								key = true;
+							}
+							break;
+						}
+					default: { break; }
+				}
+			}
+			else
+			{
+				AddError.Text = "* inputs invalid";
+			}
+
+			if(key)
+			{
+				try
+				{
+					switch(productMode)
+					{
+						case "CPU":
+							{
+								if (!string.IsNullOrEmpty(ImagePath))
+									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath,CurrentUser);
+								else
+									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+								break;
+							}
+						case "GPU":
+							{
+								if (!string.IsNullOrEmpty(ImagePath))
+									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								else
+									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+								break;
+							}
+						case "RAM":
+							{
+								if (!string.IsNullOrEmpty(ImagePath))
+									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								else
+									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+								break;
+							}
+						case "Motherboard":
+							{
+								if (!string.IsNullOrEmpty(ImagePath))
+									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								else
+									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+								break;
+							}
+						default: { break; }
+					}
+					CancelAddProductBtn_Click(sender, e);
+					RemoveImage_Click(sender, e);
+					RefreshNewProductPage();
+					Temp_Click(sender, e);
+					MessageBox.Show("Product successfully added", "Product added", MessageBoxButton.OK, MessageBoxImage.Asterisk, MessageBoxResult.OK);
+				}
+				catch (System.Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Adding product failed", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+		}
+
+		private void CancelAddProductBtn_Click(object sender, RoutedEventArgs e)
+		{
+			RefreshParticularInfoGrids();
+			AddError.Text = "";
+			AddProductPage.Visibility = Visibility.Hidden;
+			LeftSidePanel.IsEnabled = true;
+			SearchPanel.IsEnabled = true;
+			ProductsPanel.Visibility = Visibility.Visible;
 		}
 	}
 }

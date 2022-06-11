@@ -13,24 +13,32 @@ namespace UI.Views
 		public ProductView(Product product)
 		{
 			InitializeComponent();
+			Image.Source = null;
 			_product = product;
+			SetProperties(product);
+		}
+
+		public void SetProperties(Product product)
+		{
 			NameTextBlock.Text = product.Name;
 			NameTextBlock.ToolTip = product.Name;
 			RatingBar.Value = product.Rating;
 			PriceTextBlock.Text = product.Price.ToString() + "$";
 			OffTextBlock.Text = product.Discount.ToString() + "%";
-			if(product.Image != null)
+			if (product.Image != null)
 				SetImageSource(product);
 
 			if (product.Discount == 0)
 				OffBorder.Visibility = Visibility.Collapsed;
 			else if (product.Discount == 100)
 				OffTextBlock.Text = "Free";
+			else
+				OffBorder.Visibility = Visibility.Visible;
 		}
 
 		private void SetImageSource(Product product)
 		{
-			var uriSource = new Uri(product.Image, UriKind.Relative);
+			Uri uriSource = new(product.Image, UriKind.RelativeOrAbsolute);
 			BitmapImage Path = new(uriSource);
 			Image.Source = Path;
 		}

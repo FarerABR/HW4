@@ -35,6 +35,6 @@ namespace DAL.Entity.Product
         public User WhoHasMade { get; set; }
 
         public ViewStatus ViewStatus { get; set; } = ViewStatus.visible;
-        public bool In_Stock { get; set; } = false;
+        public bool In_Stock { get; set; } = true;
     }
 }

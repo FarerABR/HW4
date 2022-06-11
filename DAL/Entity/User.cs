@@ -10,7 +10,7 @@ namespace DAL.Entity
             Password = password;
             Email = email;
             Role = role;
-            if(role == UserRole.admin) { _id = 0; }
+            if(role == UserRole.admin) { _id = 0; Balance = -1; }
             Date_Created = DateTime.Now;
 		}
 

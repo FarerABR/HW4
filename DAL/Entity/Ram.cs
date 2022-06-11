@@ -1,5 +1,4 @@
 using DAL.Enum.Product;
-using System;
 
 namespace DAL.Entity.Product
 {

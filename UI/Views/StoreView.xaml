@@ -57,8 +57,9 @@
                 </Button>
             </Grid>
 
-            <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="false"
-                          materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Hidden">
+            <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                          materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Hidden"
+                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Name="LeftSidePanel" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -201,8 +202,8 @@
                 </Grid>
             </ScrollViewer>
 
-            <Grid  Name="ProductsPage"  Grid.Column="1" Grid.RowSpan="8" Background="AliceBlue"
-                   Visibility="Visible">
+            <Grid  Name="ProductsPage"  Grid.Column="1" Background="AliceBlue"
+                   Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="13" />
                     <ColumnDefinition Width="auto" />
@@ -216,8 +217,10 @@
                 </Grid.RowDefinitions>
 
                 <Border Name="SearchPanel" Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
-                BorderBrush="{StaticResource MaterialDesignToolForeground}" Margin="-10 0 0 0">
-                    <ScrollViewer>
+                BorderBrush="{StaticResource MaterialDesignToolForeground}" Margin="0 0 0 0">
+                    <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -228,22 +231,23 @@
 
                                 <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:HintAssist.IsFloating="False" materialDesign:HintAssist.Hint="Search" Grid.Row="1"
-                    Width="110" FontSize="10" AllowDrop="True" Padding="10" Margin="0 5 5 0" MinWidth="145"/>
+                    Width="110" FontSize="10" AllowDrop="True" Padding="10" Margin="0 5 5 0" MinWidth="145"
+                                         LostFocus="Temp_Click"/>
 
                                 <CheckBox Name="GPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
-                        IsChecked="True" Margin="0 25 0 0" Grid.Row="0">
+                        Margin="0 25 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
                                     GPU
                                 </CheckBox>
                                 <CheckBox Name="CPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
-                        IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
+                        Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
                                     CPU
                                 </CheckBox>
                                 <CheckBox Name="MotherboardCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
-                        IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
+                        Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
                                     Motherboard
                                 </CheckBox>
                                 <CheckBox Name="RAMCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
-                        IsChecked="True" Margin="0 13 0 0" Grid.Row="0">
+                        Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
                                     RAM
                                 </CheckBox>
 
@@ -264,138 +268,256 @@
                     </ScrollViewer>
                 </Border>
 
-                <ScrollViewer Name="ProductsPanel" Grid.Column="2" Grid.Row="1" Margin="0 0 0 0">
+                <ScrollViewer Name="ProductsPanel" Grid.Column="2" Grid.Row="1" Margin="0 0 0 0"
+                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Top">
 
                     </WrapPanel>
                 </ScrollViewer>
 
-                <Grid Name="AddProductPage" Visibility="Visible" VerticalAlignment="Center"
+                <Grid Name="AddProductPage" VerticalAlignment="Center" Visibility="Hidden"
               HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
-                    <materialDesign:Card MinHeight="400" MinWidth="550" Padding="40"
-                            Background="{DynamicResource MaterialDesignBackground}">
-                        <Grid Margin="0 0 0 -10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
-                                
-                                <TextBlock Text="General information" Margin="0" FontSize="15"/>
+                    <materialDesign:Card MinHeight="450" MinWidth="550" Padding="40 50 40 0"
+                            Background="#FFEFFAFF">
+                        <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                          HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="auto" HorizontalAlignment="Left">
+                            <Grid Margin="0 0 0 -10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
 
-                                <ComboBox Name="AddedProductType" FontSize="15"
+                                <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
+
+                                    <TextBlock Text="General information" Margin="0" FontSize="15"/>
+
+                                    <ComboBox Name="AddedProductType" FontSize="15"
                                 materialDesign:HintAssist.Hint="Product type" 
                                 IsEditable="False" Margin="0 30 0 0"
-                                DataContextChanged="AddedProductType_DataContextChanged"
+                                SelectionChanged="AddedProductType_SelectionChanged"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                                    <ComboBoxItem IsSelected="True">
-                                        CPU
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        GPU
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        RAM
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Motherboard
-                                    </ComboBoxItem>
-                                </ComboBox>
+                                        <ComboBoxItem IsSelected="True">
+                                            CPU
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            GPU
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            RAM
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            Motherboard
+                                        </ComboBoxItem>
+                                    </ComboBox>
 
-                                <TextBox
+                                    <TextBox
                                   materialDesign:HintAssist.Hint="Name of product" Margin="0 25 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                  Name="NameTextBox"  MaxLength="40" MaxWidth="215" />
-                                
-                                <TextBox
+                                  Name="NameTextBox"  MaxLength="100" MaxWidth="215" LostFocus="NameTextBox_LostFocus"
+                                  materialDesign:HintAssist.HelperText="*required"/>
+
+                                    <TextBox
                                   materialDesign:HintAssist.Hint="Price" Margin="0 30 130 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="PriceTextBox" MaxLength="10" MaxWidth="215" />
-                                <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
+                                   Name="PriceTextBox" MaxLength="10" MaxWidth="215"  LostFocus="PriceTextBox_LostFocus"/>
+                                    <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
                                     MaxHeight="14" Opacity="0.5"/>
+                                    <TextBlock Text="*number" FontSize="8" Margin="0 2 0 -12"
+                                           Foreground="Red" Visibility="Collapsed" Name="PriceError"/>
 
-                                <TextBox
+                                    <TextBox
                                   materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" />
-                                <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" KeyDown="CheckKeyNum"
+                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" LostFocus="DiscountTextBox_LostFocus"/>
+                                    <TextBlock Text="*0 to 100" FontSize="8" Margin="120 2 0 -12"
+                                           Foreground="Red" Visibility="Collapsed" Name="DiscountError"/>
+
+                                    <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
                                             MaxHeight="14" Opacity="0.5"/>
 
-                                <materialDesign:RatingBar Margin="0 40 0 0" Foreground="#FFF358FF"
-                                    Name="RatingBar" HorizontalAlignment="Center" />
+                                    <materialDesign:RatingBar Margin="0 55 0 0" Foreground="#FFF358FF"
+                                    Name="RatingBar" HorizontalAlignment="Center" ValueChanged="RatingBar_ValueChanged" />
 
-                                <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
-                                        Margin="120 22 0 0" Foreground="#FF35C495" Width="80" Height="30"
-                                        BorderBrush="#FF09D587" Name="AddProductBtn" Click="AddProductBtn_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
-                                        <TextBlock Text="add" Margin="5 0 0 0"/>
-                                    </StackPanel>
-                                </Button>
+                                    <StackPanel Name="Buttons" Orientation="Horizontal" Margin="0 40 0 0">
 
-                                <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
-                                        Margin="-125 -30 0 0" Foreground="#FFFF1313" Width="80" Height="30"
+                                        <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="0 0 0 0" Foreground="#FFFF1313" Width="80" Height="30"
                                         BorderBrush="#FFFF876F" Name="CancelAddProductBtn"
-                                        Click="CancelAddProductBtn_Click" Padding="5">
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="ArchiveCancel" Margin="-4 0 0 0"/>
-                                        <TextBlock Text="cancel" Margin="4 0 0 0"/>
+                                        Click="CancelAddProductBtn_Click" Padding="5" IsCancel="True">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="ArchiveCancel" Margin="-4 0 0 0"/>
+                                                <TextBlock Text="cancel" Margin="4 0 0 0"/>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="55 0 0 0" Foreground="#FF35C495" Width="80" Height="30" IsDefault="True"
+                                        BorderBrush="#FF09D587" Name="AddProductBtn" Click="AddProductBtn_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
+                                                <TextBlock Text="add" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </Button>
+
                                     </StackPanel>
-                                </Button>
 
-                            </StackPanel>
+                                    <TextBlock Name="AddError" Text="" Margin="90 -50 0 30"
+                                           TextAlignment="Right" Foreground="Red"/>
 
-                            <StackPanel Name="CPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
-                                        Grid.Row="0" Visibility="Collapsed">
+                                </StackPanel>
 
-                                <TextBlock Text="Product information" Margin="0" FontSize="15"/>
-
-                                <ComboBox Name="CPUSeries" FontSize="15"
-                                materialDesign:HintAssist.Hint="CPU series" 
-                                Margin="0 25 0 0"
-                                DataContextChanged="AddedProductType_DataContextChanged"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                <TextBox
-                                  materialDesign:HintAssist.Hint="CoreCount" Margin="0 20 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="CoreCountTextBox" MaxLength="10" MaxWidth="215" />
-
-                            </StackPanel>
-
-                            <StackPanel Name="GPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                <StackPanel Name="CPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
                                         Grid.Row="0" Visibility="Visible">
 
-                                <TextBlock Text="Product information" Margin="0" FontSize="15"/>
+                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
 
-                                <ComboBox Name="MemoryType" FontSize="15"
-                                materialDesign:HintAssist.Hint="Memory type" 
-                                Margin="0 25 0 0"
-                                DataContextChanged="AddedProductType_DataContextChanged"
+                                    <ComboBox Name="CPUSeries" FontSize="15"
+                                materialDesign:HintAssist.Hint="CPU series"  Margin="0 20 0 0"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
 
-                                <TextBox
-                                  materialDesign:HintAssist.Hint="CoreCount" Margin="0 20 0 0"
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                        <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="Cores" Margin="0 0 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="HDMICountTextBox" MaxLength="10" MaxWidth="215" />
+                                   Name="CoreCountTextBox" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="90"/>
 
-                            </StackPanel>
+                                        <ComboBox Name="CPUBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="20 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                    </StackPanel>
 
-                            <StackPanel Name="Preview" Grid.Column="1" Margin="0 -160 0 -30"
+                                </StackPanel>
+
+                                <StackPanel Name="GPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                    <ComboBox Name="GPUMemoryType" FontSize="15"
+                                materialDesign:HintAssist.Hint="Memory type"
+                                Margin="0 20 0 0"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                        <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="HDMI ports" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="GPUHDMICount" MaxLength="2" MaxWidth="215" 
+                                        MinWidth="90" />
+
+                                        <ComboBox Name="GPUBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="20 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                                <StackPanel Name="RAMParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0 25 0 0">
+                                        <ComboBox Name="RAMMemoryType" FontSize="12"
+                                materialDesign:HintAssist.Hint="Memory type"
+                                Margin="0 0 0 0" MinWidth="90"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                        <ComboBox Name="RAMBrand" FontSize="14"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="25 -5 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0 16 0 0">
+                                        <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="Modules" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="RAMModuleCount" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="90"/>
+
+                                        <TextBox Name="RAMModuleCopacity" FontSize="15"
+                                materialDesign:HintAssist.Hint="Copacity" KeyDown="CheckKeyNum"
+                                Margin="25 0 0 0" MinWidth="100" MaxLength="6"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                                <StackPanel Name="MotherParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                                        <ComboBox Name="MotherBasedOn" FontSize="15"
+                                materialDesign:HintAssist.Hint="Based on" 
+                                Margin="0 0 0 0" MinWidth="90"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                        <ComboBox Name="MotherBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="25 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                        <TextBox
+                                  materialDesign:HintAssist.Hint="Ram slots" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="RAMSlots" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="50" KeyDown="CheckKeyNum"/>
+
+                                        <TextBox Name="PCISlots" FontSize="13" KeyDown="CheckKeyNum"
+                                materialDesign:HintAssist.Hint="PCI slots"
+                                Margin="20 0 0 0" MinWidth="50" MaxLength="2"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+
+                                        <ComboBox Name="MotherRaid" FontSize="15"
+                                materialDesign:HintAssist.Hint="Raid"
+                                Margin="25 0 0 0" MinWidth="60"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                                <StackPanel Name="Preview" Grid.Column="1" Margin="20 -210 0 0"
                                         Grid.Row="1"/>
 
-                        </Grid>
+                                <Button Name="AddImage" Grid.Column="1" Margin="15 -330 195 0" Padding="-10"
+                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Foreground="#FF2D98FF" Click="AddImage_Click" Height="25">
+                                    <materialDesign:PackIcon Kind="FileImagePlus" Height="30" Width="30"/>
+                                </Button>
+                                <Button Name="RemoveImage" Grid.Column="1" Margin="15 -260 195 0" Padding="-10"
+                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Foreground="#FFF97253" Click="RemoveImage_Click" Height="25">
+                                    <materialDesign:PackIcon Kind="FileImageRemove" Height="30" Width="30"/>
+                                </Button>
+
+
+                            </Grid>
+                        </ScrollViewer>
                     </materialDesign:Card>
                 </Grid>
 
             </Grid>
 
-        </Grid>
+            <Grid  Name="CartPage"  Grid.Column="1" Background="AliceBlue"
+                   Visibility="Hidden">
+                
+            </Grid>
+
+            </Grid>
     </Grid>
 </Window>
