@@ -13,6 +13,7 @@
     <None Remove="Images\CPU.jpg" />
     <None Remove="Images\GPU.jpg" />
     <None Remove="Images\Motherboard.jpg" />
+    <None Remove="Images\Product.jpg" />
     <None Remove="Images\RAM.jpg" />
   </ItemGroup>
 
@@ -42,13 +43,10 @@
     <Resource Include="Images\Motherboard.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Product.jpg" />
     <Resource Include="Images\RAM.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

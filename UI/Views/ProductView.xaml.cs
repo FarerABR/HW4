@@ -13,7 +13,6 @@ namespace UI.Views
 		public ProductView(Product product)
 		{
 			InitializeComponent();
-			Image.Source = null;
 			_product = product;
 			SetProperties(product);
 		}
@@ -26,19 +25,24 @@ namespace UI.Views
 			PriceTextBlock.Text = product.Price.ToString() + "$";
 			OffTextBlock.Text = product.Discount.ToString() + "%";
 			if (product.Image != null)
-				SetImageSource(product);
+				SetImageSource(product.Image);
+			else
+				SetImageSource("../Images/Product.jpg");
 
 			if (product.Discount == 0)
 				OffBorder.Visibility = Visibility.Collapsed;
 			else if (product.Discount == 100)
+			{
 				OffTextBlock.Text = "Free";
+				OffBorder.Visibility = Visibility.Visible;
+			}
 			else
 				OffBorder.Visibility = Visibility.Visible;
 		}
 
-		private void SetImageSource(Product product)
+		private void SetImageSource(string image)
 		{
-			Uri uriSource = new(product.Image, UriKind.RelativeOrAbsolute);
+			Uri uriSource = new(image, UriKind.RelativeOrAbsolute);
 			BitmapImage Path = new(uriSource);
 			Image.Source = Path;
 		}

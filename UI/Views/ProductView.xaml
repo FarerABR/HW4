@@ -11,7 +11,7 @@
         <materialDesign:Card FlowDirection="LeftToRight" Margin="5 5 5 5">
             <StackPanel>
 
-                <Image Name="Image" Source="../Images/RAM.jpg"
+                <Image Name="Image" Source="../Images/Product.jpg"
                     Height="100" VerticalAlignment="Top"/>
 
                 <TextBlock Name="NameTextBlock" Height="20" Text="Product name" Margin="15 2 15 -2"

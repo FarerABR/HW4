@@ -4,14 +4,14 @@ namespace DAL.Entity
 {
     public class User
     {
-		public User(string username, string password, string email, UserRole role)
+		public User(string username, string password, string email, UserRole role, long id)
 		{
             Username = username;
             Password = password;
             Email = email;
             Role = role;
             if (role == UserRole.admin) { _id = 0; Balance = -1; }
-            else _id = ++Id_Seed;
+            else _id = id;
             Date_Created = DateTime.Now;
 		}
 
@@ -37,7 +37,5 @@ namespace DAL.Entity
         public decimal Balance { get; set; } = 10000;
 
         public readonly DateTime Date_Created;
-
-        public static long Id_Seed { get; set; }
     }
 }

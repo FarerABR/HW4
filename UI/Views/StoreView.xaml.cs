@@ -16,7 +16,7 @@ namespace UI.Views
 		#region Properties
 		private readonly User CurrentUser;
 		private ProductView? NewProductPreview;
-		string ImagePath = "";
+		string? ImagePath = null;
 		#endregion
 
 		public StoreView(User currentUser)
@@ -106,6 +106,7 @@ namespace UI.Views
 		private void StoreWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			Data_Access.WriteAllData();
+			Application.Current.Shutdown();
 		}
 
 		private void ButtonsRefresh()
@@ -126,6 +127,7 @@ namespace UI.Views
 		private void PagesRefresh()
 		{
 			ProductsPage.Visibility = Visibility.Hidden;
+			CartPage.Visibility = Visibility.Hidden;
 		}
 
 		private void ProductsBtn_Click(object sender, RoutedEventArgs e)
@@ -144,6 +146,7 @@ namespace UI.Views
 			PagesRefresh();
 			CartBtn.Background = Brushes.DeepSkyBlue;
 			CartBtn.IsEnabled = false;
+			CartPage.Visibility = Visibility.Visible;
 		}
 
 		private void AccountBtn_Click(object sender, RoutedEventArgs e)
@@ -207,12 +210,18 @@ namespace UI.Views
 			LeftSidePanel.IsEnabled = false;
 			SearchPanel.IsEnabled = false;
 			ProductsPanel.Visibility = Visibility.Collapsed;
+
 			Preview.Children.Clear();
 
-			NewProductPreview = new(ProductsRepository.Default_Product);
+			Product temp = new("name", 0, 10, 0, CurrentUser, 0, Brand.Intel);
+			{
+				temp.Image = ImagePath;
+			}
+			NewProductPreview = new(temp);
 			NewProductPreview.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEFFAFF"));
 			Preview.Children.Add(NewProductPreview);
-			RefreshPreview();
+			
+			ProductsPanel.Visibility = Visibility.Collapsed;
 
 			AddProductPage.Visibility = Visibility.Visible;
 			AddedProductType.Focus();
@@ -252,10 +261,10 @@ namespace UI.Views
 
 		private void RefreshParticularInfoGrids()
 		{
-			CPUParticularInfo.Visibility = Visibility.Hidden;
-			GPUParticularInfo.Visibility = Visibility.Hidden;
-			RAMParticularInfo.Visibility = Visibility.Hidden;
-			MotherParticularInfo.Visibility = Visibility.Hidden;
+			CPUParticularInfo.Visibility = Visibility.Collapsed;
+			GPUParticularInfo.Visibility = Visibility.Collapsed;
+			RAMParticularInfo.Visibility = Visibility.Collapsed;
+			MotherParticularInfo.Visibility = Visibility.Collapsed;
 		}
 
 		private void RefreshPreview()
@@ -266,16 +275,14 @@ namespace UI.Views
 
 			try
 			{
-				if (name == null)
+				if (string.IsNullOrEmpty(name))
 					name = "";
 				if (string.IsNullOrEmpty(price))
 					price = "0";
 				if (string.IsNullOrEmpty(discount))
 					discount = "0";
-				if (string.IsNullOrEmpty(ImagePath))
-					ImagePath = "";
 
-					Product temp = new(name, double.Parse(price), int.Parse(discount), RatingBar.Value, CurrentUser);
+				Product temp = new(name, double.Parse(price), int.Parse(discount), RatingBar.Value, CurrentUser, 0, Brand.Intel);
 				{
 					temp.Image = ImagePath;
 				}
@@ -300,7 +307,8 @@ namespace UI.Views
 			{
 				double.Parse(PriceTextBox.Text);
 				PriceError.Visibility = Visibility.Collapsed;
-				RefreshPreview();
+				if (DiscountError.Visibility != Visibility.Visible)
+					RefreshPreview();
 			}
 			catch
 			{
@@ -316,7 +324,8 @@ namespace UI.Views
 				if (0 <= t && t <= 100)
 				{
 					DiscountError.Visibility = Visibility.Collapsed;
-					RefreshPreview();
+					if (PriceError.Visibility != Visibility.Visible)
+						RefreshPreview();
 				}
 				else throw new Exception();
 			}
@@ -451,40 +460,48 @@ namespace UI.Views
 					{
 						case "CPU":
 							{
-								if (!string.IsNullOrEmpty(ImagePath))
-									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath,CurrentUser);
+								if (ImagePath != null)
+									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath,CurrentUser,
+									int.Parse(CoreCountTextBox.Text), (ProcessorType)Enum.Parse(typeof(ProcessorType), CPUSeries.SelectedItem.ToString()), (Brand)Enum.Parse(typeof(Brand), CPUBrand.SelectedItem.ToString()));
 								else
-									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+									ProductsRepository.CreateProcessor(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser,
+									int.Parse(CoreCountTextBox.Text), (ProcessorType)Enum.Parse(typeof(ProcessorType), CPUSeries.SelectedItem.ToString()), (Brand)Enum.Parse(typeof(Brand), CPUBrand.SelectedItem.ToString()));
 								break;
 							}
 						case "GPU":
 							{
-								if (!string.IsNullOrEmpty(ImagePath))
-									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								if (ImagePath != null)
+									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser,
+									int.Parse(GPUHDMICount.Text), (GraphMemType)Enum.Parse(typeof(GraphMemType), GPUMemoryType.SelectedItem.ToString()), (Brand)Enum.Parse(typeof(Brand), GPUBrand.SelectedItem.ToString()));
 								else
-									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+									ProductsRepository.CreateGraphicsCard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser,
+									int.Parse(GPUHDMICount.Text), (GraphMemType)Enum.Parse(typeof(GraphMemType), GPUMemoryType.SelectedItem.ToString()), (Brand)Enum.Parse(typeof(Brand), GPUBrand.SelectedItem.ToString()));
 								break;
 							}
 						case "RAM":
 							{
-								if (!string.IsNullOrEmpty(ImagePath))
-									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								if (ImagePath != null)
+									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser,
+									int.Parse(RAMModuleCount.Text), (RamMemType)Enum.Parse(typeof(RamMemType), RAMMemoryType.SelectedItem.ToString()), int.Parse(RAMModuleCopacity.Text), (Brand)Enum.Parse(typeof(Brand), RAMBrand.SelectedItem.ToString()));
 								else
-									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+									ProductsRepository.CreateRam(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser,
+									int.Parse(RAMModuleCount.Text), (RamMemType)Enum.Parse(typeof(RamMemType), RAMMemoryType.SelectedItem.ToString()), int.Parse(RAMModuleCopacity.Text), (Brand)Enum.Parse(typeof(Brand), RAMBrand.SelectedItem.ToString()));
 								break;
 							}
 						case "Motherboard":
 							{
-								if (!string.IsNullOrEmpty(ImagePath))
-									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser);
+								if (ImagePath != null)
+									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, ImagePath, CurrentUser,
+									(MotherBased)Enum.Parse(typeof(MotherBased), MotherBasedOn.SelectedItem.ToString()), (RAID)Enum.Parse(typeof(RAID), MotherRaid.SelectedItem.ToString()), int.Parse(RAMSlots.Text), int.Parse(PCISlots.Text), (Brand)Enum.Parse(typeof(Brand), MotherBrand.SelectedItem.ToString()));
 								else
-									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser);
+									ProductsRepository.CreateMotherboard(NameTextBox.Text, double.Parse(PriceTextBox.Text), int.Parse(DiscountTextBox.Text), RatingBar.Value, CurrentUser,
+									(MotherBased)Enum.Parse(typeof(MotherBased), MotherBasedOn.SelectedItem.ToString()), (RAID)Enum.Parse(typeof(RAID), MotherRaid.SelectedItem.ToString()), int.Parse(RAMSlots.Text), int.Parse(PCISlots.Text), (Brand)Enum.Parse(typeof(Brand), MotherBrand.SelectedItem.ToString()));
 								break;
 							}
 						default: { break; }
 					}
 					CancelAddProductBtn_Click(sender, e);
-					RemoveImage_Click(sender, e);
+					ImagePath = null;
 					RefreshNewProductPage();
 					Temp_Click(sender, e);
 					MessageBox.Show("Product successfully added", "Product added", MessageBoxButton.OK, MessageBoxImage.Asterisk, MessageBoxResult.OK);
@@ -498,7 +515,6 @@ namespace UI.Views
 
 		private void CancelAddProductBtn_Click(object sender, RoutedEventArgs e)
 		{
-			RefreshParticularInfoGrids();
 			AddError.Text = "";
 			AddProductPage.Visibility = Visibility.Hidden;
 			LeftSidePanel.IsEnabled = true;

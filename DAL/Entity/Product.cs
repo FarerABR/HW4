@@ -4,18 +4,17 @@ namespace DAL.Entity.Product
 {
     public class Product
     {
-		public Product(string name, double price, int discount, int rating, User whoHasMade)
+		public Product(string name, double price, int discount, int rating, User whoHasMade, long id, Brand brand)
 		{
             Name = name;
             Discount = discount;
             Price = price;
             Rating = rating;
             WhoHasMade = whoHasMade;
-            _id = ++Id_Seed;
+            _id = id;
             _date_Of_Registration = DateTime.Now;
+            Brand = brand;
 		}
-
-        public static long Id_Seed { get; set; }
 
         private readonly long _id;
         public long Id { get { return _id; } }

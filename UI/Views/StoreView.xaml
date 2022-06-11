@@ -494,12 +494,12 @@
                                 <StackPanel Name="Preview" Grid.Column="1" Margin="20 -210 0 0"
                                         Grid.Row="1"/>
 
-                                <Button Name="AddImage" Grid.Column="1" Margin="15 -330 195 0" Padding="-10"
+                                <Button Name="AddImage" Grid.Column="1" Margin="15 -330 195 0" Padding="-5 -4 -2 -3"
                                 Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
                                 Foreground="#FF2D98FF" Click="AddImage_Click" Height="25">
                                     <materialDesign:PackIcon Kind="FileImagePlus" Height="30" Width="30"/>
                                 </Button>
-                                <Button Name="RemoveImage" Grid.Column="1" Margin="15 -260 195 0" Padding="-10"
+                                <Button Name="RemoveImage" Grid.Column="1" Margin="15 -260 195 0" Padding="-5 -4 -2 -3"
                                 Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
                                 Foreground="#FFF97253" Click="RemoveImage_Click" Height="25">
                                     <materialDesign:PackIcon Kind="FileImageRemove" Height="30" Width="30"/>
@@ -514,8 +514,26 @@
             </Grid>
 
             <Grid  Name="CartPage"  Grid.Column="1" Background="AliceBlue"
-                   Visibility="Hidden">
-                
+                   Visibility="Visible">
+                <ScrollViewer Margin="30"
+                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <WrapPanel Name="CartWrapPanel" Margin="0 0 0 0">
+                            <materialDesign:Card MinHeight="450" MinWidth="550" Padding="0"
+                            Background="#FFEFFAFF">
+                                
+                            </materialDesign:Card>
+                        </WrapPanel>
+                        <TextBlock>
+                            adgasdag
+                        </TextBlock>
+                        <Button>
+                            
+                        </Button>
+                    </Grid>
+                </ScrollViewer>
             </Grid>
 
             </Grid>

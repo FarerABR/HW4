@@ -25,9 +25,20 @@ namespace BLL.Repository
 
             password = PasswordRepository.HashPassword(password);
 
-            User newUser = new(username, password, email, role);
+            User newUser = new(username, password, email, role, GenerateId());
             User_List.Add(newUser);
             return newUser;
+        }
+
+        public static long GenerateId()
+		{
+            long ResultId;
+            Random t = new();
+            do
+            {
+                ResultId = t.NextInt64();
+			} while (User_List.Where(x => x.Id == ResultId).Any());
+            return ResultId;
         }
 
         /// <summary>
