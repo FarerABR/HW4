@@ -11,16 +11,17 @@ namespace DAL.Entity.Product
             Price = price;
             Rating = rating;
             WhoHasMade = whoHasMade;
+            _id = ++Id_Seed;
             _date_Of_Registration = DateTime.Now;
 		}
 
-        public static long Id_Seed { get; set; } = 0;
+        public static long Id_Seed { get; set; }
 
-        private readonly long _id = ++Id_Seed;
+        private readonly long _id;
         public long Id { get { return _id; } }
         public string Name { get; set; }
 
-        public Brand Brand { get; set; }
+        public Brand? Brand { get; set; }
 
         public double Price { get; set; }
 

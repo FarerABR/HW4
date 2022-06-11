@@ -209,7 +209,7 @@ namespace UI.Views
 			ProductsPanel.Visibility = Visibility.Collapsed;
 			Preview.Children.Clear();
 
-			NewProductPreview = new(new Product("name", 0, 10, 0, CurrentUser));
+			NewProductPreview = new(ProductsRepository.Default_Product);
 			NewProductPreview.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEFFAFF"));
 			Preview.Children.Add(NewProductPreview);
 			RefreshPreview();

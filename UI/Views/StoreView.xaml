@@ -57,7 +57,7 @@
                 </Button>
             </Grid>
 
-            <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+            <ScrollViewer Name="MainPanel" materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
                           materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Hidden"
                           HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Name="LeftSidePanel" Grid.Column="0">
@@ -227,7 +227,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3">
+                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1" Margin="0 0 0 20">
 
                                 <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:HintAssist.IsFloating="False" materialDesign:HintAssist.Hint="Search" Grid.Row="1"
@@ -263,7 +263,7 @@
                             </Button>
 
                             <Button Name="Temp" Width="0" Height="0" Opacity="0" Click="Temp_Click"
-                                    IsDefault="True" Grid.Row="1"/>
+                                    IsDefault="True" Grid.Row="2" Margin="0 25 0 0"/>
                         </Grid>
                     </ScrollViewer>
                 </Border>

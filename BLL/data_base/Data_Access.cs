@@ -25,6 +25,21 @@ namespace BLL.data_base
 			if(userInsertData != null)
 				UserRepository.User_List = userInsertData;
 
+			// ########## Default product data ##########
+			string prodPath = "../../../../DAL/data/Product/DefaultProduct_datafile.json";
+			if (!File.Exists(prodPath))
+			{
+				using (FileStream fs = File.Create(prodPath))
+				{
+					Byte[] text = new UTF8Encoding(true).GetBytes("[]");
+					fs.Write(text);
+				}
+			}
+			string prodStr = File.ReadAllText(prodPath);
+			Product prodInsertData = JsonConvert.DeserializeObject<Product>(prodStr);
+			if (prodInsertData != null)
+				ProductsRepository.Default_Product = prodInsertData;
+
 			// ########## Graphics card data ##########
 			string graphPath = "../../../../DAL/data/Product/GraphicsCard_datafile.json";
 			if (!File.Exists(graphPath))
@@ -96,7 +111,7 @@ namespace BLL.data_base
 				}
 			}
 			string userIdSeedStr = File.ReadAllText(userIdSeedPath);
-			if(!String.IsNullOrEmpty(userIdSeedStr))
+			if (!String.IsNullOrEmpty(userIdSeedStr))
 			{
 				long userIdSeedInsertedData = JsonConvert.DeserializeObject<long>(userIdSeedStr);
 				User.Id_Seed = userIdSeedInsertedData;

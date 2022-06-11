@@ -72,6 +72,11 @@ namespace BLL.Repository
             return null;
         }
 
+        public static bool IsUserDeleted(string username)
+		{
+            return User_List.Any(x => x.Username.ToLower() == username.ToLower() && x.IsDeleted);
+        }
+
         public static void ClearLastLoggedIn()
         {
             while(User_List.Find(x => x.IsLastLoggedIn == true) != default)
@@ -124,7 +129,12 @@ namespace BLL.Repository
         {
             var user = User_List.SingleOrDefault(x => x.Id == id);
 
-            return User_List.Remove(user);
+            if (user != null)
+            {
+                user.IsDeleted = true;
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace BLL.Repository
 {
     public class ProductsRepository
     {
-
+        public static Product Default_Product;
         public static List<GraphicsCard> GraphicsCard_List { get; set; } = new List<GraphicsCard>();
         public static List<Processor> Processor_List { get; set; } = new List<Processor>();
         public static List<Ram> Ram_List { get; set; } = new List<Ram>();

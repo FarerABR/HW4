@@ -116,7 +116,7 @@ namespace UI.Views
 
 		private bool ValidateLogIn()
 		{
-			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text) && !UserRepository.UserEmailExists(LogInTextBox.Text)))
+			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text) && !UserRepository.UserEmailExists(LogInTextBox.Text) && UserRepository.IsUserDeleted(LogInTextBox.Text)))
 			{
 				LogInError.Visibility = Visibility.Hidden;
 				LogInWrongUserNameError.Visibility = Visibility.Visible;
