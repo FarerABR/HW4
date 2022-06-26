@@ -65,7 +65,7 @@
             </Border>
         </Grid>
         <Grid Name="SignUpGrid" Visibility="Hidden">
-            <materialDesign:Card UniformCornerRadius="0"
+            <materialDesign:Card
             Width="400" Height="385"
             Padding="19" Margin="0 0 0 0">
                 <StackPanel>
@@ -81,7 +81,8 @@
                         <TextBox Name="UsernameTextBox"
                         Margin="0 -15 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:HintAssist.Hint="Username" materialDesign:HintAssist.HelperTextFontSize="8"
-                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        TextChanged="UsernameTextBox_TextChanged"/>
                         <TextBlock Name="UserNameError" FontSize="8" Foreground="Red" 
                             Margin="0 2 0 -12" Visibility="Visible" Text=""/>
 
@@ -91,7 +92,7 @@
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
                         </PasswordBox>
 
-                        <TextBlock Text="* must be 8 or more long" Name="PassError"
+                        <TextBlock Text="* must be 5 or more long" Name="PassError"
                             FontSize="8" Foreground="Red"  Margin="0 2 0 -12" Visibility="Hidden"/>
 
                         <PasswordBox Name="NewUserConfirmPassBox" Margin="185 -40 0 0"
@@ -151,7 +152,7 @@
                     />
                     <StackPanel Margin="0 15 0 0">
                         <TextBox Name="LogInTextBox"
-                        Margin="0 -5 0 0"
+                        Margin="0 -5 0 0" TextChanged="LogInTextBox_TextChanged"
                         materialDesign:HintAssist.Hint="Email or Username"
                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 

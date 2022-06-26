@@ -27,51 +27,6 @@ namespace UI.Views
 			CurrentUser = currentUser;
 		}
 
-		private void AddProducts(string types, string search)
-		{
-			ProductsWrapPanel.Children.Clear();
-
-			if (types.Contains('1'))
-				foreach (var x in ProductsRepository.Processor_List)
-				{
-					if (x.ViewStatus != ViewStatus.deleted && !ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
-					{
-						ProductView productView = new(x, this);
-						ProductsWrapPanel.Children.Add(productView);
-					}
-				}
-
-			if (types.Contains('2'))
-				foreach (var x in ProductsRepository.GraphicsCard_List)
-				{
-					if (x.ViewStatus != ViewStatus.deleted && !ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
-					{
-						ProductView productView = new(x, this);
-						ProductsWrapPanel.Children.Add(productView);
-					}
-				}
-
-			if (types.Contains('3'))
-				foreach (var x in ProductsRepository.Ram_List)
-				{
-					if (x.ViewStatus != ViewStatus.deleted && !ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
-					{
-						ProductView productView = new(x, this);
-						ProductsWrapPanel.Children.Add(productView);
-					}
-				}
-
-			if (types.Contains('4'))
-				foreach (var x in ProductsRepository.Motherboard_List)
-				{
-					if (x.ViewStatus != ViewStatus.deleted && !ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
-					{
-						ProductView productView = new(x, this);
-						ProductsWrapPanel.Children.Add(productView);
-					}
-				}
-		}
-
 		private void StoreWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (CurrentUser.Role == UserRole.customer)
@@ -79,6 +34,7 @@ namespace UI.Views
 				ManageSep.Visibility = Visibility.Collapsed;
 				ManageBtn.Visibility = Visibility.Collapsed;
 				AddNewProductBtn.Visibility = Visibility.Hidden;
+				DetailsEditBtn.Visibility = Visibility.Collapsed;
 			}
 			UsernameTextBlock.Text = CurrentUser.Username;
 			UsernameTextBlock.ToolTip = CurrentUser.Username;
@@ -104,11 +60,24 @@ namespace UI.Views
 			MotherBasedOn.ItemsSource = Enum.GetValues(typeof(MotherBased));
 			MotherBrand.ItemsSource = Enum.GetValues(typeof(Brand));
 			MotherRaid.ItemsSource = Enum.GetValues(typeof(RAID));
+
+			AccountGenderSelect.ItemsSource = Enum.GetValues(typeof(UserGender));
 		}
 
 		private void StoreWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			Data_Access.WriteAllData();
+		}
+
+		private void CheckKeyNum(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			e.Handled = !(new System.Text.RegularExpressions.Regex("[0-9]").IsMatch(e.Key.ToString())
+				|| e.Key.ToString() == "Escape" || e.Key.ToString() == "Return");
+		}
+
+		private static bool CheckKeyAlph(char c)
+		{
+			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 		}
 
 		#region Main Buttons
@@ -163,6 +132,11 @@ namespace UI.Views
 			PagesRefresh();
 			AccountBtn.Background = Brushes.DeepSkyBlue;
 			AccountBtn.IsEnabled = false;
+			ChangePassBtn.Visibility = AccountEditBtn.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+			AccountEditBack.Visibility = AccountEditBtn.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+			AccountEditCorrect.Visibility = Visibility.Collapsed;
+			AccountEditWrong.Visibility = Visibility.Collapsed;
+			RefreshAccountPage();
 			AccountPage.Visibility = Visibility.Visible;
 		}
 
@@ -205,6 +179,55 @@ namespace UI.Views
 		#endregion
 
 		#region Products
+		private void AddProducts(string types, string search)
+		{
+			ProductsWrapPanel.Children.Clear();
+
+			if (types.Contains('1'))
+				foreach (var x in ProductsRepository.Processor_List)
+				{
+					if ((CurrentUser.Role != UserRole.customer || x.ViewStatus != ViewStatus.deleted) &&
+					!ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
+					{
+						ProductView productView = new(x, this);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('2'))
+				foreach (var x in ProductsRepository.GraphicsCard_List)
+				{
+					if ((CurrentUser.Role != UserRole.customer || x.ViewStatus != ViewStatus.deleted) &&
+					!ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
+					{
+						ProductView productView = new(x, this);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('3'))
+				foreach (var x in ProductsRepository.Ram_List)
+				{
+					if ((CurrentUser.Role != UserRole.customer || x.ViewStatus != ViewStatus.deleted) &&
+					!ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
+					{
+						ProductView productView = new(x, this);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+
+			if (types.Contains('4'))
+				foreach (var x in ProductsRepository.Motherboard_List)
+				{
+					if ((CurrentUser.Role != UserRole.customer || x.ViewStatus != ViewStatus.deleted) &&
+					!ProductsRepository.IsAddedToCart(x, CurrentUser) && x.Name.ToLower().Contains(search.ToLower()))
+					{
+						ProductView productView = new(x, this);
+						ProductsWrapPanel.Children.Add(productView);
+					}
+				}
+		}
+
 		private void Temp_Click(object sender, RoutedEventArgs e)
 		{
 			string mode = "";
@@ -220,6 +243,64 @@ namespace UI.Views
 		}
 
 		#region Product details
+		private void CheckEmptyTextBox(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(DetailsProductName.Text) || DetailsProductName.Text[0] != ' ')
+			{
+				DetailsProductName.Text = " " + DetailsProductName.Text;
+				DetailsProductName.Focus();
+				DetailsProductName.CaretIndex = DetailsProductName.Text.Length;
+			}
+			if (string.IsNullOrEmpty(DetailsProductPrice.Text) || DetailsProductPrice.Text[0] != ' ')
+			{
+				DetailsProductPrice.Text = " " + DetailsProductPrice.Text;
+				DetailsProductPrice.Focus();
+				DetailsProductPrice.CaretIndex = DetailsProductPrice.Text.Length;
+			}
+			if (string.IsNullOrEmpty(DetailsProductDiscount.Text) || DetailsProductDiscount.Text[0] != ' ')
+			{
+				DetailsProductDiscount.Text = " " + DetailsProductDiscount.Text;
+				DetailsProductDiscount.Focus();
+				DetailsProductDiscount.CaretIndex = DetailsProductDiscount.Text.Length;
+			}
+			if (string.IsNullOrEmpty(FirstDetailAnswer.Text) || FirstDetailAnswer.Text[0] != ' ')
+			{
+				FirstDetailAnswer.Text = " " + FirstDetailAnswer.Text;
+				FirstDetailAnswer.Focus();
+				FirstDetailAnswer.CaretIndex = FirstDetailAnswer.Text.Length;
+			}
+			if (string.IsNullOrEmpty(SecondDetailAnswer.Text) || SecondDetailAnswer.Text[0] != ' ')
+			{
+				SecondDetailAnswer.Text = " " + SecondDetailAnswer.Text;
+				SecondDetailAnswer.Focus();
+				SecondDetailAnswer.CaretIndex = SecondDetailAnswer.Text.Length;
+			}
+			if (string.IsNullOrEmpty(ThirdDetailAnswer.Text) || ThirdDetailAnswer.Text[0] != ' ')
+			{
+				ThirdDetailAnswer.Text = " " + ThirdDetailAnswer.Text;
+				ThirdDetailAnswer.Focus();
+				ThirdDetailAnswer.CaretIndex = ThirdDetailAnswer.Text.Length;
+			}
+			if (string.IsNullOrEmpty(FourthDetailAnswer.Text) || FourthDetailAnswer.Text[0] != ' ')
+			{
+				FourthDetailAnswer.Text = " " + FourthDetailAnswer.Text;
+				FourthDetailAnswer.Focus();
+				FourthDetailAnswer.CaretIndex = FourthDetailAnswer.Text.Length;
+			}
+			if (string.IsNullOrEmpty(FifthDetailAnswer.Text) || FifthDetailAnswer.Text[0] != ' ')
+			{
+				FifthDetailAnswer.Text = " " + FifthDetailAnswer.Text;
+				FifthDetailAnswer.Focus();
+				FifthDetailAnswer.CaretIndex = FifthDetailAnswer.Text.Length;
+			}
+			if (string.IsNullOrEmpty(SixthDetailAnswer.Text) || SixthDetailAnswer.Text[0] != ' ')
+			{
+				SixthDetailAnswer.Text = " " + SixthDetailAnswer.Text;
+				SixthDetailAnswer.Focus();
+				SixthDetailAnswer.CaretIndex = SixthDetailAnswer.Text.Length;
+			}
+		}
+
 		public void ShowProductDetails(Product product)
 		{
 			CurrentDetailingProduct = product;
@@ -227,6 +308,11 @@ namespace UI.Views
 			SearchPanel.IsEnabled = false;
 			DetailsEditError.Visibility = Visibility.Collapsed;
 			DetailsEditSuccess.Visibility = Visibility.Collapsed;
+			DetailsDeleteBtn.Visibility = Visibility.Collapsed;
+			DetailsProductVisibility.Visibility = Visibility.Collapsed;
+
+			DetailsDeleteBtn.IsChecked = (product.ViewStatus == ViewStatus.deleted)? true: false;
+			DetailsDeleteBtn_Click(new object(), new RoutedEventArgs());
 
 			DetailsProductName.Text = " " + product.Name;
 			DetailsProductPrice.Text = " " + product.Price.ToString();
@@ -251,9 +337,9 @@ namespace UI.Views
 						SecondDetail.Text = "Cores:";
 						SecondDetail.ToolTip = "Total number of cores:";
 						ThirdDetail.Text = "Brand:";
-						FirstDetailAnswer.Text = temp.Series.ToString();
-						SecondDetailAnswer.Text = temp.CoreCount.ToString();
-						ThirdDetailAnswer.Text = temp.Brand.ToString();
+						FirstDetailAnswer.Text = " " + temp.Series.ToString();
+						SecondDetailAnswer.Text = " " + temp.CoreCount.ToString();
+						ThirdDetailAnswer.Text = " " + temp.Brand.ToString();
 						break;
 					}
 				case "GPU":
@@ -263,9 +349,9 @@ namespace UI.Views
 						SecondDetail.Text = "HDMI ports:";
 						SecondDetail.ToolTip = "Total number of HDMI ports:";
 						ThirdDetail.Text = "Brand:";
-						FirstDetailAnswer.Text = temp.MemoryType.ToString();
-						SecondDetailAnswer.Text = temp.HDMICount.ToString();
-						ThirdDetailAnswer.Text = temp.Brand.ToString();
+						FirstDetailAnswer.Text = " " + temp.MemoryType.ToString();
+						SecondDetailAnswer.Text = " " + temp.HDMICount.ToString();
+						ThirdDetailAnswer.Text = " " + temp.Brand.ToString();
 						break;
 					}
 				case "RAM":
@@ -278,10 +364,10 @@ namespace UI.Views
 						ThirdDetail.ToolTip = "Module capacity:";
 						FourthDetail.Text = "Brand:";
 						FourthDetail.Visibility = Visibility.Visible;
-						FirstDetailAnswer.Text = temp.MemoryType.ToString();
-						SecondDetailAnswer.Text = temp.ModuleCount.ToString();
-						ThirdDetailAnswer.Text = temp.ModuleCapacity.ToString();
-						FourthDetailAnswer.Text = temp.Brand.ToString();
+						FirstDetailAnswer.Text = " " + temp.MemoryType.ToString();
+						SecondDetailAnswer.Text = " " + temp.ModuleCount.ToString();
+						ThirdDetailAnswer.Text = " " + temp.ModuleCapacity.ToString();
+						FourthDetailAnswer.Text = " " + temp.Brand.ToString();
 						FourthDetailAnswer.Visibility = Visibility.Visible;
 						break;
 					}
@@ -298,11 +384,11 @@ namespace UI.Views
 						SixthDetail.Text = "Brand:";
 						FifthDetail.Visibility = Visibility.Visible;
 						SixthDetail.Visibility = Visibility.Visible;
-						FirstDetailAnswer.Text = temp.BasedOn.ToString();
-						SecondDetailAnswer.Text = temp.RAMCount.ToString();
-						ThirdDetailAnswer.Text = temp.PCICount.ToString();
-						FifthDetailAnswer.Text = temp.RAIDSupport.ToString();
-						SixthDetailAnswer.Text = temp.Brand.ToString();
+						FirstDetailAnswer.Text = " " + temp.BasedOn.ToString();
+						SecondDetailAnswer.Text = " " + temp.RAMCount.ToString();
+						ThirdDetailAnswer.Text = " " + temp.PCICount.ToString();
+						FifthDetailAnswer.Text = " " + temp.RAIDSupport.ToString();
+						SixthDetailAnswer.Text = " " + temp.Brand.ToString();
 						FifthDetailAnswer.Visibility = Visibility.Visible;
 						SixthDetailAnswer.Visibility = Visibility.Visible;
 						break;
@@ -334,28 +420,14 @@ namespace UI.Views
 			Temp_Click(sender, e);
 		}
 
-		private void DetailsBack_Click(object sender, RoutedEventArgs e)
-		{
-			DetailsEditError.Visibility = Visibility.Collapsed;
-			DetailsPanel.Visibility = Visibility.Collapsed;
-			ProductsPanel.Visibility = Visibility.Visible;
-			SearchPanel.IsEnabled = true;
-			if (DetailsSaveBtn.Visibility == Visibility.Visible)
-			{
-				MakeDetailsReadOnly();
-				AddToCartBtn.IsEnabled = true;
-				DetailsEditBtn.Visibility = Visibility.Visible;
-				DetailsSaveBtn.Visibility = Visibility.Collapsed;
-			}
-			else { DetailsEditSuccess.Visibility = Visibility.Collapsed; }
-		}
-
 		private void DetailsEditBtn_Click(object sender, RoutedEventArgs e)
 		{
 			AddToCartBtn.IsEnabled = false;
 			DetailsSaveBtn.Visibility = Visibility.Visible;
 			DetailsEditBtn.Visibility = Visibility.Collapsed;
 			DetailsEditSuccess.Visibility = Visibility.Collapsed;
+			DetailsDeleteBtn.Visibility = Visibility.Visible;
+			DetailsProductVisibility.Visibility = Visibility.Visible;
 
 			DetailsProductName.IsReadOnly = false;
 			DetailsProductPrice.IsReadOnly = false;
@@ -369,61 +441,96 @@ namespace UI.Views
 			SixthDetailAnswer.IsReadOnly = false;
 		}
 
+		private void DetailsDeleteBtn_Click(object sender, RoutedEventArgs e)
+		{
+			if ((bool)DetailsDeleteBtn.IsChecked)
+			{
+				DetailsProductVisibility.Text = "deleted";
+				DetailsProductVisibility.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFF6B00"));
+			}
+			else
+			{
+				DetailsProductVisibility.Text = "visible";
+				DetailsProductVisibility.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF00C018"));
+			}
+		}
+
 		private void DetailsSaveBtn_Click(object sender, RoutedEventArgs e)
 		{
-			MakeDetailsReadOnly();
 			try
 			{
-				CurrentDetailingProduct.Name = DetailsProductName.Text;
-				CurrentDetailingProduct.Price = decimal.Parse(DetailsProductPrice.Text);
-				CurrentDetailingProduct.Discount = int.Parse(DetailsProductDiscount.Text);
-				CurrentDetailingProduct.Rating = DetailsRating.Value;
-				switch(ProductsRepository.GetType(CurrentDetailingProduct))
+				switch (ProductsRepository.GetType(CurrentDetailingProduct))
 				{
 					case "CPU":
 						{
-							var t = (Processor)CurrentDetailingProduct;
-							t.Series = (ProcessorType)Enum.Parse(typeof(ProcessorType), FirstDetailAnswer.Text);
-							t.CoreCount = int.Parse(SecondDetailAnswer.Text);
-							t.Brand = (Brand)Enum.Parse(typeof(Brand), ThirdDetailAnswer.Text);
+							var t = CurrentDetailingProduct as Processor;
+							t.Series = (ProcessorType)Enum.Parse(typeof(ProcessorType), FirstDetailAnswer.Text.Trim());
+							t.CoreCount = int.Parse(SecondDetailAnswer.Text.Trim());
+							t.Brand = (Brand)Enum.Parse(typeof(Brand), ThirdDetailAnswer.Text.Trim());
 							break;
 						}
 					case "GPU":
 						{
-							var t = (GraphicsCard)CurrentDetailingProduct;
-							t.MemoryType = (GraphMemType)Enum.Parse(typeof(GraphMemType), FirstDetailAnswer.Text);
-							t.HDMICount = int.Parse(SecondDetailAnswer.Text);
-							t.Brand = (Brand)Enum.Parse(typeof(Brand), ThirdDetailAnswer.Text);
+							var t = CurrentDetailingProduct as GraphicsCard;
+							t.MemoryType = (GraphMemType)Enum.Parse(typeof(GraphMemType), FirstDetailAnswer.Text.Trim());
+							t.HDMICount = int.Parse(SecondDetailAnswer.Text.Trim());
+							t.Brand = (Brand)Enum.Parse(typeof(Brand), ThirdDetailAnswer.Text.Trim());
 							break;
 						}
 					case "RAM":
 						{
-							var t = (Ram)CurrentDetailingProduct;
-							t.MemoryType = (RamMemType)Enum.Parse(typeof(RamMemType), FirstDetailAnswer.Text);
-							t.ModuleCount = int.Parse(SecondDetailAnswer.Text);
-							t.ModuleCapacity = int.Parse(ThirdDetailAnswer.Text);
-							t.Brand = (Brand)Enum.Parse(typeof(Brand), FourthDetailAnswer.Text);
+							var t = CurrentDetailingProduct as Ram;
+							t.MemoryType = (RamMemType)Enum.Parse(typeof(RamMemType), FirstDetailAnswer.Text.Trim());
+							t.ModuleCount = int.Parse(SecondDetailAnswer.Text.Trim());
+							t.ModuleCapacity = int.Parse(ThirdDetailAnswer.Text.Trim());
+							t.Brand = (Brand)Enum.Parse(typeof(Brand), FourthDetailAnswer.Text.Trim());
 							break;
 						}
 					case "Motherboard":
 						{
-							var t = (Motherboard)CurrentDetailingProduct;
-							t.BasedOn = (MotherBased)Enum.Parse(typeof(MotherBased), FirstDetailAnswer.Text);
-							t.RAMCount = int.Parse(SecondDetailAnswer.Text);
-							t.PCICount = int.Parse(ThirdDetailAnswer.Text);
-							t.RAIDSupport = (RAID)Enum.Parse(typeof(RAID), FifthDetailAnswer.Text);
-							t.Brand = (Brand)Enum.Parse(typeof(Brand), SixthDetailAnswer.Text);
+							var t = CurrentDetailingProduct as Motherboard;
+							t.BasedOn = (MotherBased)Enum.Parse(typeof(MotherBased), FirstDetailAnswer.Text.Trim());
+							t.RAMCount = int.Parse(SecondDetailAnswer.Text.Trim());
+							t.PCICount = int.Parse(ThirdDetailAnswer.Text.Trim());
+							t.RAIDSupport = (RAID)Enum.Parse(typeof(RAID), FifthDetailAnswer.Text.Trim());
+							t.Brand = (Brand)Enum.Parse(typeof(Brand), SixthDetailAnswer.Text.Trim());
 							break;
 						}
 				}
+				MakeDetailsReadOnly();
+				CurrentDetailingProduct.Name = DetailsProductName.Text.Trim();
+				CurrentDetailingProduct.Price = decimal.Parse(DetailsProductPrice.Text.Trim());
+				CurrentDetailingProduct.Discount = int.Parse(DetailsProductDiscount.Text.Trim());
+				CurrentDetailingProduct.Rating = DetailsRating.Value;
+				CurrentDetailingProduct.ViewStatus = ((bool)DetailsDeleteBtn.IsChecked) ?
+				ViewStatus.deleted : ViewStatus.visible;
 			}
 			catch { DetailsEditError.Visibility = Visibility.Visible; return; }
 
 			AddToCartBtn.IsEnabled = true;
 			DetailsEditError.Visibility = Visibility.Collapsed;
 			DetailsEditSuccess.Visibility = Visibility.Visible;
+			DetailsDeleteBtn.Visibility = Visibility.Collapsed;
+			DetailsProductVisibility.Visibility = Visibility.Collapsed;
 			DetailsEditBtn.Visibility = Visibility.Visible;
 			DetailsSaveBtn.Visibility = Visibility.Collapsed;
+		}
+
+		private void DetailsBack_Click(object sender, RoutedEventArgs e)
+		{
+			DetailsEditError.Visibility = Visibility.Collapsed;
+			DetailsPanel.Visibility = Visibility.Collapsed;
+			Temp_Click(sender, e);
+			ProductsPanel.Visibility = Visibility.Visible;
+			SearchPanel.IsEnabled = true;
+			if (DetailsSaveBtn.Visibility == Visibility.Visible)
+			{
+				MakeDetailsReadOnly();
+				AddToCartBtn.IsEnabled = true;
+				DetailsEditBtn.Visibility = Visibility.Visible;
+				DetailsSaveBtn.Visibility = Visibility.Collapsed;
+			}
+			else { DetailsEditSuccess.Visibility = Visibility.Collapsed; }
 		}
 		#endregion
 
@@ -450,12 +557,6 @@ namespace UI.Views
 
 			AddProductPage.Visibility = Visibility.Visible;
 			AddedProductType.Focus();
-		}
-
-		private void CheckKeyNum(object sender, System.Windows.Input.KeyEventArgs e)
-		{
-			e.Handled = !((new System.Text.RegularExpressions.Regex("[0-9]").IsMatch(e.Key.ToString())
-				|| e.Key.ToString() == "Escape" || e.Key.ToString() == "Return"));
 		}
 
 		private void RefreshNewProductPage()
@@ -754,7 +855,7 @@ namespace UI.Views
 		{
 			decimal totalPrice = 0;
 			decimal totalDiscount = 0;
-			decimal finalTotalCharge = 0;
+			decimal finalTotalCharge;
 
 			CartWrapPanel.Children.Clear();
 			BalanceError.Visibility = Visibility.Collapsed;
@@ -811,11 +912,17 @@ namespace UI.Views
 
 			finalTotalCharge = totalPrice - totalDiscount;
 			TotalCartCharge = finalTotalCharge;
-			TotalPriceTextBlock.Text = Math.Round(totalPrice, 2) + "$";
+
+			double t = (int)(totalPrice * 100); t /= 100;
+			TotalPriceTextBlock.Text = t.ToString() + "$";
 			TotalPriceTextBlock.ToolTip = totalPrice.ToString() + "$";
-			DiscountTextBlock.Text = Math.Round(totalDiscount, 2).ToString() + "$";
+
+			t = (int)(totalDiscount * 100); t /= 100;
+			DiscountTextBlock.Text = t.ToString() + "$";
 			DiscountTextBlock.ToolTip = totalDiscount.ToString() + "$";
-			FinalChargeTextBlock.Text = Math.Round(finalTotalCharge, 2).ToString() + "$";
+
+			t = (int)(finalTotalCharge * 100); t /= 100;
+			FinalChargeTextBlock.Text = t.ToString() + "$";
 			FinalChargeTextBlock.ToolTip = finalTotalCharge.ToString() + "$";
 		}
 
@@ -842,7 +949,238 @@ namespace UI.Views
 		#endregion
 
 		#region Account
+		private void RefreshAccountPage()
+		{
+			AccountUsername.Text = CurrentUser.Username;
+			AccountUsername.ToolTip = AccountUsername.Text;
+			AccountEmail.Text = CurrentUser.Email;
+			AccountEmail.ToolTip = CurrentUser.Email;
+			AccountRole.Text = CurrentUser.Role.ToString();
+			AccountID.Text = CurrentUser.Id.ToString();
+			AccountFirstName.Text = CurrentUser.FirstName;
+			AccountFirstName.ToolTip = AccountFirstName.Text;
+			AccountLastName.Text = CurrentUser.LastName;
+			AccountLastName.ToolTip = AccountLastName.Text;
+			AccountGender.Text = CurrentUser.Gender.ToString();
+			double x = (int)(CurrentUser.Balance * 100); x /= 100;
+			AccountBalance.Text = x.ToString();
+			AccountBalance.ToolTip = CurrentUser.Balance.ToString();
+			AccountCreatedOn.Text = CurrentUser.Date_Created.ToLongDateString()
+			+ "\n" + CurrentUser.Date_Created.ToLongTimeString();
+			AccountCreatedOn.ToolTip = AccountCreatedOn.Text;
 
+			AccountUsernameError.Visibility = Visibility.Collapsed;
+			AccountEmailError.Visibility = Visibility.Collapsed;
+		}
+
+		private void AccountEditBtn_Click(object sender, RoutedEventArgs e)
+		{
+			AccountUsername.IsReadOnly = false;
+			AccountEmail.IsReadOnly = false;
+			AccountFirstName.IsReadOnly = false;
+			AccountLastName.IsReadOnly = false;
+
+			AccountEditCorrect.Visibility = Visibility.Collapsed;
+			AccountGender.Visibility = Visibility.Collapsed;
+			AccountGenderSelect.SelectedItem = CurrentUser.Gender;
+			AccountGenderSelect.Visibility = Visibility.Visible;
+			ChangePassBtn.Visibility = Visibility.Visible;
+			AccountSaveBtn.Visibility = Visibility.Visible;
+			AccountEditBtn.Visibility = Visibility.Collapsed;
+			AccountEditBack.Visibility = Visibility.Visible;
+		}
+
+		private void ChangePassBtn_Click(object sender, RoutedEventArgs e)
+		{
+			CurrPassError.Visibility = Visibility.Collapsed;
+			NewPassError.Visibility = Visibility.Collapsed;
+			NewPassConfirmError.Visibility = Visibility.Collapsed;
+			MainAccountGrid.IsEnabled = false;
+			MainAccountGrid.Background = Brushes.Silver;
+			ChangePasswordPage.Visibility = Visibility.Visible;
+			CurrPassBox.Focus();
+		}
+
+		private void ChPassShowHideBtn_Click(object sender, RoutedEventArgs e)
+		{
+			if (CurrPassBlock.Visibility == Visibility.Hidden)
+			{
+				ChPassShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Release;
+				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+				CurrPassBlock.Text = CurrPassBox.Password;
+				if (CurrPassBlock.Text == string.Empty)
+					CurrPassBlock.Opacity = 0;
+				CurrPassBlock.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				ChPassShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Press;
+				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+				CurrPassBlock.Opacity = 1;
+				CurrPassBlock.Visibility = Visibility.Hidden;
+			}
+		}
+
+		private void ChPassBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bool result = true;
+			if (!PasswordRepository.CheckPassword(CurrentUser.Username, CurrPassBox.Password))
+			{
+				CurrPassError.Visibility = Visibility.Visible;
+				result = false;
+			}
+			else CurrPassError.Visibility = Visibility.Collapsed;
+
+			if (NewPassBox.Password.Length < 5)
+			{
+				NewPassError.Text = "* at least 5 characters";
+				NewPassError.Foreground = Brushes.Red;
+				NewPassError.Opacity = 0.5;
+				result = false;
+			}
+			else
+			{
+				NewPassError.Text = "at least 5 characters";
+				NewPassError.Foreground = Brushes.Black;
+				NewPassError.Opacity = 0.5;
+			}
+
+			if (NewPassBox.Password != NewPassConfirmBox.Password)
+			{
+				NewPassConfirmError.Visibility = Visibility.Visible;
+				result = false;
+			}
+			else NewPassConfirmError.Visibility = Visibility.Collapsed;
+
+			if (result)
+			{
+				UserRepository.UpdatePassword(CurrentUser, NewPassBox.Password);
+				ChPassCancelBtn_Click(sender, e);
+			}
+		}
+
+		private void ChPassCancelBtn_Click(object sender, RoutedEventArgs e)
+		{
+			MainAccountGrid.IsEnabled = true;
+			MainAccountGrid.Background = null;
+			ChangePasswordPage.Visibility = Visibility.Hidden;
+			CurrPassError.Visibility = Visibility.Collapsed;
+			NewPassError.Visibility = Visibility.Collapsed;
+			NewPassConfirmError.Visibility = Visibility.Collapsed;
+			CurrPassBox.Password = "";
+			CurrPassBlock.Text = "";
+			NewPassBox.Password = "";
+			NewPassConfirmBox.Password = "";
+		}
+
+		private void AccountEditBack_Click(object sender, RoutedEventArgs e)
+		{
+			AccountUsername.IsReadOnly = true;
+			AccountEmail.IsReadOnly = true;
+			AccountFirstName.IsReadOnly = true;
+			AccountLastName.IsReadOnly = true;
+
+			AccountEditWrong.Visibility = Visibility.Collapsed;
+			AccountGenderSelect.Visibility = Visibility.Collapsed;
+			AccountGender.Visibility = Visibility.Visible;
+			ChangePassBtn.Visibility = Visibility.Collapsed;
+			AccountSaveBtn.Visibility = Visibility.Collapsed;
+			AccountEditBtn.Visibility = Visibility.Visible;
+			AccountEditBack.Visibility = Visibility.Collapsed;
+		}
+
+		private void AccountSaveBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bool res = true;
+			try
+			{
+				if (AccountUsername.Text.Length < 3 || AccountUsername.Text.Length > 15)
+				{
+					AccountUsernameError.Visibility = Visibility.Visible;
+					res = false;
+				}
+				else AccountUsernameError.Visibility = Visibility.Collapsed;
+				CurrentUser.Username = AccountUsername.Text;
+
+				if (!ShellView.ValidEmail(AccountEmail.Text.Trim()))
+				{
+					AccountEmailError.Visibility = Visibility.Visible;
+					res = false;
+				}
+				else AccountEmailError.Visibility = Visibility.Collapsed;
+
+				if(!res)
+					throw new Exception();
+
+				CurrentUser.Email = AccountEmail.Text;
+
+				if (AccountFirstName.Text.Length == 0)
+					AccountFirstName.Text = "not set";
+				CurrentUser.FirstName = AccountFirstName.Text;
+
+				if (AccountLastName.Text.Length == 0)
+					AccountLastName.Text = "not set";
+				CurrentUser.LastName = AccountLastName.Text;
+				CurrentUser.Gender = (UserGender)Enum.Parse(typeof(UserGender), AccountGenderSelect.SelectedItem.ToString());
+
+				AccountEditWrong.Visibility = Visibility.Collapsed;
+				AccountEditCorrect.Visibility = Visibility.Visible;
+			}
+			catch { AccountEditWrong.Visibility = Visibility.Visible; return; }
+
+			AccountUsername.IsReadOnly = true;
+			AccountEmail.IsReadOnly = true;
+			AccountFirstName.IsReadOnly = true;
+			AccountLastName.IsReadOnly = true;
+
+			AccountGenderSelect.Visibility = Visibility.Collapsed;
+			AccountGender.Visibility = Visibility.Visible;
+			ChangePassBtn.Visibility = Visibility.Collapsed;
+			AccountEditBack.Visibility = Visibility.Collapsed;
+			AccountSaveBtn.Visibility = Visibility.Collapsed;
+			AccountEditBtn.Visibility = Visibility.Visible;
+			AccountEditBtn.Focus();
+			UsernameTextBlock.Text = CurrentUser.Username;
+			UsernameTextBlock.ToolTip = CurrentUser.Username;
+
+			RefreshAccountPage();
+		}
+
+		private void AccountFirstName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(AccountFirstName.Text) && AccountFirstName.Text != "not set" && AccountFirstName.Text != "First Name here")
+			{
+				int CaretIndex = AccountFirstName.CaretIndex;
+				for (int i = 0; i < AccountFirstName.Text.Length; i++)
+				{
+					if (!CheckKeyAlph(AccountFirstName.Text[i]))
+					{
+						AccountFirstName.Text = AccountFirstName.Text.Remove(i, 1);
+						if(i <= CaretIndex)
+							CaretIndex--;
+					}
+				}
+				AccountFirstName.CaretIndex = CaretIndex;
+			}
+		}
+
+		private void AccountLastName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(AccountLastName.Text) && AccountLastName.Text != "not set" && AccountLastName.Text != "First Name here")
+			{
+				int CaretIndex = AccountLastName.CaretIndex;
+				for (int i = 0; i < AccountLastName.Text.Length; i++)
+				{
+					if (!CheckKeyAlph(AccountLastName.Text[i]))
+					{
+						AccountLastName.Text = AccountLastName.Text.Remove(i, 1);
+						if (i <= CaretIndex)
+							CaretIndex--;
+					}
+				}
+				AccountLastName.CaretIndex = CaretIndex;
+			}
+		}
 		#endregion
 
 		#region Manage

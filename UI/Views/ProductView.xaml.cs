@@ -27,7 +27,10 @@ namespace UI.Views
 			NameTextBlock.Text = product.Name;
 			NameTextBlock.ToolTip = product.Name;
 			RatingBar.Value = product.Rating;
-			PriceTextBlock.Text = product.Price.ToString() + "$";
+			RatingBar.ToolTip = "Rating: " + product.Rating.ToString();
+			double x = (int)(product.Price * 100); x /= 100;
+			PriceTextBlock.Text = x.ToString() + "$";
+			PriceTextBlock.ToolTip = product.Price.ToString() + "$";
 			OffTextBlock.Text = product.Discount.ToString() + "%";
 
 			if (ProductsRepository.IsAddedToCart(product, _storeView.CurrentUser))
@@ -50,6 +53,11 @@ namespace UI.Views
 			}
 			else
 				OffBorder.Visibility = Visibility.Visible;
+
+			if(product.ViewStatus == DAL.Enum.Product.ViewStatus.deleted)
+				DeletedBorder.Visibility = Visibility.Visible;
+			else
+				DeletedBorder.Visibility = Visibility.Collapsed;
 		}
 
 		private void SetImageSource(string image)

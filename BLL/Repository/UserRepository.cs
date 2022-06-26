@@ -46,6 +46,18 @@ namespace BLL.Repository
         }
 
         /// <summary>
+        /// Updates password for a specified user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="newPassword"></param>
+        public static void UpdatePassword(User user, string newPassword)
+		{
+            newPassword = PasswordRepository.HashPassword(newPassword);
+            user.Password = newPassword;
+            UpdateUser(user);
+        }
+
+        /// <summary>
         /// returns the user by given Id
         /// </summary>
         /// <param name="id"></param>
@@ -79,7 +91,6 @@ namespace BLL.Repository
         /// returns the last user logged in
         /// </summary>
         /// <returns>User</returns>
-        /// public static User SearchUser(string username)
         public static User StayLoggedInUser()
         {
             if(User_List.Find(x => x.StayLoggedIn == true) != default)
@@ -87,11 +98,19 @@ namespace BLL.Repository
             return null;
         }
 
+        /// <summary>
+        /// true if User exists and is deleted, otherwise false
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static bool IsUserDeleted(string username)
 		{
             return User_List.Any(x => x.Username.ToLower() == username.ToLower() && x.IsDeleted);
         }
 
+        /// <summary>
+        /// Clears the stay logged in state for any possible user
+        /// </summary>
         public static void ClearStayLoggedIn()
         {
             while(User_List.Find(x => x.StayLoggedIn == true) != default)

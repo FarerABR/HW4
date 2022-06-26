@@ -36,6 +36,6 @@ namespace DAL.Entity
 
         public decimal Balance { get; set; } = 10000;
 
-        public readonly DateTime Date_Created;
+        public DateTime Date_Created;
     }
 }

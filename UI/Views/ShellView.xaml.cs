@@ -28,18 +28,16 @@ namespace UI.Views
 			try { UserRepository.CreateUser("Admin420", "XD", "SuffAdmin420@Gmail.com", UserRole.admin); } catch { }
 		}
 
-		private static bool ValidEmail(string email)
+		public static bool ValidEmail(string email)
 		{
-			var trimmedEmail = email.Trim();
-
-			if (trimmedEmail.EndsWith("."))
+			if (email.EndsWith("."))
 			{
 				return false;
 			}
 			try
 			{
 				var addr = new System.Net.Mail.MailAddress(email);
-				return addr.Address == trimmedEmail;
+				return addr.Address == email;
 			}
 			catch
 			{
@@ -50,6 +48,8 @@ namespace UI.Views
 		private bool ValidateSignUp()
 		{
 			bool res = true;
+			UsernameTextBox.Text = UsernameTextBox.Text.Trim();
+			NewUserEmail.Text = NewUserEmail.Text.Trim();
 			if (UsernameTextBox.Text == "")
 			{
 				UserNameError.Text = "* Field is required";
@@ -57,9 +57,23 @@ namespace UI.Views
 				UserNameError.Opacity = 1;
 				res = false;
 			}
-			else if(UsernameTextBox.Text.Length < 5)
+			else if(UsernameTextBox.Text.Length < 3)
 			{
-				UserNameError.Text = "* at least 5 characters";
+				UserNameError.Text = "* at least 3 characters";
+				UserNameError.Foreground = Brushes.Red;
+				UserNameError.Opacity = 1;
+				res = false;
+			}
+			else if (UsernameTextBox.Text.Length > 15)
+			{
+				UserNameError.Text = "* at most 15 characters";
+				UserNameError.Foreground = Brushes.Red;
+				UserNameError.Opacity = 1;
+				res = false;
+			}
+			else if (ValidEmail(UsernameTextBox.Text))
+			{
+				UserNameError.Text = "* invalid username";
 				UserNameError.Foreground = Brushes.Red;
 				UserNameError.Opacity = 1;
 				res = false;
@@ -75,10 +89,10 @@ namespace UI.Views
 			{
 				UserNameError.Opacity = 0.5;
 				UserNameError.Foreground = Brushes.Black;
-				UserNameError.Text = "at least 5 characters";
+				UserNameError.Text = "3 to 15 characters";
 			}
 
-			if (NewUserPassBox.Password.Length == 0)
+			if (NewUserPassBox.Password.Length < 5)
 			{
 				ConfrimPassError.Visibility = Visibility.Hidden;
 				PassError.Visibility = Visibility.Visible;
@@ -202,6 +216,11 @@ namespace UI.Views
 			}
 		}
 
+		private void UsernameTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			UsernameTextBox.Text = UsernameTextBox.Text.TrimStart();
+		}
+
 		private void SignUpBack_Click(object sender, RoutedEventArgs e)
 		{
 			SignUpGrid.Visibility = Visibility.Hidden;
@@ -242,6 +261,11 @@ namespace UI.Views
 				KeepSignCheckBox.IsChecked = true;
 		}
 
+		private void LogInTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			LogInTextBox.Text = LogInTextBox.Text.TrimStart();
+		}
+
 		private void LogInBack_Click(object sender, RoutedEventArgs e)
 		{
 			LogInGrid.Visibility = Visibility.Hidden;
@@ -274,7 +298,7 @@ namespace UI.Views
 		{
 			UserNameError.Opacity = 0.5;
 			UserNameError.Foreground = Brushes.Black;
-			UserNameError.Text = "at least 5 characters";
+			UserNameError.Text = "3 to 15 characters";
 			PassError.Visibility = Visibility.Hidden;
 			ConfrimPassError.Visibility = Visibility.Hidden;
 			EmailError.Visibility = Visibility.Hidden;

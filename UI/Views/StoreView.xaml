@@ -6,110 +6,679 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Name="StoreWindow" Loaded="StoreWindow_Loaded" Title=" Suff™ Store" 
         mc:Ignorable="d" Background="{StaticResource MaterialDesignBackground}"
-        Height="650" Width="1100" WindowStartupLocation="CenterScreen"
+        Height="615" Width="1020" WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource MaterialDesignFont}" Closing="StoreWindow_Closing">
 
-    <Grid>
-        <Grid Name="MainPage">
+    <Grid Name="MainPage">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid  Name="ProductsPage"  Grid.Column="1" Background="AliceBlue"
+                   Visibility="Hidden">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="13" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="13" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="13" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="13" />
+            </Grid.RowDefinitions>
 
-            <Grid  Name="ProductsPage"  Grid.Column="1" Background="AliceBlue"
-                   Visibility="Visible">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="13" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="13" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="13" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="13" />
-                </Grid.RowDefinitions>
-
-                <Border Name="SearchPanel" Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
+            <Border Name="SearchPanel" Grid.Column="1" Grid.Row="1" BorderThickness="0.8" Padding="10"
                 BorderBrush="{StaticResource MaterialDesignToolForeground}" Margin="0 0 0 0">
-                    <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
                         materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
                           HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1" Margin="0 0 0 20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="1" Margin="0 0 0 20">
 
-                                <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:HintAssist.IsFloating="False" materialDesign:HintAssist.Hint="Search" Grid.Row="1"
                     Width="110" FontSize="10" AllowDrop="True" Padding="10" Margin="0 5 5 0" MinWidth="145"
                                          LostFocus="Temp_Click"/>
 
-                                <CheckBox Name="GPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                            <CheckBox Name="GPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         Margin="0 25 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
-                                    GPU
-                                </CheckBox>
-                                <CheckBox Name="CPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                GPU
+                            </CheckBox>
+                            <CheckBox Name="CPUCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
-                                    CPU
-                                </CheckBox>
-                                <CheckBox Name="MotherboardCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                CPU
+                            </CheckBox>
+                            <CheckBox Name="MotherboardCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
-                                    Motherboard
-                                </CheckBox>
-                                <CheckBox Name="RAMCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                                Motherboard
+                            </CheckBox>
+                            <CheckBox Name="RAMCheck" Style="{StaticResource MaterialDesignAccentCheckBox}"
                         Margin="0 13 0 0" Grid.Row="0" Checked="Temp_Click" Unchecked="Temp_Click">
-                                    RAM
-                                </CheckBox>
+                                RAM
+                            </CheckBox>
 
-                            </StackPanel>
+                        </StackPanel>
 
-                            <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11"
+                        <Button Name="AddNewProductBtn" Margin="17 0 2 10" FontSize="11"
                         Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black"
                                 Grid.Row="2" Click="AddNewProductBtn_Click" Background="#FFFEDC52">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="StorePlus" Margin="0 1 5 0"/>
-                                    <TextBlock Text="add new product" Margin="0 3 0 0"/>
-                                </StackPanel>
-                            </Button>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="StorePlus" Margin="0 1 5 0"/>
+                                <TextBlock Text="add new product" Margin="0 3 0 0"/>
+                            </StackPanel>
+                        </Button>
 
-                            <Button Name="Temp" Width="0" Height="0" Opacity="0" Click="Temp_Click"
+                        <Button Name="Temp" Width="0" Height="0" Opacity="0" Click="Temp_Click"
                                     IsDefault="True" Grid.Row="2" Margin="0 25 0 0"/>
-                        </Grid>
-                    </ScrollViewer>
-                </Border>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
 
-                <ScrollViewer Name="ProductsPanel" Grid.Column="2" Grid.Row="1"
+            <ScrollViewer Name="ProductsPanel" Grid.Column="2" Grid.Row="1"
                         materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
                         materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
                         HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                    <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
+                <WrapPanel Name="ProductsWrapPanel" Margin="30 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Top">
 
-                    </WrapPanel>
-                </ScrollViewer>
+                </WrapPanel>
+            </ScrollViewer>
 
-                <ScrollViewer Name="DetailsPanel" Grid.Column="2" Grid.Row="1" Visibility="Visible"
-                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true" Margin="0 -6 0 0"
+            <ScrollViewer Name="DetailsPanel" Grid.Column="2" Grid.Row="1" Visibility="Collapsed"
+                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true" Margin="0 0 0 0"
                         materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
                         HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Border Margin="40 10 30 10" Background="#FFEDFAFF"
-                                Padding="40 40 40 0" BorderBrush="#FF08B2C0"
+                <Grid>
+                    <Border Margin="20 10 0 10" Background="#FFD0FEFF"
+                                Padding="40 40 40 15" BorderBrush="#FF08B2C0"
                                 BorderThickness="1.5" CornerRadius="20">
-                            <Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
+                                <TextBlock Text="Name:" Grid.Row="0" Foreground="#FF1824FF"
+                                           Margin="0 5 0 20" FontSize="23"/>
+                                <TextBlock Text="Price:" Grid.Row="1" Foreground="#FF1824FF"
+                                           Margin="0 0 0 20" FontSize="23"/>
+                                <TextBlock Text="Discount:" Grid.Row="2"
+                                           Margin="0 0 0 20" FontSize="23" Foreground="#FF1824FF"/>
+                                <TextBlock Text="Rating:" Grid.Row="3" Foreground="#FF1824FF"
+                                           Margin="0 0 0 20" FontSize="23"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="0" Grid.Row="5" Grid.RowSpan="4">
+                                <TextBlock Text="first" Grid.Row="5" Name="FirstDetail"
+                                           Margin="0 20 0 20" FontSize="23" Foreground="#FF1824FF"/>
+                                <TextBlock Text="second" Grid.Row="6" Name="SecondDetail"
+                                           Margin="0 0 0 20" FontSize="23" Foreground="#FF1824FF"/>
+                                <TextBlock Text="third" Grid.Row="7" Name="ThirdDetail"
+                                           Margin="0 1 0 20" FontSize="23" Foreground="#FF1824FF"/>
+                                <TextBlock Text="fourth" Grid.Row="8" Name="FourthDetail"
+                                           Margin="0 3 0 20" FontSize="23" Foreground="#FF1824FF"
+                                            Visibility="Collapsed"/>
+                                <TextBlock Text="fifth" Grid.Row="8" Name="FifthDetail"
+                                            Margin="0 3 0 20" FontSize="23" Foreground="#FF1824FF"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Margin="15 0 0 0">
+                                <TextBox Name="DetailsProductName" Grid.Row="0" IsReadOnly="True"
+                                Margin="0 3 0 15" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+                                <TextBox Name="DetailsProductPrice" Grid.Row="1" IsReadOnly="True"
+                                Margin="0 0 0 15" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+                                <TextBox Name="DetailsProductDiscount" Grid.Row="2" IsReadOnly="True"
+                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+
+                                <DockPanel Margin="0 -2 0 0">
+
+                                    <materialDesign:RatingBar Name="DetailsRating" Value="4"
+                                        Grid.Row="3" Foreground="#FFF62ADD" IsReadOnly="True"/>
+
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <TextBlock Text="Date created:" Margin="30 2 20 0"
+                                            Foreground="#FF1824FF" FontSize="18"/>
+
+                                        <TextBlock Name="CreationDateTextBlock" Text="Test"
+                                            Foreground="#FF008167" FontSize="15" Margin="0 -2 5 0"
+                                            TextAlignment="Center"/>
+                                    </StackPanel>
+
+                                </DockPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Grid.Row="5" Grid.RowSpan="4" Margin="15 0 0 0">
+                                <TextBox Name="FirstDetailAnswer" Grid.Row="5" IsReadOnly="True"
+                                Margin="0 13 0 15" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+                                <TextBox Name="SecondDetailAnswer" Grid.Row="6" IsReadOnly="True"
+                                Margin="0 0 0 15" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+                                <TextBox Name="ThirdDetailAnswer" Grid.Row="7" IsReadOnly="True"
+                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+                                <TextBox Name="FourthDetailAnswer" Grid.Row="8" IsReadOnly="True"
+                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Visibility="Collapsed" Foreground="#FF383838"
+                                BorderBrush="#BC0BA97B" TextChanged="CheckEmptyTextBox"/>
+
+                                <DockPanel Grid.Row="8">
+                                    <TextBox Name="FifthDetailAnswer" IsReadOnly="True"
+                                FontSize="20" Height="34" Padding="3" MinWidth="150"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B"
+                                DockPanel.Dock="Left" TextChanged="CheckEmptyTextBox"/>
+                                    <TextBox Name="SixthDetailAnswer" IsReadOnly="True"
+                                FontSize="20" Height="34" Padding="3" MinWidth="150"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Foreground="#FF383838" BorderBrush="#BC0BA97B"
+                                DockPanel.Dock="Right" TextChanged="CheckEmptyTextBox"/>
+                                    <TextBlock Text="Sixth" Name="SixthDetail"
+                                            Margin="35 0 20 0" FontSize="23"
+                                            Foreground="#FF1824FF" DockPanel.Dock="Right"/>
+
+                                    <TextBlock/>
+                                </DockPanel>
+
+                            </StackPanel>
+
+                            <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="-10 0 -10 10"/>
+
+                            <Button Name="AddToCartBtn"
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                Padding="0 -10 0 -10" Foreground="#FFAA31FB"
+                                Grid.Row="10" Grid.Column="1" Width="146" Height="35"
+                                Click="AddToCartBtn_Click" IsDefault="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="CartPlus" Width="20"
+                                    Margin="0 1 5 0" Height="20"/>
+                                    <TextBlock Text="add to cart" FontSize="17"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Name="DetailsEditBtn"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                Padding="0 -10 0 -10" Foreground="#FFE3FF00" Visibility="Visible"
+                                Grid.Row="10" Grid.Column="1" Margin="0 0 40 0"
+                                Width="90" Click="DetailsEditBtn_Click" Height="30"
+                                Background="#FF2D7CFE" BorderBrush="#FF5B97FA">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="StoreEdit" Width="20"
+                                    Margin="-7 0 5 0" Height="18"/>
+                                    <TextBlock Text="Edit" FontSize="15" Margin="0 0 0 1"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Name="DetailsSaveBtn"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                Padding="0 -10 0 -10" Foreground="#FFFC6000" Visibility="Collapsed"
+                                Grid.Row="10" Grid.Column="1" Margin="0 0 40 0" IsDefault="True"
+                                Width="90" Click="DetailsSaveBtn_Click" Height="30"
+                                Background="#FF70FFED" BorderBrush="#FF77FFE6">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ContentSaveEdit" Width="20"
+                                    Margin="-7 0 5 0" Height="18"/>
+                                    <TextBlock Text="Save" FontSize="15" Margin="0 0 0 1"/>
+                                </StackPanel>
+                            </Button>
+
+                            <TextBlock Name="DetailsEditError" Grid.Row="10" Grid.Column="1"
+                                    Text="* invalid inputs" Foreground="Red" Margin="0 -10 50 35"
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Visibility="Collapsed"/>
+
+                            <TextBlock Name="DetailsEditSuccess" Grid.Row="10" Grid.Column="1"
+                                    Text="✔Saved changes" Foreground="#FF00C619" Margin="0 -10 50 35"
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                    Visibility="Visible"/>
+
+                            <TextBlock Name="DetailsProductVisibility" Text="visible"
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                    Grid.Row="10" Grid.Column="1" Margin="17 0 0 9"
+                                    FontSize="12" Foreground="#FF00C018" />
+
+                            <ToggleButton Name="DetailsDeleteBtn"
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                    Grid.Row="10" Grid.Column="1" Margin="60 0 0 7" IsChecked="false"
+                                    Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                    Background="#FFFFFEB3" Click="DetailsDeleteBtn_Click">
+                                <materialDesign:PackIcon
+                                        Kind="DeleteOff"
+                                        RenderTransformOrigin=".5,.5">
+                                    <materialDesign:PackIcon.Foreground>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF1FA1FF" Offset="0.35"/>
+                                            <GradientStop Color="#FFB3FF9F" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </materialDesign:PackIcon.Foreground>
+                                </materialDesign:PackIcon>
+                                <materialDesign:ToggleButtonAssist.OnContent>
+                                    <materialDesign:PackIcon
+                                            Kind="Delete" Foreground="#DDFF0000" />
+                                </materialDesign:ToggleButtonAssist.OnContent>
+                            </ToggleButton>
+
+                        </Grid>
+
+                    </Border>
+
+                    <materialDesign:PackIcon Kind="KeyboardBackspace"
+                                Height="35" Width="60" Margin="45 16 10 10" Foreground="#FF88B2C5" />
+                    <Button Name="DetailsBack" Style="{StaticResource MaterialDesignFlatButton}"
+                                VerticalAlignment="Top" HorizontalAlignment="Left"
+                                Margin="45 16 30 30" Padding="-10" Click="DetailsBack_Click"
+                                Height="35" Width="60" Opacity="0" IsCancel="True"/>
+
+                </Grid>
+            </ScrollViewer>
+
+            <Grid Name="AddProductPage" VerticalAlignment="Center" Visibility="Hidden"
+              HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
+                <materialDesign:Card MinHeight="450" MinWidth="550" Padding="40 50 40 0"
+                            Background="#FFEFFAFF">
+                    <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="auto" 
+                        HorizontalAlignment="Left">
+                        <Grid Margin="0 0 0 -10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
+
+                                <TextBlock Text="General information" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="AddedProductType" FontSize="15"
+                                materialDesign:HintAssist.Hint="Product type" 
+                                IsEditable="False" Margin="0 30 0 0"
+                                SelectionChanged="AddedProductType_SelectionChanged"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                    <ComboBoxItem IsSelected="True">
+                                        CPU
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        GPU
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        RAM
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Motherboard
+                                    </ComboBoxItem>
+                                </ComboBox>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Name of product" Margin="0 25 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  Name="NameTextBox"  MaxLength="100" MaxWidth="215" LostFocus="NameTextBox_LostFocus"
+                                  materialDesign:HintAssist.HelperText="*required"/>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Price" Margin="0 30 130 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="PriceTextBox" MaxLength="10" MaxWidth="215"  LostFocus="PriceTextBox_LostFocus"/>
+                                <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
+                                    MaxHeight="14" Opacity="0.5"/>
+                                <TextBlock Text="*number" FontSize="8" Margin="0 2 0 -12"
+                                           Foreground="Red" Visibility="Collapsed" Name="PriceError"/>
+
+                                <TextBox
+                                  materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" KeyDown="CheckKeyNum"
+                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" LostFocus="DiscountTextBox_LostFocus"/>
+                                <TextBlock Text="*0 to 100" FontSize="8" Margin="120 2 0 -12"
+                                           Foreground="Red" Visibility="Collapsed" Name="DiscountError"/>
+
+                                <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
+                                            MaxHeight="14" Opacity="0.5"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 55 0 0">
+
+                                    <materialDesign:PackIcon Kind="Numeric0Circle"
+                                            Foreground="#FFEA79F3" Margin="30 5 -30 0"/>
+                                    <Button Name="ZeroRatingBtn" Click="ZeroRatingBtn_Click"
+                                            Style="{StaticResource MaterialDesignFlatButton}" Opacity="0"
+                                            Margin="15 2 5 0" Height="14" Width="14"
+                                            materialDesign:ButtonAssist.CornerRadius="7"/>
+
+                                    <materialDesign:RatingBar
+                                            Foreground="#FFF358FF"
+                                            Name="RatingBar" HorizontalAlignment="Center"
+                                            ValueChanged="RatingBar_ValueChanged"/>
+
+                                </StackPanel>
+
+                                <StackPanel Name="Buttons" Orientation="Horizontal" Margin="0 40 0 0">
+
+                                    <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="0 0 0 0" Foreground="#FFFF1313" Width="80" Height="30"
+                                        BorderBrush="#FFFF876F" Name="CancelAddProductBtn"
+                                        Click="CancelAddProductBtn_Click" Padding="5" IsCancel="True">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="ArchiveCancel" Margin="-4 0 0 0"/>
+                                            <TextBlock Text="cancel" Margin="4 0 0 0"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
+                                        Margin="55 0 0 0" Foreground="#FF35C495" Width="80" Height="30" IsDefault="True"
+                                        BorderBrush="#FF09D587" Name="AddProductBtn" Click="AddProductBtn_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
+                                            <TextBlock Text="add" Margin="5 0 0 0"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                </StackPanel>
+
+                                <TextBlock Name="AddError" Text="" Margin="90 -50 0 30"
+                                           TextAlignment="Right" Foreground="Red"/>
+
+                            </StackPanel>
+
+                            <StackPanel Name="CPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Visible">
+
+                                <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="CPUSeries" FontSize="15"
+                                materialDesign:HintAssist.Hint="CPU series"  Margin="0 20 0 0"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                    <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="Cores" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="CoreCountTextBox" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="90"/>
+
+                                    <ComboBox Name="CPUBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="20 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Name="GPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                <ComboBox Name="GPUMemoryType" FontSize="15"
+                                materialDesign:HintAssist.Hint="Memory type"
+                                Margin="0 20 0 0"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                    <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="HDMI ports" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="GPUHDMICount" MaxLength="2" MaxWidth="215" 
+                                        MinWidth="90" />
+
+                                    <ComboBox Name="GPUBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="20 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Name="RAMParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 25 0 0">
+                                    <ComboBox Name="RAMMemoryType" FontSize="12"
+                                materialDesign:HintAssist.Hint="Memory type"
+                                Margin="0 0 0 0" MinWidth="90"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                    <ComboBox Name="RAMBrand" FontSize="14"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="25 -5 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 16 0 0">
+                                    <TextBox KeyDown="CheckKeyNum"
+                                  materialDesign:HintAssist.Hint="Modules" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="RAMModuleCount" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="90"/>
+
+                                    <TextBox Name="RAMModuleCopacity" FontSize="15"
+                                materialDesign:HintAssist.Hint="Copacity" KeyDown="CheckKeyNum"
+                                Margin="25 0 0 0" MinWidth="100" MaxLength="6"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Name="MotherParticularInfo" Margin="20 0 0 170" Grid.Column="1"
+                                        Grid.Row="0" Visibility="Collapsed">
+
+                                <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                                    <ComboBox Name="MotherBasedOn" FontSize="15"
+                                materialDesign:HintAssist.Hint="Based on" 
+                                Margin="0 0 0 0" MinWidth="90"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+
+                                    <ComboBox Name="MotherBrand" FontSize="15"
+                                materialDesign:HintAssist.Hint="Brand"
+                                Margin="25 0 0 0" MinWidth="100"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
+                                    <TextBox
+                                  materialDesign:HintAssist.Hint="Ram slots" Margin="0 0 0 0"
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   Name="RAMSlots" MaxLength="3" MaxWidth="215" 
+                                        MinWidth="50" KeyDown="CheckKeyNum"/>
+
+                                    <TextBox Name="PCISlots" FontSize="13" KeyDown="CheckKeyNum"
+                                materialDesign:HintAssist.Hint="PCI slots"
+                                Margin="20 0 0 0" MinWidth="50" MaxLength="2"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+
+                                    <ComboBox Name="MotherRaid" FontSize="15"
+                                materialDesign:HintAssist.Hint="Raid"
+                                Margin="25 0 0 0" MinWidth="60"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                            <StackPanel Name="Preview" Grid.Column="1" Margin="20 -210 0 0"
+                                        Grid.Row="1"/>
+
+                            <materialDesign:PackIcon Kind="FileImagePlus" Height="30" Width="30"
+                                Grid.Column="1" Margin="10 -180 195 0"
+                                Grid.Row="1" Foreground="#FF2D98FF"/>
+                            <Button Name="AddImage" Grid.Column="1" Margin="10 -333 192 0"
+                                Padding="-5 -4 -2 -3" Width="23" Opacity="0"
+                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Click="AddImage_Click" Height="26"/>
+
+                            <materialDesign:PackIcon Kind="FileImagePlus" Height="30" Width="30"
+                                Grid.Column="1" Margin="10 -145 195 0"
+                                Grid.Row="1" Foreground="#FFF97253"/>
+                            <Button Name="RemoveImage" Grid.Column="1" Margin="10 -259 192 0"
+                                Padding="-5 -4 -2 -3" Width="23" Opacity="0"
+                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Click="RemoveImage_Click" Height="26"/>
+
+
+                        </Grid>
+                    </ScrollViewer>
+                </materialDesign:Card>
+            </Grid>
+
+        </Grid>
+
+        <Grid  Name="CartPage"  Grid.Column="1" Background="AliceBlue"
+                   Visibility="Hidden">
+            <ScrollViewer Margin="30 20 30 30"
+                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Name="TopPanel" Height="25" Background="#FFC8DEFF">
+
+                        <TextBlock HorizontalAlignment="Left" Text="Cart"
+                                FontWeight="Bold" Margin="5 5 0 0"/>
+
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+
+                            <materialDesign:PackIcon Kind="Cash100"
+                                    Margin="0 4 2 0" Height="17"/>
+                            <TextBlock Text="Balane:"
+                                    Margin="0 5 5 0" FontWeight="DemiBold"/>
+
+                            <TextBlock Name="BalanceTextBlock" Text="1000$"
+                                    Margin="0 5 10 0" FontWeight="DemiBold"/>
+
+                        </StackPanel>
+
+                    </DockPanel>
+
+                    <ScrollViewer Name="CartPanel" Grid.Row="1"
+                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+                        <WrapPanel Name="CartWrapPanel" Margin="0 0 10 0"
+                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                        </WrapPanel>
+
+                    </ScrollViewer>
+
+                    <TextBlock Name="BalanceError" Grid.Row="2"
+                            HorizontalAlignment="Right" Margin="0 10 50 0"
+                            Foreground="Red" Text="* Insufficient balance"/>
+
+                    <DockPanel Name="BottomPanel" Grid.Row="2" Margin="0 30 0 10">
+
+                        <StackPanel Margin="20 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock>
+                                total price:
+                            </TextBlock>
+                            <TextBlock  Foreground="#FF1AB200">
+                                discount:
+                            </TextBlock>
+                            <TextBlock  Foreground="#FFDF0C0C">
+                                final charge:
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Margin="8 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <TextBlock Name="TotalPriceTextBlock" Text="12349"/>
+                            <TextBlock Name="DiscountTextBlock" Text="12349" Foreground="#FF1AB200"/>
+                            <TextBlock Name="FinalChargeTextBlock" Text="12349" Foreground="#FFDF0C0C"/>
+                        </StackPanel>
+
+                        <Button Name="ConfirmPurchaseBtn" Grid.Row="1" Width="165"
+                                Click="ConfirmPurchaseBtn_Click" VerticalAlignment="Bottom"
+                                HorizontalAlignment="Right" Height="40" Foreground="White"
+                                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.5"
+                                Background="#FF8E56FF" BorderBrush="#FF8E56FF" Margin="10 0 0 0"
+                                IsDefault="True" ToolTip="Advance to finalize your payment">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="StoreCheck" Margin="0 0 5 0"/>
+                                <TextBlock Text="Confirm Purchase"/>
+                            </StackPanel>
+                        </Button>
+
+                    </DockPanel>
+
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Name="AccountPage" Grid.Column="1"
+                  Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Row="1" Grid.Column="1"
+                    materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                    materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                    HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+                <Border BorderBrush="#FF7AB9FF" BorderThickness="2">
+                    <materialDesign:Card Background="AliceBlue">
+
+                        <Grid>
+
+                            <Grid Name="MainAccountGrid">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="40"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="40"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -117,684 +686,409 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
 
-                                <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="4">
-                                    <TextBlock Text="Name:" Grid.Row="0" Foreground="#FF1824FF"
-                                           Margin="0 5 0 20" FontSize="23"/>
-                                    <TextBlock Text="Price:" Grid.Row="1" Foreground="#FF1824FF"
-                                           Margin="0 0 0 20" FontSize="23"/>
-                                    <TextBlock Text="Discount:" Grid.Row="2"
-                                           Margin="0 0 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                    <TextBlock Text="Rating:" Grid.Row="3" Foreground="#FF1824FF"
-                                           Margin="0 0 0 20" FontSize="23"/>
-                                </StackPanel>
+                                <TextBlock Text="Username:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="1" Grid.Column="1" Margin="0 5 20 30"/>
+                                <TextBlock Text="Email:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="2" Grid.Column="1" Margin="0 5 20 30"/>
+                                <TextBlock Text="Role:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="3" Grid.Column="1" Margin="0 5 20 30"/>
+                                <TextBlock Text="ID:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="4" Grid.Column="1" Margin="0 5 20 30"/>
+                                <Button Name="ChangePassBtn" FontSize="15"
+                            FontWeight="Medium" Content="Change password"
+                            Grid.Row="5" Grid.Column="1" Margin="70 5 -100 35"
+                            Background="#FF0CCAFF" Foreground="#DDFFFFFF"
+                            Click="ChangePassBtn_Click" Visibility="Visible"/>
 
-                                <StackPanel Grid.Column="0" Grid.Row="5" Grid.RowSpan="4">
-                                    <TextBlock Text="first" Grid.Row="5" Name="FirstDetail"
-                                           Margin="0 20 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                    <TextBlock Text="second" Grid.Row="6" Name="SecondDetail"
-                                           Margin="0 0 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                    <TextBlock Text="third" Grid.Row="7" Name="ThirdDetail"
-                                           Margin="0 1 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                    <TextBlock Text="fourth" Grid.Row="8" Name="FourthDetail"
-                                           Margin="0 3 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                    <TextBlock Text="fifth" Grid.Row="8" Name="FifthDetail"
-                                            Margin="0 3 0 20" FontSize="23" Foreground="#FF1824FF"/>
-                                </StackPanel>
+                                <TextBox Name="AccountUsername" FontSize="18"
+                            Grid.Row="1" Grid.Column="2" Text="Username here"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Height="40" HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center" Padding="5 0 5 0"
+                            Margin="0 -30 0 0" MaxWidth="180" IsReadOnly="True"/>
+                                <TextBlock Name="AccountUsernameError" FontSize="12"
+                            Grid.Row="1" Grid.Column="2" Text="* 3 to 15 characters"
+                            Foreground="Red" Margin="0 38 0 0"/>
 
-                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Margin="15 0 0 0">
-                                    <TextBox Name="DetailsProductName" Grid.Row="0" IsReadOnly="True"
-                                Margin="0 3 0 15" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                              Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-                                    <TextBox Name="DetailsProductPrice" Grid.Row="1" IsReadOnly="True"
-                                Margin="0 0 0 15" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                              Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-                                    <TextBox Name="DetailsProductDiscount" Grid.Row="2" IsReadOnly="True"
-                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                              Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
+                                <TextBox Name="AccountEmail" FontSize="15"
+                            Grid.Row="2" Grid.Column="2" Text="Email here"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Height="40" HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center" Padding="5 0 5 0"
+                            Margin="0 -30 0 0" MaxWidth="180" IsReadOnly="True"/>
+                                <TextBlock Name="AccountEmailError" FontSize="12"
+                            Grid.Row="2" Grid.Column="2" Text="* invalid email"
+                            Foreground="Red" Margin="0 38 0 0"/>
 
-                                    <DockPanel Margin="0 -2 0 0">
+                                <TextBlock Name="AccountRole" FontSize="20"
+                            Grid.Row="3" Grid.Column="2" Text="Role here"
+                            Height="40" Padding="20 10 0 0"
+                            Margin="0 -30 0 0" MaxWidth="200"/>
+                                <TextBlock Name="AccountID" FontSize="20"
+                            Grid.Row="4" Grid.Column="2" Text="ID here"
+                            Height="40" Padding="20 10 0 0"
+                            Margin="0 -30 0 0" MaxWidth="200"/>
 
-                                        <materialDesign:RatingBar Name="DetailsRating" Value="4"
-                                        Grid.Row="3" Foreground="#FFF62ADD" IsReadOnly="True"/>
+                                <TextBlock Text="First Name:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="1" Grid.Column="4" Margin="50 5 20 35"/>
+                                <TextBlock Text="Last Name:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="2" Grid.Column="4" Margin="50 5 20 35"/>
+                                <TextBlock Text="Gender:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="3" Grid.Column="4" Margin="50 5 20 35"/>
+                                <TextBlock Text="Balance:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="4" Grid.Column="4" Margin="50 5 20 35"/>
+                                <TextBlock Text="Created on:" FontSize="22" FontWeight="Medium"
+                            Grid.Row="5" Grid.Column="4" Margin="50 5 20 35"/>
 
-                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                            <TextBlock Text="Date created:" Margin="30 2 20 0"
-                                            Foreground="#FF1824FF" FontSize="18"/>
+                                <TextBox Name="AccountFirstName" FontSize="19"
+                            Grid.Row="1" Grid.Column="5" Text="First Name here"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Height="40" HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center" Padding="5 0 5 0"
+                            Margin="0 -30 0 0" MaxWidth="180" IsReadOnly="True"
+                            TextChanged="AccountFirstName_TextChanged"/>
+                                <TextBox Name="AccountLastName" FontSize="19"
+                            Grid.Row="2" Grid.Column="5" Text="Last Name here"
+                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                            Height="40" HorizontalContentAlignment="Left"
+                            VerticalContentAlignment="Center" Padding="5 0 5 0"
+                            Margin="0 -30 0 0" MaxWidth="180" IsReadOnly="True"
+                            TextChanged="AccountLastName_TextChanged"/>
+                                <TextBlock Name="AccountGender" FontSize="20"
+                            Grid.Row="3" Grid.Column="5" Text="Gender here"
+                            Height="40" Padding="10 10 5 0"
+                            Margin="0 -30 0 0" MaxWidth="180"/>
+                                <ComboBox Name="AccountGenderSelect" FontSize="15"
+                            Grid.Row="3" Grid.Column="5" Visibility="Collapsed"
+                            materialDesign:HintAssist.Hint="Gender"
+                            Margin="10 -30 0 0" MinWidth="100" Width="120"
+                            HorizontalAlignment="Left"/>
+                                <TextBlock Name="AccountBalance" FontSize="20"
+                            Grid.Row="4" Grid.Column="5" Text="Balance here"
+                            Height="40" Padding="10 10 5 0"
+                            Margin="0 -30 0 0" MaxWidth="200"/>
+                                <TextBlock Name="AccountCreatedOn" FontSize="15"
+                            Grid.Row="5" Grid.Column="5" Text="Date here"
+                            Padding="10 10 5 0" Foreground="Green"
+                            Margin="0 0 0 0" MaxWidth="200"/>
 
-                                            <TextBlock Name="CreationDateTextBlock" Text="Test"
-                                            Foreground="#FF008167" FontSize="15" Margin="0 -2 5 0"
-                                            TextAlignment="Center"/>
-                                        </StackPanel>
+                                <TextBlock Name="AccountEditCorrect"
+                                    Text="✔ Changes saved" Grid.Row="7"
+                                    Grid.Column="5" Margin="25 0 0 0"
+                                    Foreground="Green" Visibility="Collapsed"/>
+                                <TextBlock Name="AccountEditWrong"
+                                    Text="✘ Invalid inputs" Grid.Row="7"
+                                    Grid.Column="5" Margin="25 0 0 0"
+                                    Foreground="Red" Visibility="Visible"/>
 
-                                    </DockPanel>
+                                <Button Name="AccountEditBtn" Visibility="Visible"
+                            Grid.Row="7" Grid.Column="5" IsDefault="True"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Foreground="#FF1F00F0" Click="AccountEditBtn_Click"
+                             Margin="0 20 0 -20">
 
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="1" Grid.Row="5" Grid.RowSpan="4" Margin="15 0 0 0">
-                                    <TextBox Name="FirstDetailAnswer" Grid.Row="5" IsReadOnly="True"
-                                Margin="0 13 0 15" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-                                    <TextBox Name="SecondDetailAnswer" Grid.Row="6" IsReadOnly="True"
-                                Margin="0 0 0 15" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-                                    <TextBox Name="ThirdDetailAnswer" Grid.Row="7" IsReadOnly="True"
-                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-                                    <TextBox Name="FourthDetailAnswer" Grid.Row="8" IsReadOnly="True"
-                                Margin="0 0 0 18" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                             Foreground="#FF383838" BorderBrush="#BC0BA97B"/>
-
-                                    <DockPanel Grid.Row="8">
-                                        <TextBox Name="FifthDetailAnswer" IsReadOnly="True"
-                                Margin="0 0 0 0" FontSize="20" Height="34" Padding="3"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                Foreground="#FF383838" BorderBrush="#BC0BA97B"
-                                DockPanel.Dock="Left" MinWidth="150"/>
-                                        <TextBox Name="SixthDetailAnswer" IsReadOnly="True"
-                                        FontSize="20" Height="34" Padding="3" MinWidth="150"
-                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                Foreground="#FF383838" BorderBrush="#BC0BA97B"
-                                DockPanel.Dock="Right"/>
-                                        <TextBlock Text="Sixth" Name="SixthDetail"
-                                            Margin="35 0 20 0" FontSize="23"
-                                            Foreground="#FF1824FF" DockPanel.Dock="Right"/>
-
-                                        <TextBlock/>
-                                    </DockPanel>
-                                    
-                                </StackPanel>
-
-                                <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="-10 0 -10 10"/>
-
-                                <Button Name="AddToCartBtn"
-                                Style="{StaticResource MaterialDesignOutlinedButton}"
-                                VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                                Padding="0 -10 0 -10" Foreground="#FFAA31FB"
-                                Grid.Row="10" Grid.Column="1" Margin="0 10 0 30"
-                                Width="146" Click="AddToCartBtn_Click" Height="35">
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="CartPlus" Width="20"
-                                    Margin="0 1 5 0" Height="20"/>
-                                        <TextBlock Text="add to cart" FontSize="17"/>
+
+                                        <materialDesign:PackIcon Kind="AccountEdit"/>
+
+                                        <TextBlock Text=" Edit account"/>
+
                                     </StackPanel>
+
                                 </Button>
 
-                                <Button Name="DetailsEditBtn"
-                                VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                Padding="0 -10 0 -10" Foreground="#FF239B17" Visibility="Visible"
-                                Grid.Row="10" Grid.Column="1" Margin="50 10 0 30"
-                                Width="90" Click="DetailsEditBtn_Click" Height="30"
-                                Background="#FFECFE00" BorderBrush="#FFB7C100">
+                                <Button Name="AccountSaveBtn" Visibility="Collapsed"
+                            Grid.Row="7" Grid.Column="5" IsDefault="True"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Foreground="#FF07C500" Click="AccountSaveBtn_Click"
+                            Width="100" BorderBrush="#FF39B900" Margin="0 20 0 -20">
+
                                     <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="StoreEdit" Width="20"
-                                    Margin="0 1 5 0" Height="18"/>
-                                        <TextBlock Text="Edit" FontSize="15" Margin="0 0 0 1"/>
+
+                                        <materialDesign:PackIcon Kind="AccountCheck"/>
+
+                                        <TextBlock Text=" Save"/>
+
                                     </StackPanel>
+
                                 </Button>
 
-                                <Button Name="DetailsSaveBtn"
-                                VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                Padding="0 -10 0 -10" Foreground="#FFDB42DB" Visibility="Collapsed"
-                                Grid.Row="10" Grid.Column="1" Margin="50 10 0 30"
-                                Width="90" Click="DetailsSaveBtn_Click" Height="30"
-                                Background="#FF53F9FF" BorderBrush="#FF59C9FF">
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="ContentSaveEdit" Width="20"
-                                    Margin="0 1 5 0" Height="18"/>
-                                        <TextBlock Text="Save" FontSize="15" Margin="0 0 0 1"/>
-                                    </StackPanel>
-                                </Button>
-
-                                <TextBlock Name="DetailsEditError" Grid.Row="10" Grid.Column="1"
-                                    Text="* invalid inputs" Foreground="Red" Margin="40 0 0 65"
-                                    VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-
-                                <TextBlock Name="DetailsEditSuccess" Grid.Row="10" Grid.Column="1"
-                                    Text="Changes Saved!" Foreground="#FF009F14" Margin="40 0 0 65"
-                                    VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                                    Visibility="Collapsed"/>
+                                <Button Name="AccountEditBack" Visibility="Visible"
+                            Grid.Row="7" Grid.Column="1" IsCancel="True" Content="Back"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Foreground="Black" Click="AccountEditBack_Click"
+                            Width="100" BorderBrush="#FF333632" Margin="0 20 0 -20"/>
 
                             </Grid>
 
-                        </Border>
+                            <Border Name="ChangePasswordPage" Padding="19"
+                                    BorderBrush="Aquamarine" Visibility="Hidden"
+                                    Width="350" Height="300" BorderThickness="1" 
+                                    CornerRadius="30" Background="White">
+                                <StackPanel>
 
-                        <materialDesign:PackIcon Kind="KeyboardBackspace"
-                                Height="35" Width="60" Margin="55 16 10 10" Foreground="#FF88B2C5" />
-                        <Button Name="DetailsBack" Style="{StaticResource MaterialDesignFlatButton}"
-                                VerticalAlignment="Top" HorizontalAlignment="Left"
-                                Margin="55 16 30 30" Padding="-10" Click="DetailsBack_Click"
-                                Height="35" Width="60" Opacity="0"/>
+                                    <TextBlock 
+                                            Margin="16 12 12 10"
+                                            FontSize="18" FontWeight="DemiBold">
+                                            Change password
+                                    </TextBlock>
 
-                    </Grid>
-                </ScrollViewer>
+                                    <Separator Background="LightGray"
+                                    Style="{StaticResource MaterialDesignLightSeparator}"/>
 
-                <Grid Name="AddProductPage" VerticalAlignment="Center" Visibility="Hidden"
-              HorizontalAlignment="Center" Grid.Column="2" Grid.Row="1">
-                    <materialDesign:Card MinHeight="450" MinWidth="550" Padding="40 50 40 0"
-                            Background="#FFEFFAFF">
-                        <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
-                          HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="auto" HorizontalAlignment="Left">
-                            <Grid Margin="0 0 0 -10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
+                                    <StackPanel Margin="0 15 0 0">
 
-                                <StackPanel Name="GeneralInfo" Margin="0 0 20 0" Grid.Column="0">
+                                        <PasswordBox
+                                            Name="CurrPassBox" Margin="0 -5 20 0"
+                                            materialDesign:HintAssist.Hint="Current password"
+                                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
 
-                                    <TextBlock Text="General information" Margin="0" FontSize="15"/>
+                                        <TextBlock Name="CurrPassBlock"  Margin="-1 -20 20 1" Visibility="Collapsed"
+                                            FontSize="13" Background="White" Padding="1 0 0 0"/>
 
-                                    <ComboBox Name="AddedProductType" FontSize="15"
-                                materialDesign:HintAssist.Hint="Product type" 
-                                IsEditable="False" Margin="0 30 0 0"
-                                SelectionChanged="AddedProductType_SelectionChanged"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                                        <ComboBoxItem IsSelected="True">
-                                            CPU
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            GPU
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            RAM
-                                        </ComboBoxItem>
-                                        <ComboBoxItem>
-                                            Motherboard
-                                        </ComboBoxItem>
-                                    </ComboBox>
+                                        <TextBlock Name="CurrPassError" Text="* wrong password"
+                                            Foreground="Red" FontSize="9" Visibility="Visible"
+                                            Margin="0 0 0 -15"/>
 
-                                    <TextBox
-                                  materialDesign:HintAssist.Hint="Name of product" Margin="0 25 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                  Name="NameTextBox"  MaxLength="100" MaxWidth="215" LostFocus="NameTextBox_LostFocus"
-                                  materialDesign:HintAssist.HelperText="*required"/>
+                                        <materialDesign:PackIcon Kind="Eye" Margin="0 -22 0 -20" Visibility="Visible"
+                                                HorizontalAlignment="Right" Opacity="0.6" Name="ShowHideIcon" />
 
-                                    <TextBox
-                                  materialDesign:HintAssist.Hint="Price" Margin="0 30 130 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="PriceTextBox" MaxLength="10" MaxWidth="215"  LostFocus="PriceTextBox_LostFocus"/>
-                                    <materialDesign:PackIcon Kind="Dollar" Margin="83 -13 0 0"
-                                    MaxHeight="14" Opacity="0.5"/>
-                                    <TextBlock Text="*number" FontSize="8" Margin="0 2 0 -12"
-                                           Foreground="Red" Visibility="Collapsed" Name="PriceError"/>
+                                        <Button Background="White" Height="12" Width="16" Name="ChPassShowHideBtn"
+                                                HorizontalAlignment="Right" Margin="0 -27.7 0 0"
+                                                materialDesign:ButtonAssist.CornerRadius="8" Opacity="0"
+                                                Click="ChPassShowHideBtn_Click" ClickMode="Press" IsTabStop="False"
+                                                IsEnabled="{Binding DataContext.ControlsEnabled,
+                                                RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
 
-                                    <TextBox
-                                  materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" KeyDown="CheckKeyNum"
-                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" LostFocus="DiscountTextBox_LostFocus"/>
-                                    <TextBlock Text="*0 to 100" FontSize="8" Margin="120 2 0 -12"
-                                           Foreground="Red" Visibility="Collapsed" Name="DiscountError"/>
-
-                                    <materialDesign:PackIcon Kind="SackPercent" Margin="199 -13 0 0"
-                                            MaxHeight="14" Opacity="0.5"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 55 0 0">
-
-                                        <materialDesign:PackIcon Kind="Numeric0Circle"
-                                            Foreground="#FFEA79F3" Margin="30 5 -30 0"/>
-                                        <Button Name="ZeroRatingBtn" Click="ZeroRatingBtn_Click"
-                                            Style="{StaticResource MaterialDesignFlatButton}" Opacity="0"
-                                            Margin="15 2 5 0" Height="14" Width="14"
-                                            materialDesign:ButtonAssist.CornerRadius="7"/>
+                                        <PasswordBox Name="NewPassBox" Margin="0 20 175 0"
+                                            materialDesign:HintAssist.Hint="New password"
+                                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
                                         
-                                        <materialDesign:RatingBar
-                                            Foreground="#FFF358FF"
-                                            Name="RatingBar" HorizontalAlignment="Center"
-                                            ValueChanged="RatingBar_ValueChanged"/>
+                                        <TextBlock Name="NewPassError" Text="* at least 5 characters"
+                                            Foreground="Red" FontSize="9" Visibility="Collapsed"
+                                            Margin="0 0 0 -15"/>
 
-                                    </StackPanel>
+                                        <PasswordBox Name="NewPassConfirmBox" Margin="170 -34 0 0"
+                                            materialDesign:HintAssist.Hint="Confirm password"
+                                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
 
-                                    <StackPanel Name="Buttons" Orientation="Horizontal" Margin="0 40 0 0">
+                                        <TextBlock Name="NewPassConfirmError" Text="* doesn't match"
+                                            Foreground="Red" FontSize="9" Visibility="Visible"
+                                            Margin="170 0 0 -15"/>
 
-                                        <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
-                                        Margin="0 0 0 0" Foreground="#FFFF1313" Width="80" Height="30"
-                                        BorderBrush="#FFFF876F" Name="CancelAddProductBtn"
-                                        Click="CancelAddProductBtn_Click" Padding="5" IsCancel="True">
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="ArchiveCancel" Margin="-4 0 0 0"/>
-                                                <TextBlock Text="cancel" Margin="4 0 0 0"/>
-                                            </StackPanel>
+                                        <Button Name="ChPassBtn" IsDefault="True"
+                                            Style="{StaticResource MaterialDesignRaisedButton}"
+                                            materialDesign:ButtonAssist.CornerRadius="13" Content="Change"
+                                            ToolTip="Advance to log into your account" Foreground="#DDFFFFFF"
+                                            materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.4"
+                                            Margin="230 55 0 10" Background="#FF61ABF3" Click="ChPassBtn_Click"/>
+
+                                        <Button Name="ChPassCancelBtn" Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                                            Margin="0 -54 240 0" Background="#FF8E8B90" IsCancel="True"
+                                            materialDesign:ButtonAssist.CornerRadius="5" Click="ChPassCancelBtn_Click"
+                                            Height="25" Width="70" ToolTip="Back to previous page">
+                                            <TextBlock FontSize="12">
+                                                Cancel
+                                            </TextBlock>
                                         </Button>
 
-                                        <Button Style="{StaticResource MaterialDesignOutlinedSecondaryLightButton}"
-                                        Margin="55 0 0 0" Foreground="#FF35C495" Width="80" Height="30" IsDefault="True"
-                                        BorderBrush="#FF09D587" Name="AddProductBtn" Click="AddProductBtn_Click">
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="PackageVariantClosedPlus"/>
-                                                <TextBlock Text="add" Margin="5 0 0 0"/>
-                                            </StackPanel>
-                                        </Button>
-
-                                    </StackPanel>
-
-                                    <TextBlock Name="AddError" Text="" Margin="90 -50 0 30"
-                                           TextAlignment="Right" Foreground="Red"/>
-
-                                </StackPanel>
-
-                                <StackPanel Name="CPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
-                                        Grid.Row="0" Visibility="Visible">
-
-                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
-
-                                    <ComboBox Name="CPUSeries" FontSize="15"
-                                materialDesign:HintAssist.Hint="CPU series"  Margin="0 20 0 0"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                        <TextBox KeyDown="CheckKeyNum"
-                                  materialDesign:HintAssist.Hint="Cores" Margin="0 0 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="CoreCountTextBox" MaxLength="3" MaxWidth="215" 
-                                        MinWidth="90"/>
-
-                                        <ComboBox Name="CPUBrand" FontSize="15"
-                                materialDesign:HintAssist.Hint="Brand"
-                                Margin="20 0 0 0" MinWidth="100"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
                                     </StackPanel>
 
                                 </StackPanel>
+                                
+                            </Border>
 
-                                <StackPanel Name="GPUParticularInfo" Margin="20 0 0 170" Grid.Column="1"
-                                        Grid.Row="0" Visibility="Collapsed">
+                        </Grid>
 
-                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
-
-                                    <ComboBox Name="GPUMemoryType" FontSize="15"
-                                materialDesign:HintAssist.Hint="Memory type"
-                                Margin="0 20 0 0"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                        <TextBox KeyDown="CheckKeyNum"
-                                  materialDesign:HintAssist.Hint="HDMI ports" Margin="0 0 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="GPUHDMICount" MaxLength="2" MaxWidth="215" 
-                                        MinWidth="90" />
-
-                                        <ComboBox Name="GPUBrand" FontSize="15"
-                                materialDesign:HintAssist.Hint="Brand"
-                                Margin="20 0 0 0" MinWidth="100"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-                                    </StackPanel>
-
-                                </StackPanel>
-
-                                <StackPanel Name="RAMParticularInfo" Margin="20 0 0 170" Grid.Column="1"
-                                        Grid.Row="0" Visibility="Collapsed">
-
-                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 25 0 0">
-                                        <ComboBox Name="RAMMemoryType" FontSize="12"
-                                materialDesign:HintAssist.Hint="Memory type"
-                                Margin="0 0 0 0" MinWidth="90"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                        <ComboBox Name="RAMBrand" FontSize="14"
-                                materialDesign:HintAssist.Hint="Brand"
-                                Margin="25 -5 0 0" MinWidth="100"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 16 0 0">
-                                        <TextBox KeyDown="CheckKeyNum"
-                                  materialDesign:HintAssist.Hint="Modules" Margin="0 0 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="RAMModuleCount" MaxLength="3" MaxWidth="215" 
-                                        MinWidth="90"/>
-
-                                        <TextBox Name="RAMModuleCopacity" FontSize="15"
-                                materialDesign:HintAssist.Hint="Copacity" KeyDown="CheckKeyNum"
-                                Margin="25 0 0 0" MinWidth="100" MaxLength="6"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                                    </StackPanel>
-
-                                </StackPanel>
-
-                                <StackPanel Name="MotherParticularInfo" Margin="20 0 0 170" Grid.Column="1"
-                                        Grid.Row="0" Visibility="Collapsed">
-
-                                    <TextBlock Text="Specific information*" Margin="0" FontSize="15"/>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                                        <ComboBox Name="MotherBasedOn" FontSize="15"
-                                materialDesign:HintAssist.Hint="Based on" 
-                                Margin="0 0 0 0" MinWidth="90"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-
-                                        <ComboBox Name="MotherBrand" FontSize="15"
-                                materialDesign:HintAssist.Hint="Brand"
-                                Margin="25 0 0 0" MinWidth="100"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                        <TextBox
-                                  materialDesign:HintAssist.Hint="Ram slots" Margin="0 0 0 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="RAMSlots" MaxLength="3" MaxWidth="215" 
-                                        MinWidth="50" KeyDown="CheckKeyNum"/>
-
-                                        <TextBox Name="PCISlots" FontSize="13" KeyDown="CheckKeyNum"
-                                materialDesign:HintAssist.Hint="PCI slots"
-                                Margin="20 0 0 0" MinWidth="50" MaxLength="2"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-
-                                        <ComboBox Name="MotherRaid" FontSize="15"
-                                materialDesign:HintAssist.Hint="Raid"
-                                Margin="25 0 0 0" MinWidth="60"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
-                                    </StackPanel>
-
-                                </StackPanel>
-
-                                <StackPanel Name="Preview" Grid.Column="1" Margin="20 -210 0 0"
-                                        Grid.Row="1"/>
-
-                                <Button Name="AddImage" Grid.Column="1" Margin="15 -330 195 0" Padding="-5 -4 -2 -3"
-                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
-                                Foreground="#FF2D98FF" Click="AddImage_Click" Height="25">
-                                    <materialDesign:PackIcon Kind="FileImagePlus" Height="30" Width="30"/>
-                                </Button>
-                                <Button Name="RemoveImage" Grid.Column="1" Margin="15 -260 195 0" Padding="-5 -4 -2 -3"
-                                Grid.Row="1" Style="{StaticResource MaterialDesignFlatButton}"
-                                Foreground="#FFF97253" Click="RemoveImage_Click" Height="25">
-                                    <materialDesign:PackIcon Kind="FileImageRemove" Height="30" Width="30"/>
-                                </Button>
-
-
-                            </Grid>
-                        </ScrollViewer>
                     </materialDesign:Card>
-                </Grid>
+                </Border>
 
-            </Grid>
+            </ScrollViewer>
+        </Grid>
 
-            <Grid  Name="CartPage"  Grid.Column="1" Background="AliceBlue"
-                   Visibility="Hidden">
-                <ScrollViewer Margin="30 20 30 30"
-                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
-                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
-                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-
-                        <DockPanel Name="TopPanel" Height="25" Background="#FFC8DEFF">
-
-                            <TextBlock HorizontalAlignment="Left" Text="Cart"
-                                FontWeight="Bold" Margin="5 5 0 0"/>
-
-                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
-                                <materialDesign:PackIcon Kind="Cash100"
-                                    Margin="0 4 2 0" Height="17"/>
-                                <TextBlock Text="Balane:"
-                                    Margin="0 5 5 0" FontWeight="DemiBold"/>
-
-                                <TextBlock Name="BalanceTextBlock" Text="1000$"
-                                    Margin="0 5 10 0" FontWeight="DemiBold"/>
-
-                            </StackPanel>
-
-                        </DockPanel>
-
-                        <ScrollViewer Name="CartPanel" Grid.Row="1"
-                        materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
-                        materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
-                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-
-                            <WrapPanel Name="CartWrapPanel" Margin="0 0 10 0"
-                                HorizontalAlignment="Left" VerticalAlignment="Top">
-                            </WrapPanel>
-
-                        </ScrollViewer>
-
-                        <TextBlock Name="BalanceError" Grid.Row="2"
-                            HorizontalAlignment="Right" Margin="0 10 50 0"
-                            Foreground="Red" Text="* Insufficient balance"/>
-
-                        <DockPanel Name="BottomPanel" Grid.Row="2" Margin="0 30 0 10">
-
-                            <StackPanel Margin="20 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <TextBlock>
-                                total price:
-                                </TextBlock>
-                                <TextBlock  Foreground="#FF1AB200">
-                                discount:
-                                </TextBlock>
-                                <TextBlock  Foreground="#FFDF0C0C">
-                                final charge:
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Margin="8 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <TextBlock Name="TotalPriceTextBlock" Text="12349"/>
-                                <TextBlock Name="DiscountTextBlock" Text="12349" Foreground="#FF1AB200"/>
-                                <TextBlock Name="FinalChargeTextBlock" Text="12349" Foreground="#FFDF0C0C"/>
-                            </StackPanel>
-
-                            <Button Name="ConfirmPurchaseBtn" Grid.Row="1" Width="165"
-                                Click="ConfirmPurchaseBtn_Click" VerticalAlignment="Bottom"
-                                HorizontalAlignment="Right" Height="40" Foreground="White"
-                                materialDesign:ShadowAssist.ShadowAnimationDuration="0:0:0.5"
-                                Background="#FF8E56FF" BorderBrush="#FF8E56FF" Margin="10 0 0 0"
-                                IsDefault="True" ToolTip="Advance to finalize your payment">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="StoreCheck" Margin="0 0 5 0"/>
-                                    <TextBlock Text="Confirm Purchase"/>
-                                </StackPanel>
-                            </Button>
-
-                        </DockPanel>
-
-                    </Grid>
-                </ScrollViewer>
-            </Grid>
-
-            <Grid Name="AccountPage" Grid.Column="1" Background="AliceBlue"
-                  Visibility="Hidden">
-                
-            </Grid>
-
-            <Grid Name="ManagePage" Grid.Column="1" Background="AliceBlue"
+        <Grid Name="ManagePage" Grid.Column="1" Background="AliceBlue"
                   Visibility="Hidden">
 
-            </Grid>
+        </Grid>
 
-            <Grid Name="AboutGrid" Background="White" Grid.Column="1"
+        <Grid Name="AboutGrid" Background="White" Grid.Column="1"
                     Visibility="Collapsed">
-                <MediaElement Margin="-100" Name="MediaPlayer">
-                    <MediaElement.Triggers>
-                        <EventTrigger RoutedEvent="MediaElement.Loaded">
-                            <EventTrigger.Actions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <MediaTimeline Source="D:\Edu\HW4\UI\Images\Coding.wmv"
+            <MediaElement Margin="-100" Name="MediaPlayer">
+                <MediaElement.Triggers>
+                    <EventTrigger RoutedEvent="MediaElement.Loaded">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <MediaTimeline Source="D:\Edu\HW4\UI\Images\Coding.wmv"
                                                 Storyboard.TargetName="MediaPlayer" RepeatBehavior="Forever" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger.Actions>
-                        </EventTrigger>
-                    </MediaElement.Triggers>
-                </MediaElement>
-                <TextBlock Margin="0 0 0 300" Foreground="#FFFBAEFF" VerticalAlignment="Center"
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </MediaElement.Triggers>
+            </MediaElement>
+            <TextBlock Margin="0 0 0 300" Foreground="#FFFBAEFF" VerticalAlignment="Center"
                            TextAlignment="Center" FontSize="22" FontWeight="Bold">
                                 This is an offline virtual store created and licensed by
-                </TextBlock>
-                <TextBlock Foreground="#FFFBAEFF" Margin="0 0 0 125" VerticalAlignment="Center"
+            </TextBlock>
+            <TextBlock Foreground="#FFFBAEFF" Margin="0 0 0 125" VerticalAlignment="Center"
                            TextAlignment="Center" FontSize="22" FontWeight="Bold" >
                     ©Constant Suffering™ consisted of:
-                </TextBlock>
-                <TextBlock Foreground="#FFFBAEFF" Margin="0 50 0 0" VerticalAlignment="Center"
+            </TextBlock>
+            <TextBlock Foreground="#FFFBAEFF" Margin="0 50 0 0" VerticalAlignment="Center"
                            TextAlignment="Center" FontSize="22" FontWeight="Bold">
                     Ali Adlyar, Ali Baghaee Ravari, Arman Moqimi
-                </TextBlock>
-                <TextBlock Foreground="#FFFBAEFF" Margin="0 225 0 0" VerticalAlignment="Center"
+            </TextBlock>
+            <TextBlock Foreground="#FFFBAEFF" Margin="0 225 0 0" VerticalAlignment="Center"
                            TextAlignment="Center" FontSize="22" FontWeight="Bold">
                     ♥
-                </TextBlock>
+            </TextBlock>
 
-                <Button Name="AboutOk" Margin="0 350 160 0" MaxWidth="150"
+            <Button Name="AboutOk" Margin="0 350 160 0" MaxWidth="150"
                         HorizontalAlignment="Right" MaxHeight="100" FontSize="25"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Click="AboutOk_Click" IsDefault="True" IsCancel="True">
-                    <TextBlock Text="OK" Margin="0 -3 0 0"/>
-                </Button>
-            </Grid>
+                <TextBlock Text="OK" Margin="0 -3 0 0"/>
+            </Button>
+        </Grid>
 
-            <ScrollViewer Name="MainPanel" materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+        <ScrollViewer Name="MainPanel" materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
                           materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Hidden"
                           HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Grid Name="LeftSidePanel" Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
+            <Grid Name="LeftSidePanel" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-                    <DockPanel DockPanel.Dock="Left" Grid.Column="0"
+                <DockPanel DockPanel.Dock="Left" Grid.Column="0"
             
             Grid.RowSpan="12" Grid.ColumnSpan="1" Background="#FF4B55FF" />
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
 
-                        <materialDesign:PackIcon Kind="Account" Foreground="White"
+                    <materialDesign:PackIcon Kind="Account" Foreground="White"
 
             MinHeight="30" MinWidth="30" Margin="4 10 0 0" />
-                        <StackPanel Margin="0 0 10 0" HorizontalAlignment="Center">
-                            <TextBlock Name="UsernameTextBlock" Text="Username" Margin="7 9 3 3"
+                    <StackPanel Margin="0 0 10 0" HorizontalAlignment="Center">
+                        <TextBlock Name="UsernameTextBlock" Text="Username" Margin="7 9 3 3"
                 Foreground="White" FontSize="18" MaxWidth="90" VerticalAlignment="Center"
                                    MinWidth="70" HorizontalAlignment="Center" TextAlignment="Center"/>
-                            <TextBlock Name="IDTextBlock" HorizontalAlignment="Center" Margin="0 0 2 0"
+                        <TextBlock Name="IDTextBlock" HorizontalAlignment="Center" Margin="0 0 2 0"
                 VerticalAlignment="Center" Text="#id" Opacity="0.6" TextAlignment="Center"/>
-                        </StackPanel>
-
                     </StackPanel>
 
-                    <Separator Background="Black" Grid.Row="1"
+                </StackPanel>
+
+                <Separator Background="Black" Grid.Row="1"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="2 0 2 -5" />
 
-                    <!--#region Buttons-->
+                <!--#region Buttons-->
 
-                    <!--#region Products button-->
-                    <Button Name="ProductsBtn" Click="ProductsBtn_Click"
+                <!--#region Products button-->
+                <Button Name="ProductsBtn" Click="ProductsBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource=
             {RelativeSource FindAncestor, AncestorType=Window}}" Grid.Row="2"
             VerticalAlignment="Center" Foreground="#FFD3FF44" MinHeight="50">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ShoppingMusic" Margin="0 0 5 0"
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ShoppingMusic" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="Products"
+                        <TextBlock Text="Products"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </StackPanel>
-                    </Button>
-                    <!--#endregion-->
+                    </StackPanel>
+                </Button>
+                <!--#endregion-->
 
-                    <Separator Background="Black" Grid.Row="3" Opacity="0.5"
+                <Separator Background="Black" Grid.Row="3" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="12 -7" />
 
-                    <!--#region Cart button-->
-                    <Button Name="CartBtn" Click="CartBtn_Click"
+                <!--#region Cart button-->
+                <Button Name="CartBtn" Click="CartBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="4" VerticalAlignment="Center"
             Foreground="#FFD3FF44" MinHeight="50">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0"
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="Cart"
+                        <TextBlock Text="Cart"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </StackPanel>
-                    </Button>
-                    <!--#endregion-->
+                    </StackPanel>
+                </Button>
+                <!--#endregion-->
 
-                    <Separator Background="Black" Grid.Row="5" Opacity="0.5"
+                <Separator Background="Black" Grid.Row="5" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="12 -7" />
 
-                    <!--#region Account button-->
-                    <Button Name="AccountBtn" Click="AccountBtn_Click"
+                <!--#region Account button-->
+                <Button Name="AccountBtn" Click="AccountBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="6" VerticalAlignment="Center"
             Foreground="#FFD3FF44" MinHeight="50">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountEdit" Margin="0 0 5 0"
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountCog" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="Account"
+                        <TextBlock Text="Account"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </StackPanel>
-                    </Button>
-                    <!--#endregion-->
+                    </StackPanel>
+                </Button>
+                <!--#endregion-->
 
-                    <Separator Background="Black" Grid.Row="7" Opacity="0.5"
+                <Separator Background="Black" Grid.Row="7" Opacity="0.5"
             Style="{StaticResource MaterialDesignDarkSeparator}"
             Margin="12 -7" Name="ManageSep"/>
 
-                    <!--#region Manage button-->
-                    <Button Name="ManageBtn" Click="ManageBtn_Click"
+                <!--#region Manage button-->
+                <Button Name="ManageBtn" Click="ManageBtn_Click"
             Style="{StaticResource MaterialDesignFlatDarkButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
             Grid.Row="8" VerticalAlignment="Center"
             Foreground="#FFD3FF44" MinHeight="50">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountTie" Margin="0 0 5 0"
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountTie" Margin="0 0 5 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBlock Text="Manage"
+                        <TextBlock Text="Manage"
                         VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                        </StackPanel>
-                    </Button>
-                    <!--#endregion-->
+                    </StackPanel>
+                </Button>
+                <!--#endregion-->
 
-                    <StackPanel Grid.Row="10">
+                <StackPanel Grid.Row="10">
 
-                        <TextBlock Text="About" FontSize="10" Margin="10 10 0 -15"
+                    <TextBlock Text="About" FontSize="10" Margin="10 10 0 -15"
                     Foreground="White" HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
-                        <materialDesign:PackIcon Kind="Information" HorizontalAlignment="Center"
+                    <materialDesign:PackIcon Kind="Information" HorizontalAlignment="Center"
                             Margin="0 0 40 -20" Foreground="White"/>
 
-                        <Button Name="AboutBtn" Grid.Row="10" Opacity="0"
+                    <Button Name="AboutBtn" Grid.Row="10" Opacity="0"
                     Margin="30 0 30 10" Height="20" Click="AboutBtn_Click">
-                        </Button>
+                    </Button>
 
-                    </StackPanel>
+                </StackPanel>
 
-                    <Button Name="LogOutBtn" Click="LogOutBtn_Click"
+                <Button Name="LogOutBtn" Click="LogOutBtn_Click"
             Style="{StaticResource MaterialDesignFlatSecondaryLightBgButton}"
             IsEnabled="{Binding DataContext.ControlsEnabled,
             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -802,11 +1096,10 @@
             Content="Log out" Background="#FFFF3737" Foreground="White"
             materialDesign:RippleAssist.Feedback="#DD000000" BorderBrush="#FFF40303"
             ToolTip="Log out of account and advance to welcome page"/>
-                    <!--#endregion-->
+                <!--#endregion-->
 
-                </Grid>
-            </ScrollViewer>
+            </Grid>
+        </ScrollViewer>
 
-        </Grid>
     </Grid>
 </Window>
