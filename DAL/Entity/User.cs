@@ -4,7 +4,7 @@ namespace DAL.Entity
 {
     public class User
     {
-		public User(string username, string password, string email, UserRole role, long id)
+		public User(string username, string password, string email, UserRole role, ushort id)
 		{
             Username = username;
             Password = password;
@@ -17,12 +17,12 @@ namespace DAL.Entity
 
         public bool IsDeleted { get; set; } = false;
 
-        public bool IsLastLoggedIn { get; set; } = false;
+        public bool StayLoggedIn { get; set; } = false;
 
         public UserRole Role { get; set; }
 
-        private readonly long _id;
-        public long Id { get { return _id; } }
+        private readonly ushort _id;
+        public ushort Id { get { return _id; } }
 
         public string FirstName { get; set; } = "not set";
         public string LastName { get; set; } = "not set";

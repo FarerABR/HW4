@@ -4,8 +4,8 @@ namespace DAL.Entity.Product
 {
     public class Ram : Product
     {
-		public Ram(string name, double price, int off, int rating, string image, User whoHasMade, long id, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
-            : base(name, price, off, rating, whoHasMade, id, brand)
+		public Ram(string name, decimal price, int off, int rating, string image, ushort whoHasMadeId, ushort id, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
+            : base(name, price, off, rating, whoHasMadeId, id, brand)
         {
             Image = image;
             ModuleCount = moduleCount;

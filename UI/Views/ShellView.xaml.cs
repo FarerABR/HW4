@@ -18,7 +18,7 @@ namespace UI.Views
 		{
 			InitializeComponent();
 			Data_Access.ReadAllData();
-			CurrentUser = UserRepository.LastLoggedIn();
+			CurrentUser = UserRepository.StayLoggedInUser();
 			if (CurrentUser != null)
 			{
 				StoreView StoreViewWindow = new(CurrentUser);
@@ -116,7 +116,7 @@ namespace UI.Views
 
 		private bool ValidateLogIn()
 		{
-			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text) && !UserRepository.UserEmailExists(LogInTextBox.Text) && UserRepository.IsUserDeleted(LogInTextBox.Text)))
+			if (LogInTextBox.Text.Length == 0 || (!UserRepository.UsernameExists(LogInTextBox.Text) && !UserRepository.UserEmailExists(LogInTextBox.Text)) || UserRepository.IsUserDeleted(LogInTextBox.Text))
 			{
 				LogInError.Visibility = Visibility.Hidden;
 				LogInWrongUserNameError.Visibility = Visibility.Visible;
@@ -222,7 +222,7 @@ namespace UI.Views
 						KeepSignedIn = (bool)KeepSignCheckBox.IsChecked;
 						if (KeepSignedIn)
 						{
-							CurrentUser.IsLastLoggedIn = true;
+							CurrentUser.StayLoggedIn = true;
 							UserRepository.UpdateUser(CurrentUser);
 						}
 						StoreView StoreViewWindow = new(CurrentUser);

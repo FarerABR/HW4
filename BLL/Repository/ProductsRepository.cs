@@ -11,18 +11,81 @@ namespace BLL.Repository
         public static List<Ram> Ram_List { get; set; } = new List<Ram>();
         public static List<Motherboard> Motherboard_List { get; set; } = new List<Motherboard>();
 
-        public static long GenerateId()
+        /// <summary>
+        /// generates a unique id for the product
+        /// </summary>
+        /// <returns>a ushort id</returns>
+        public static ushort GenerateId()
         {
-            long ResultId;
+            ushort ResultId;
             Random t = new();
             do
             {
-                ResultId = t.NextInt64();
+                ResultId = (ushort)t.Next(65535);
             }
             while (Processor_List.Where(x => x.Id == ResultId).Any() || GraphicsCard_List.Where(x => x.Id == ResultId).Any()
             || Ram_List.Where(x => x.Id == ResultId).Any() || Motherboard_List.Where(x => x.Id == ResultId).Any());
 
             return ResultId;
+        }
+
+        public static void UpdateProduct(Product product)
+		{
+			try
+			{
+                UpdateGraphicsCard((GraphicsCard)product);
+			} catch { }
+            try
+            {
+                UpdateMotherboard((Motherboard)product);
+            }
+            catch { }
+            try
+            {
+                UpdateProcessor((Processor)product);
+            }
+            catch { }
+            try
+            {
+                UpdateRam((Ram)product);
+            }
+            catch { }
+        }
+
+        public static string GetType(Product product)
+		{
+            if (Processor_List.Where(x => x.Id == product.Id).Any())
+                return "CPU";
+            if (GraphicsCard_List.Where(x => x.Id == product.Id).Any())
+                return "GPU";
+            if (Ram_List.Where(x => x.Id == product.Id).Any())
+                return "RAM";
+            if (Motherboard_List.Where(x => x.Id == product.Id).Any())
+                return "Motherboard";
+            return null;
+        }
+
+        public static bool IsAddedToCart(Product product, User user)
+		{
+            if (product.AddedToCartIds_List.Where(x => x == user.Id).Any())
+                return true;
+            return false;
+		}
+
+        /// <summary>
+        /// Clears the products added to the user cart
+        /// </summary>
+        /// <param name="product"></param>
+        public static void ClearUserCart(User user)
+		{
+            foreach (var x in Processor_List)
+                x.AddedToCartIds_List.Remove(user.Id);
+            foreach (var x in GraphicsCard_List)
+                x.AddedToCartIds_List.Remove(user.Id);
+            foreach (var x in Ram_List)
+                x.AddedToCartIds_List.Remove(user.Id);
+            foreach (var x in Motherboard_List)
+                x.AddedToCartIds_List.Remove(user.Id);
         }
 
         #region GraphicsCard
@@ -31,13 +94,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public static GraphicsCard CreateGraphicsCard(string name, double price, int off, int rating, string image, User whoHasMade, int hdmiCount, GraphMemType memoryType, Brand brand)
+        public static GraphicsCard CreateGraphicsCard(string name, decimal price, int off, int rating, string image, User whoHasMade, int hdmiCount, GraphMemType memoryType, Brand brand)
         {
             if (GraphicsCard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Graphics card already exists");
             }
-            var newGraphicsCard = new GraphicsCard(name, price, off, rating, image, whoHasMade, GenerateId(), hdmiCount, memoryType, brand);
+            var newGraphicsCard = new GraphicsCard(name, price, off, rating, image, whoHasMade.Id, GenerateId(), hdmiCount, memoryType, brand);
             GraphicsCard_List.Add(newGraphicsCard);
             return newGraphicsCard;
         }
@@ -47,13 +110,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public static GraphicsCard CreateGraphicsCard(string name, double price, int off, int rating, User whoHasMade, int hdmiCount, GraphMemType memoryType, Brand brand)
+        public static GraphicsCard CreateGraphicsCard(string name, decimal price, int off, int rating, User whoHasMade, int hdmiCount, GraphMemType memoryType, Brand brand)
         {
             if (GraphicsCard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Graphics card already exists");
             }
-            var newGraphicsCard = new GraphicsCard(name, price, off, rating, "../Images/GPU.jpg", whoHasMade, GenerateId(), hdmiCount, memoryType, brand);
+            var newGraphicsCard = new GraphicsCard(name, price, off, rating, "../Images/GPU.jpg", whoHasMade.Id, GenerateId(), hdmiCount, memoryType, brand);
             GraphicsCard_List.Add(newGraphicsCard);
             return newGraphicsCard;
         }
@@ -117,13 +180,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newProcessor"></param>
         /// <returns>input</returns>
-        public static Processor CreateProcessor(string name, double price, int off, int rating, string image, User whoHasMade, int coreCount, ProcessorType series, Brand brand)
+        public static Processor CreateProcessor(string name, decimal price, int off, int rating, string image, User whoHasMade, int coreCount, ProcessorType series, Brand brand)
         {
             if (Processor_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Processor already exists");
             }
-            var newProcessor = new Processor(name, price, off, rating, image, whoHasMade, GenerateId(), coreCount, series, brand);
+            var newProcessor = new Processor(name, price, off, rating, image, whoHasMade.Id, GenerateId(), coreCount, series, brand);
             Processor_List.Add(newProcessor);
             return newProcessor;
         }
@@ -133,13 +196,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newProcessor"></param>
         /// <returns>input</returns>
-        public static Processor CreateProcessor(string name, double price, int off, int rating, User whoHasMade, int coreCount, ProcessorType series, Brand brand)
+        public static Processor CreateProcessor(string name, decimal price, int off, int rating, User whoHasMade, int coreCount, ProcessorType series, Brand brand)
         {
             if (Processor_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Processor already exists");
             }
-            var newProcessor = new Processor(name, price, off, rating, "../Images/CPU.jpg", whoHasMade, GenerateId(), coreCount, series, brand);
+            var newProcessor = new Processor(name, price, off, rating, "../Images/CPU.jpg", whoHasMade.Id, GenerateId(), coreCount, series, brand);
             Processor_List.Add(newProcessor);
             return newProcessor;
         }
@@ -204,13 +267,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newRam"></param>
         /// <returns>input</returns>
-        public static Ram CreateRam(string name, double price, int off, int rating, string image, User whoHasMade, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
+        public static Ram CreateRam(string name, decimal price, int off, int rating, string image, User whoHasMade, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
         {
             if (Ram_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("RAM already exists");
             }
-            var newRam = new Ram(name, price, off, rating, image, whoHasMade, GenerateId(), moduleCount, memoryType, moduleCapacity, brand);
+            var newRam = new Ram(name, price, off, rating, image, whoHasMade.Id, GenerateId(), moduleCount, memoryType, moduleCapacity, brand);
             Ram_List.Add(newRam);
             return newRam;
         }
@@ -220,13 +283,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newRam"></param>
         /// <returns>input</returns>
-        public static Ram CreateRam(string name, double price, int off, int rating, User whoHasMade, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
+        public static Ram CreateRam(string name, decimal price, int off, int rating, User whoHasMade, int moduleCount, RamMemType memoryType, int moduleCapacity, Brand brand)
         {
             if (Ram_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("RAM already exists");
             }
-            var newRam = new Ram(name, price, off, rating, "../Images/RAM.jpg", whoHasMade, GenerateId(), moduleCount, memoryType, moduleCapacity, brand);
+            var newRam = new Ram(name, price, off, rating, "../Images/RAM.jpg", whoHasMade.Id, GenerateId(), moduleCount, memoryType, moduleCapacity, brand);
             Ram_List.Add(newRam);
             return newRam;
         }
@@ -290,13 +353,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public static Motherboard CreateMotherboard(string name, double price, int off, int rating, string image, User whoHasMade, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
+        public static Motherboard CreateMotherboard(string name, decimal price, int off, int rating, string image, User whoHasMade, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
         {
             if (Motherboard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Motherboard already exists");
             }
-            var newMotherboard = new Motherboard(name, price, off, rating, image, whoHasMade, GenerateId(), basedOn, raidSupport, ramCount, pciCount, brand);
+            var newMotherboard = new Motherboard(name, price, off, rating, image, whoHasMade.Id, GenerateId(), basedOn, raidSupport, ramCount, pciCount, brand);
             Motherboard_List.Add(newMotherboard);
             return newMotherboard;
         }
@@ -306,13 +369,13 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="newGraphicsCard"></param>
         /// <returns>input</returns>
-        public static Motherboard CreateMotherboard(string name, double price, int off, int rating, User whoHasMade, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
+        public static Motherboard CreateMotherboard(string name, decimal price, int off, int rating, User whoHasMade, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
         {
             if (Motherboard_List.Where(x => x.Name.ToLower() == name.ToLower()).Any())
             {
                 throw new Exception("Motherboard already exists");
             }
-            var newMotherboard = new Motherboard(name, price, off, rating, "../Images/Motherboard.jpg", whoHasMade, GenerateId(), basedOn, raidSupport, ramCount, pciCount, brand);
+            var newMotherboard = new Motherboard(name, price, off, rating, "../Images/Motherboard.jpg", whoHasMade.Id, GenerateId(), basedOn, raidSupport, ramCount, pciCount, brand);
             Motherboard_List.Add(newMotherboard);
             return newMotherboard;
         }

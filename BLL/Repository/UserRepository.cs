@@ -30,13 +30,17 @@ namespace BLL.Repository
             return newUser;
         }
 
-        public static long GenerateId()
+        /// <summary>
+        /// generates a unique id for the user
+        /// </summary>
+        /// <returns>a ushort id</returns>
+        public static ushort GenerateId()
 		{
-            long ResultId;
+            ushort ResultId;
             Random t = new();
             do
             {
-                ResultId = t.NextInt64();
+                ResultId = (ushort)t.Next(65535);
 			} while (User_List.Where(x => x.Id == ResultId).Any());
             return ResultId;
         }
@@ -76,10 +80,10 @@ namespace BLL.Repository
         /// </summary>
         /// <returns>User</returns>
         /// public static User SearchUser(string username)
-        public static User LastLoggedIn()
+        public static User StayLoggedInUser()
         {
-            if(User_List.Find(x => x.IsLastLoggedIn == true) != default)
-                return User_List.Find(x => x.IsLastLoggedIn == true);
+            if(User_List.Find(x => x.StayLoggedIn == true) != default)
+                return User_List.Find(x => x.StayLoggedIn == true);
             return null;
         }
 
@@ -88,11 +92,11 @@ namespace BLL.Repository
             return User_List.Any(x => x.Username.ToLower() == username.ToLower() && x.IsDeleted);
         }
 
-        public static void ClearLastLoggedIn()
+        public static void ClearStayLoggedIn()
         {
-            while(User_List.Find(x => x.IsLastLoggedIn == true) != default)
+            while(User_List.Find(x => x.StayLoggedIn == true) != default)
 			{
-                User_List.Find(x => x.IsLastLoggedIn == true).IsLastLoggedIn = false;
+                User_List.Find(x => x.StayLoggedIn == true).StayLoggedIn = false;
             }
         }
 

@@ -4,25 +4,25 @@ namespace DAL.Entity.Product
 {
     public class Product
     {
-		public Product(string name, double price, int discount, int rating, User whoHasMade, long id, Brand brand)
+		public Product(string name, decimal price, int discount, int rating, ushort whoHasMadeId, ushort id, Brand brand)
 		{
             Name = name;
             Discount = discount;
             Price = price;
             Rating = rating;
-            WhoHasMade = whoHasMade;
+            WhoHasMadeId = whoHasMadeId;
             _id = id;
-            _date_Of_Registration = DateTime.Now;
+            Date_Of_Registration = DateTime.Now;
             Brand = brand;
 		}
 
-        private readonly long _id;
-        public long Id { get { return _id; } }
+        private readonly ushort _id;
+        public ushort Id { get { return _id; } }
         public string Name { get; set; }
 
         public Brand? Brand { get; set; }
 
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         public int Discount { get; set; }
 
@@ -30,11 +30,12 @@ namespace DAL.Entity.Product
 
         public string Image { get; set; }
 
-        private readonly DateTime _date_Of_Registration;
-        public DateTime Date_Of_Registration { get { return _date_Of_Registration; } }
-        public User WhoHasMade { get; set; }
+        public DateTime Date_Of_Registration { get; set; }
+
+        public ushort WhoHasMadeId;
 
         public ViewStatus ViewStatus { get; set; } = ViewStatus.visible;
-        public bool In_Stock { get; set; } = true;
+
+        public List<int> AddedToCartIds_List = new();
     }
 }

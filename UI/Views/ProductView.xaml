@@ -26,12 +26,16 @@
                 <Button Name="DetailsBtn" Click="DetailsBtn_Click"
                     ToolTip="Click to view full information" Content="Details"
                     Background="#FF00FFAC" BorderBrush="White"
-                    Margin="0 4 0 0"/>
+                    Margin="0 4 0 0" Visibility="Visible"/>
+                <Button Name="RemoveFromCartBtn" Click="RemoveFromCartBtn_Click"
+                    ToolTip="remove product from cart" Content="Remove"
+                    Background="#FFFF4343" BorderBrush="White"
+                    Margin="0 4 0 0" Foreground="#DDFFFFFF" Visibility="Collapsed"/>
 
             </StackPanel>
         </materialDesign:Card>
         <Border Margin="-7 -9 -7 -7" Height="30" Width="30" CornerRadius="15"
-                Name="OffBorder" Background="#FFFF1E1E" VerticalAlignment="Top"
+                Name="OffBorder" Background="#FFFF0808" VerticalAlignment="Top"
                 HorizontalAlignment="Right">
             <TextBlock Name="OffTextBlock" FontSize="11" VerticalAlignment="Center" Text="70%"
                         HorizontalAlignment="Center" Foreground="White" Margin="1 2 0 2"

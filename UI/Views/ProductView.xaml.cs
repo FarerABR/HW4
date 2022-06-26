@@ -3,17 +3,22 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using DAL.Entity.Product;
+using BLL.Repository;
 
 namespace UI.Views
 {
 	public partial class ProductView : UserControl
 	{
+		#region Properties
+		private readonly StoreView _storeView;
 		private readonly Product _product;
+		#endregion
 
-		public ProductView(Product product)
+		public ProductView(Product product, StoreView storeView)
 		{
 			InitializeComponent();
 			_product = product;
+			_storeView = storeView;
 			SetProperties(product);
 		}
 
@@ -24,6 +29,13 @@ namespace UI.Views
 			RatingBar.Value = product.Rating;
 			PriceTextBlock.Text = product.Price.ToString() + "$";
 			OffTextBlock.Text = product.Discount.ToString() + "%";
+
+			if (ProductsRepository.IsAddedToCart(product, _storeView.CurrentUser))
+			{
+				DetailsBtn.Visibility = Visibility.Collapsed;
+				RemoveFromCartBtn.Visibility = Visibility.Visible;
+			}
+
 			if (product.Image != null)
 				SetImageSource(product.Image);
 			else
@@ -49,7 +61,12 @@ namespace UI.Views
 
 		private void DetailsBtn_Click(object sender, RoutedEventArgs e)
 		{
-			StoreView.ShowProductDetails(_product);
+			_storeView.ShowProductDetails(_product);
+		}
+
+		private void RemoveFromCartBtn_Click(object sender, RoutedEventArgs e)
+		{
+			_storeView.RemoveProductFromCart(_product);
 		}
 	}
 }

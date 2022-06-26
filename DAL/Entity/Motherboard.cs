@@ -4,8 +4,8 @@ namespace DAL.Entity.Product
 {
     public class Motherboard : Product
     {
-        public Motherboard(string name, double price, int off, int rating, string image, User whoHasMade, long id, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
-            : base(name, price, off, rating, whoHasMade, id, brand)
+        public Motherboard(string name, decimal price, int off, int rating, string image, ushort whoHasMadeId, ushort id, MotherBased basedOn, RAID raidSupport, int ramCount, int pciCount, Brand brand)
+            : base(name, price, off, rating, whoHasMadeId, id, brand)
         {
             Image = image;
             BasedOn = basedOn;
