@@ -1,4 +1,5 @@
 using DAL.Entity;
+using DAL.Entity.Product;
 using DAL.Enum.User;
 
 namespace BLL.Repository
@@ -62,7 +63,7 @@ namespace BLL.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns>User</returns>
-        public static User GetUserById(int id)
+        public static User GetUserById(ushort id)
         {
             return User_List.Where(x => x.Id == id).FirstOrDefault();
         }
@@ -156,16 +157,172 @@ namespace BLL.Repository
         }
 
         /// <summary>
-        /// deletes the user from User_List
+        /// tries to promote a user to its next higher available role
+        /// </summary>
+        /// <param name="fromWho"></param>
+        /// <param name="onWho"></param>
+        /// <returns>true if promotion done, false if admin being added</returns>
+        /// <exception cref="Exception"></exception>
+        public static bool PromoteUser(User fromWho, User onWho)
+		{
+            if (fromWho == null || onWho == null)
+                throw new Exception("User cannot be null!");
+
+            if (fromWho.Id == onWho.Id)
+            {
+                throw new Exception("You cannot promote yourself!");
+            }
+
+            if (onWho.Role == UserRole.admin)
+			{
+                throw new Exception("You cannot promote an admin!");
+            }
+
+            if (fromWho.Role == UserRole.admin)
+			{
+                if (onWho.Role == UserRole.moderator)
+                {
+                    return false;
+				}
+
+                onWho.Role = UserRole.moderator;
+            }
+
+            else if(fromWho.Role == UserRole.moderator)
+			{
+                if(onWho.Role == UserRole.moderator)
+				{
+                    throw new Exception("You cannot promote a moderator!");
+                }
+
+                throw new Exception("You cannot add a moderator!");
+            }
+
+            return true;
+		}
+
+        /// <summary>
+        /// tries to demote a user to its next lower available role
+        /// </summary>
+        /// <param name="fromWho"></param>
+        /// <param name="onWho"></param>
+        /// <exception cref="Exception"></exception>
+        public static void DemoteUser(User fromWho, User onWho)
+        {
+            if (fromWho == null || onWho == null)
+                throw new Exception("User cannot be null!");
+
+            if (fromWho.Id == onWho.Id)
+                throw new Exception("You cannot demote yourself!");
+
+            if (onWho.Role == UserRole.customer)
+                throw new Exception("You cannot demote a customer!");
+
+            if (fromWho.Role == UserRole.admin)
+            {
+                onWho.Role = UserRole.customer;
+            }
+
+            else if (fromWho.Role == UserRole.moderator)
+            {
+                if (onWho.Role == UserRole.admin)
+                    throw new Exception("You cannot demote an admin!");
+
+                throw new Exception("You cannot demote a moderator!");
+            }
+        }
+
+        /// <summary>
+        /// transfers adminship to another user
+        /// </summary>
+        /// <param name="currAdmin"></param>
+        /// <param name="newAdmin"></param>
+        /// <exception cref="Exception"></exception>
+        public static void TransferAdmin(User currAdmin, User newAdmin)
+        {
+            currAdmin.Role = UserRole.moderator;
+            currAdmin.Balance = 10000;
+            ushort t = GenerateId();
+
+            List<Product> Cart_List = new();
+            foreach(var x in ProductsRepository.Processor_List)
+                if(ProductsRepository.IsAddedToCart(x, currAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.GraphicsCard_List)
+                if (ProductsRepository.IsAddedToCart(x, currAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.Ram_List)
+                if (ProductsRepository.IsAddedToCart(x, currAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.Motherboard_List)
+                if (ProductsRepository.IsAddedToCart(x, currAdmin))
+                    Cart_List.Add(x);
+
+            foreach(var x in Cart_List)
+			{
+                int Index = x.AddedToCartIds_List.FindIndex(y => y == currAdmin.Id);
+                x.AddedToCartIds_List[Index] = t;
+			}
+            currAdmin.Id = t;
+
+            newAdmin.Role = UserRole.admin;
+            newAdmin.Balance = -1;
+
+            Cart_List.Clear();
+            foreach (var x in ProductsRepository.Processor_List)
+                if (ProductsRepository.IsAddedToCart(x, newAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.GraphicsCard_List)
+                if (ProductsRepository.IsAddedToCart(x, newAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.Ram_List)
+                if (ProductsRepository.IsAddedToCart(x, newAdmin))
+                    Cart_List.Add(x);
+            foreach (var x in ProductsRepository.Motherboard_List)
+                if (ProductsRepository.IsAddedToCart(x, newAdmin))
+                    Cart_List.Add(x);
+
+            foreach (var x in Cart_List)
+            {
+                int Index = x.AddedToCartIds_List.FindIndex(y => y == newAdmin.Id);
+                x.AddedToCartIds_List[Index] = 0;
+            }
+            newAdmin.Id = 0;
+
+            ClearStayLoggedIn();
+        }
+
+        /// <summary>
+        /// deletes the user from User_List, true if successful
         /// </summary>
         /// <param name="id"></param>
-        public static bool DeleteUser(int id)
+        public static bool DeleteUser(ushort id)
         {
             var user = User_List.SingleOrDefault(x => x.Id == id);
 
             if (user != null)
             {
+                if (user.IsDeleted)
+                    return false;
                 user.IsDeleted = true;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// restores the user to User_List, true if successful
+        /// </summary>
+        /// <param name="id"></param>
+        public static bool RestoreUser(ushort id)
+        {
+            var user = User_List.SingleOrDefault(x => x.Id == id);
+
+            if (user != null)
+            {
+                if (!user.IsDeleted)
+                    return false;
+                user.IsDeleted = false;
                 return true;
             }
             return false;

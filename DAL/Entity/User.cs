@@ -10,8 +10,8 @@ namespace DAL.Entity
             Password = password;
             Email = email;
             Role = role;
-            if (role == UserRole.admin) { _id = 0; Balance = -1; }
-            else _id = id;
+            if (role == UserRole.admin) { Id = 0; Balance = -1; }
+            else Id = id;
             Date_Created = DateTime.Now;
 		}
 
@@ -21,8 +21,7 @@ namespace DAL.Entity
 
         public UserRole Role { get; set; }
 
-        private readonly ushort _id;
-        public ushort Id { get { return _id; } }
+        public ushort Id;
 
         public string FirstName { get; set; } = "not set";
         public string LastName { get; set; } = "not set";

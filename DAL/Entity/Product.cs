@@ -36,6 +36,6 @@ namespace DAL.Entity.Product
 
         public ViewStatus ViewStatus { get; set; } = ViewStatus.visible;
 
-        public List<int> AddedToCartIds_List = new();
+        public List<ushort> AddedToCartIds_List = new();
     }
 }

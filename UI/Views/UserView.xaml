@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="UI.Views.UserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:UI.Views"
+             mc:Ignorable="d"
+             Height="60" Width="170">
+
+    <Grid Name="MainGrid" Background="Red">
+
+        <StackPanel Orientation="Horizontal">
+
+            <StackPanel HorizontalAlignment="Left" Margin="0 5 10 5">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Account" Height="18"
+            Foreground="White" Margin="2 0 0 0"/>
+
+                    <TextBlock Name="Username" Text="Username here" MaxWidth="90"
+            Foreground="White" Margin="0 0 0 0" FontSize="13"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0"
+                    HorizontalAlignment="Center">
+                    <TextBlock Text="ID:"
+            Foreground="White" Margin="5 0 0 0" FontSize="9"/>
+
+                    <TextBlock Name="Id" Text="UserId here"
+            Foreground="White" Margin="3 0 0 0" FontSize="9"
+            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+            TextAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Name="IsDeletedIcon" Kind="AccountCancel"
+            Foreground="White" Margin="-1 0 0 0"/>
+
+                    <TextBlock Name="IsDeletedTextBox" Text="Deleted"
+            Foreground="White" Margin="3 0 0 0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <TextBlock Text="Role:"
+            Foreground="White" Margin="0 0 4 0" FontSize="11"/>
+
+                    <TextBlock Name="Role" Text="UserRole here"
+            Foreground="White" Margin="0 0 0 0" FontSize="11"/>
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+    
+</UserControl>

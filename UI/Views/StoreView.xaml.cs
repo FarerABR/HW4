@@ -19,6 +19,7 @@ namespace UI.Views
 		private string? ImagePath = null;
 		private Product? CurrentDetailingProduct = null;
 		private decimal TotalCartCharge;
+		private string? ActionTypeOfFind = null;
 		#endregion
 
 		public StoreView(User currentUser)
@@ -78,6 +79,11 @@ namespace UI.Views
 		private static bool CheckKeyAlph(char c)
 		{
 			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+		}
+
+		private static bool CheckKeyNum(char c)
+		{
+			return (c >= '0' && c <= '9');
 		}
 
 		#region Main Buttons
@@ -146,7 +152,10 @@ namespace UI.Views
 			PagesRefresh();
 			ManageBtn.Background = Brushes.DeepSkyBlue;
 			ManageBtn.IsEnabled = false;
+			ManageText.Visibility = Visibility.Collapsed;
+			RefreshManagePage();
 			ManagePage.Visibility = Visibility.Visible;
+			ManageAction.Focus();
 		}
 
 		private void AboutBtn_Click(object sender, RoutedEventArgs e)
@@ -315,6 +324,7 @@ namespace UI.Views
 			DetailsDeleteBtn_Click(new object(), new RoutedEventArgs());
 
 			DetailsProductName.Text = " " + product.Name;
+			DetailsProductName.ToolTip = product.Name;
 			DetailsProductPrice.Text = " " + product.Price.ToString();
 			DetailsProductDiscount.Text = " " + product.Discount.ToString();
 			DetailsRating.Value = product.Rating;
@@ -537,6 +547,11 @@ namespace UI.Views
 		#region Add new product
 		private void AddNewProductBtn_Click(object sender, RoutedEventArgs e)
 		{
+			if(CPUParticularInfo.Visibility != Visibility.Visible && GPUParticularInfo.Visibility != Visibility.Visible && RAMParticularInfo.Visibility != Visibility.Visible && MotherParticularInfo.Visibility != Visibility.Visible)
+			{
+				AddedProductType.SelectedIndex = 0;
+				CPUParticularInfo.Visibility = Visibility.Visible;
+			}
 			SearchPanel.IsEnabled = false;
 			ProductsPanel.Visibility = Visibility.Collapsed;
 
@@ -582,6 +597,10 @@ namespace UI.Views
 			MotherBrand.SelectedItem = null;
 			RAMSlots.Text = null;
 			PCISlots.Text = null;
+			MotherRaid.SelectedItem = null;
+
+			AddedProductType.SelectedIndex = 0;
+			CPUParticularInfo.Visibility = Visibility.Visible;
 		}
 
 		private void RefreshParticularInfoGrids()
@@ -829,6 +848,7 @@ namespace UI.Views
 					CancelAddProductBtn_Click(sender, e);
 					ImagePath = null;
 					RefreshNewProductPage();
+					ZeroRatingBtn_Click(sender, e);
 					Temp_Click(sender, e);
 					MessageBox.Show("Product successfully added", "Product added", MessageBoxButton.OK, MessageBoxImage.Asterisk, MessageBoxResult.OK);
 				}
@@ -1184,7 +1204,176 @@ namespace UI.Views
 		#endregion
 
 		#region Manage
+		private void RefreshManagePage()
+		{
+			ManageUsersWrapPanel.Children.Clear();
+			foreach(var x in UserRepository.User_List)
+			{
+				UserView temp = new(x);
+				ManageUsersWrapPanel.Children.Add(temp);
+			}
+		}
 
+		private void ManageUsernameOrId_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			try
+			{
+				switch (ManageUsernameOrId.SelectedItem.ToString().Contains("ID"))
+				{
+					case true:
+						{
+							ManageUsername.Visibility = Visibility.Collapsed;
+							ManageUserId.Visibility = Visibility.Visible;
+							ActionTypeOfFind = "ID";
+							break;
+						}
+					case false:
+						{
+							ManageUserId.Visibility = Visibility.Collapsed;
+							ManageUsername.Visibility = Visibility.Visible;
+							ActionTypeOfFind = "Username";
+							break;
+						}
+				}
+			}
+			catch { }
+		}
+
+		private void ManageUserId_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			if (!string.IsNullOrEmpty(ManageUserId.Text))
+			{
+				int CaretIndex = ManageUserId.CaretIndex;
+				for (int i = 0; i < ManageUserId.Text.Length; i++)
+				{
+					if (!CheckKeyNum(ManageUserId.Text[i]))
+					{
+						ManageUserId.Text = ManageUserId.Text.Remove(i, 1);
+						if (i <= CaretIndex)
+							CaretIndex--;
+					}
+				}
+				ManageUserId.CaretIndex = CaretIndex;
+			}
+		}
+
+		private void ManageOkBtn_Click(object sender, RoutedEventArgs e)
+		{
+			bool res = false;
+			if(ManageAction.SelectedIndex == -1)
+			{
+				ManageText.Text = "* select action";
+				ManageText.Foreground = Brushes.Red;
+				ManageText.Visibility = Visibility.Visible;
+				return;
+			}
+			User? temp = null;
+			switch(ActionTypeOfFind)
+			{
+				case "Username":
+					{
+						if (UserRepository.SearchUser(ManageUsername.Text) == null)
+						{
+							ManageText.Text = "* user not found";
+							ManageText.Foreground = Brushes.Red;
+							ManageText.Visibility = Visibility.Visible;
+						}
+						else
+							temp = UserRepository.SearchUser(ManageUsername.Text);
+						break;
+					}
+				case "ID":
+					{
+						if (UserRepository.GetUserById(ushort.Parse(ManageUserId.Text)) == null)
+						{
+							ManageText.Text = "* user not found";
+							ManageText.Foreground = Brushes.Red;
+							ManageText.Visibility = Visibility.Visible;
+						}
+						else
+							temp = UserRepository.GetUserById(ushort.Parse(ManageUserId.Text));
+						break;
+					}
+			}
+
+			switch(ManageAction.SelectedItem.ToString())
+			{
+				case "System.Windows.Controls.ComboBoxItem: Promote":
+					{
+						try
+						{
+							if (!UserRepository.PromoteUser(CurrentUser, temp))
+							{
+								var Result = MessageBox.Show("You are about to transfer the adminship to another user!", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Stop, MessageBoxResult.Yes);
+								switch (Result)
+								{
+									case MessageBoxResult.Yes:
+										{
+											UserRepository.TransferAdmin(CurrentUser, temp);
+											LogOutBtn_Click(sender, e);
+											res = true;
+											break;
+										}
+									default:
+										{
+											break;
+										}
+								}
+							}
+							else
+								res = true;
+						}
+						catch (Exception ex)
+						{
+							MessageBox.Show(ex.Message, "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error);
+						}
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: Demote":
+					{
+						try
+						{
+							UserRepository.DemoteUser(CurrentUser, temp);
+							res = true;
+						}
+						catch (Exception ex)
+						{
+							MessageBox.Show(ex.Message, "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error);
+						}
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: Delete":
+					{
+						if (!UserRepository.DeleteUser(temp.Id))
+						{
+							MessageBox.Show("User already deleted", "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+						}
+						else
+							res = true;
+						break;
+					}
+				case "System.Windows.Controls.ComboBoxItem: Restore":
+					{
+						if (!UserRepository.RestoreUser(temp.Id))
+						{
+							MessageBox.Show("User already deleted", "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+						}
+						else
+							res = true;
+						break;
+					}
+					default: break;
+			}
+
+			if(res)
+			{
+				ManageText.Text = "🗸 action completed";
+				ManageText.Foreground = Brushes.Green;
+				ManageText.Visibility = Visibility.Visible;
+
+				RefreshManagePage();
+			}
+		}
 		#endregion
 	}
 }
