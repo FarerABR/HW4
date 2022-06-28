@@ -1028,22 +1028,18 @@ namespace UI.Views
 
 		private void ChPassShowHideBtn_Click(object sender, RoutedEventArgs e)
 		{
-			if (CurrPassBlock.Visibility == Visibility.Hidden)
-			{
-				ChPassShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Release;
-				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
-				CurrPassBlock.Text = CurrPassBox.Password;
-				if (CurrPassBlock.Text == string.Empty)
-					CurrPassBlock.Opacity = 0;
-				CurrPassBlock.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				ChPassShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Press;
-				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
-				CurrPassBlock.Opacity = 1;
-				CurrPassBlock.Visibility = Visibility.Hidden;
-			}
+			ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+			CurrPassBlock.Text = CurrPassBox.Password;
+			if (CurrPassBlock.Text == string.Empty)
+				CurrPassBlock.Opacity = 0;
+			CurrPassBlock.Visibility = Visibility.Visible;
+		}
+
+		private void ChPassShowHideBtn_LostMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+			CurrPassBlock.Opacity = 1;
+			CurrPassBlock.Visibility = Visibility.Hidden;
 		}
 
 		private void ChPassBtn_Click(object sender, RoutedEventArgs e)
@@ -1326,6 +1322,7 @@ namespace UI.Views
 								ManageText.Foreground = Brushes.Red;
 								ManageText.Visibility = Visibility.Visible;
 								res = false;
+								break;
 							}
 
 							if (!UserRepository.PromoteUser(CurrentUser, temp))
@@ -1359,8 +1356,8 @@ namespace UI.Views
 								ManageText.Visibility = Visibility.Visible;
 								res = false;
 							}
-
-							UserRepository.DemoteUser(CurrentUser, temp);
+							else
+								UserRepository.DemoteUser(CurrentUser, temp);
 							break;
 						}
 

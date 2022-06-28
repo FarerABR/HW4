@@ -276,22 +276,18 @@ namespace UI.Views
 
 		private void LogInShowHideBtn_Click(object sender, RoutedEventArgs e)
 		{
-			if(LogInPassBlock.Visibility == Visibility.Hidden)
-			{
-				LogInShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Release;
-				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
-				LogInPassBlock.Text = LogInPassBox.Password;
-				if (LogInPassBlock.Text == string.Empty)
-					LogInPassBlock.Opacity = 0;
-				LogInPassBlock.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				LogInShowHideBtn.ClickMode = System.Windows.Controls.ClickMode.Press;
-				ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
-				LogInPassBlock.Opacity = 1;
-				LogInPassBlock.Visibility = Visibility.Hidden;
-			}
+			ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.EyeOff;
+			LogInPassBlock.Text = LogInPassBox.Password;
+			if (LogInPassBlock.Text == string.Empty)
+				LogInPassBlock.Opacity = 0;
+			LogInPassBlock.Visibility = Visibility.Visible;
+		}
+
+		private void LogInShowHideBtn_LostMouseCapture(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			ShowHideIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Eye;
+			LogInPassBlock.Opacity = 1;
+			LogInPassBlock.Visibility = Visibility.Hidden;
 		}
 
 		private void Fresh()

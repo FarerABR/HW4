@@ -862,6 +862,7 @@
 
                                         <Button Background="White" Height="12" Width="16" Name="ChPassShowHideBtn"
                                                 HorizontalAlignment="Right" Margin="0 -27.7 0 0"
+                                                LostMouseCapture="ChPassShowHideBtn_LostMouseCapture"
                                                 materialDesign:ButtonAssist.CornerRadius="8" Opacity="0"
                                                 Click="ChPassShowHideBtn_Click" ClickMode="Press" IsTabStop="False"
                                                 IsEnabled="{Binding DataContext.ControlsEnabled,
@@ -1035,7 +1036,7 @@
                         <EventTrigger.Actions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <MediaTimeline Source="D:\Edu\HW4\UI\Images\Coding.wmv"
+                                    <MediaTimeline Name="AboutVideo" Source="..\..\..\Images\Coding.wmv"
                                                 Storyboard.TargetName="MediaPlayer" RepeatBehavior="Forever" />
                                 </Storyboard>
                             </BeginStoryboard>

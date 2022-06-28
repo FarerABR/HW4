@@ -167,6 +167,7 @@
                             HorizontalAlignment="Right" Margin="0 -27.7 0 0"
                             materialDesign:ButtonAssist.CornerRadius="8" Opacity="0"
                             Click="LogInShowHideBtn_Click" ClickMode="Press" IsTabStop="False"
+                            LostMouseCapture="LogInShowHideBtn_LostMouseCapture"
                             IsEnabled="{Binding DataContext.ControlsEnabled,
                             RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                              />

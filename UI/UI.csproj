@@ -10,11 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\AMD Ryzen 7 5800X3D.jpg" />
     <None Remove="Images\AMD Ryzen 9 5950X Hardware Bundle.jpg" />
+    <None Remove="Images\AMD Ryzen 9 5950X.jpg" />
     <None Remove="Images\ASUS ROG MAXIMUS Z690 Extreme.jpg" />
     <None Remove="Images\ASUS TUF Gaming Z590-PLUS WiFi motherboard socket Intel LGA 1200.jpg" />
     <None Remove="Images\Coding.wmv" />
     <None Remove="Images\Computer.jpg" />
+    <None Remove="Images\corei9 12900K.jpg" />
     <None Remove="Images\Corsair CMN32GX4M2Z3200C16 32gb.jpg" />
     <None Remove="Images\Corsair VENGEANCE RGB PRO 128GB %284x32GB%29 DDR4 3600.jpg" />
     <None Remove="Images\CPU.jpg" />
@@ -22,6 +25,8 @@
     <None Remove="Images\G.SKILL Trident Z Royal Elite Series 32GB.jpg" />
     <None Remove="Images\GIGABYTE AORUS MASTER Z690 LGA1700 Motherboard.jpg" />
     <None Remove="Images\GPU.jpg" />
+    <None Remove="Images\intel core i5 12600 48ghz turbo lga1700 processor.jpg" />
+    <None Remove="Images\Intel Xeon E5-2430 v2 %40 2.50GHz.jpeg" />
     <None Remove="Images\Kingston Fury Beast 32gb.jpg" />
     <None Remove="Images\Motherboard.jpg" />
     <None Remove="Images\MSI MEG Z690 GODLIKE motherboard Intel Z690 LGA 1700 Extended ATX.jpg" />
@@ -48,11 +53,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\AMD Ryzen 7 5800X3D.jpg" />
     <Resource Include="Images\AMD Ryzen 9 5950X Hardware Bundle.jpg" />
+    <Resource Include="Images\AMD Ryzen 9 5950X.jpg" />
     <Resource Include="Images\ASUS ROG MAXIMUS Z690 Extreme.jpg" />
     <Resource Include="Images\ASUS TUF Gaming Z590-PLUS WiFi motherboard socket Intel LGA 1200.jpg" />
     <Resource Include="Images\Coding.wmv" />
     <Resource Include="Images\Computer.jpg" />
+    <Resource Include="Images\corei9 12900K.jpg" />
     <Resource Include="Images\Corsair CMN32GX4M2Z3200C16 32gb.jpg" />
     <Resource Include="Images\Corsair VENGEANCE RGB PRO 128GB (4x32GB) DDR4 3600.jpg" />
     <Resource Include="Images\CPU.jpg">
@@ -64,6 +72,8 @@
     <Resource Include="Images\GPU.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\intel core i5 12600 48ghz turbo lga1700 processor.jpg" />
+    <Resource Include="Images\Intel Xeon E5-2430 v2 @ 2.50GHz.jpeg" />
     <Resource Include="Images\Kingston Fury Beast 32gb.jpg" />
     <Resource Include="Images\Motherboard.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
