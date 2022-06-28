@@ -296,36 +296,51 @@ namespace BLL.Repository
         /// deletes the user from User_List, true if successful
         /// </summary>
         /// <param name="id"></param>
-        public static bool DeleteUser(ushort id)
+        /// <returns>true if user deleted and false when self delete</returns>
+        public static bool DeleteUser(User fromWho, ushort id)
         {
-            var user = User_List.SingleOrDefault(x => x.Id == id);
-
-            if (user != null)
+            if (fromWho.Id == id)
             {
-                if (user.IsDeleted)
-                    return false;
-                user.IsDeleted = true;
-                return true;
+                if (fromWho.Role == UserRole.admin)
+                    throw new Exception("Please transfer admin role to another user\nbefore deleting your account!");
+                return false;
             }
-            return false;
+
+            var onWho = User_List.SingleOrDefault(x => x.Id == id);
+            if (fromWho.Role == UserRole.moderator)
+                if (onWho.Role != UserRole.customer)
+                    throw new Exception("You don't have required privileges to do that!");
+
+            onWho.IsDeleted = true;
+            return true;
         }
 
         /// <summary>
-        /// restores the user to User_List, true if successful
+        /// self deletes a user account
+        /// </summary>
+        /// <param name="user"></param>
+        public static void SelfDelete(User user)
+		{
+            user.IsDeleted = true;
+		}
+
+        /// <summary>
+        /// restores the user to User_List
         /// </summary>
         /// <param name="id"></param>
-        public static bool RestoreUser(ushort id)
+        /// true if successful and false if user is not deleted
+        public static bool RestoreUser(User fromWho, ushort id)
         {
-            var user = User_List.SingleOrDefault(x => x.Id == id);
+            var onWho = User_List.SingleOrDefault(x => x.Id == id);
+            if (onWho.IsDeleted == false)
+                return false;
 
-            if (user != null)
-            {
-                if (!user.IsDeleted)
-                    return false;
-                user.IsDeleted = false;
-                return true;
-            }
-            return false;
+            if (fromWho.Role == UserRole.moderator)
+                if (onWho.Role != UserRole.customer)
+                    throw new Exception("You don't have required privileges to do that!");
+
+            onWho.IsDeleted = false;
+            return true;
         }
     }
 }

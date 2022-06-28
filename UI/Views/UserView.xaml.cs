@@ -20,12 +20,12 @@ namespace UI.Views
 					}
 				case UserRole.moderator:
 					{
-						MainGrid.Background = Brushes.Green;
+						MainGrid.Background = Brushes.Blue;
 						break;
 					}
 				case UserRole.customer:
 					{
-						MainGrid.Background = Brushes.Blue;
+						MainGrid.Background = Brushes.Green;
 						break;
 					}
 			}

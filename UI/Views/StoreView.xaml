@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid  Name="ProductsPage"  Grid.Column="1" Background="AliceBlue"
-                   Visibility="Visible">
+                   Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="13" />
                 <ColumnDefinition Width="auto" />
@@ -363,8 +363,10 @@
 
                                 <TextBox
                                   materialDesign:HintAssist.Hint="Discount" Margin="120 -34 17 0"
-                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" KeyDown="CheckKeyNum"
-                                   Name="DiscountTextBox" MaxLength="3" MaxWidth="215" LostFocus="DiscountTextBox_LostFocus"/>
+                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                  TextChanged="CheckKeyNum"
+                                  Name="DiscountTextBox" MaxLength="3" MaxWidth="215"
+                                  LostFocus="DiscountTextBox_LostFocus"/>
                                 <TextBlock Text="*0 to 100" FontSize="8" Margin="120 2 0 -12"
                                            Foreground="Red" Visibility="Collapsed" Name="DiscountError"/>
 
@@ -425,10 +427,11 @@
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                    <TextBox KeyDown="CheckKeyNum" FontSize="15"
+                                    <TextBox Name="CoreCountTextBox"
+                                  TextChanged="CheckKeyNum" FontSize="15"
                                   materialDesign:HintAssist.Hint="Cores" Margin="0 0 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="CoreCountTextBox" MaxLength="3" MaxWidth="215" 
+                                  MaxLength="3" MaxWidth="215" 
                                         MinWidth="90"/>
 
                                     <ComboBox Name="CPUBrand" FontSize="15"
@@ -450,7 +453,7 @@
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"/>
 
                                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                    <TextBox KeyDown="CheckKeyNum" FontSize="15"
+                                    <TextBox TextChanged="CheckKeyNum" FontSize="15"
                                   materialDesign:HintAssist.Hint="HDMI ports" Margin="0 0 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                    Name="GPUHDMICount" MaxLength="2" MaxWidth="215" 
@@ -482,14 +485,14 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0 16 0 0">
-                                    <TextBox KeyDown="CheckKeyNum" FontSize="14"
+                                    <TextBox TextChanged="CheckKeyNum" FontSize="14"
                                   materialDesign:HintAssist.Hint="Modules" Margin="0 0 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                    Name="RAMModuleCount" MaxLength="3" MaxWidth="215" 
                                         MinWidth="90"/>
 
                                     <TextBox Name="RAMModuleCopacity" FontSize="15"
-                                materialDesign:HintAssist.Hint="Copacity" KeyDown="CheckKeyNum"
+                                materialDesign:HintAssist.Hint="Copacity" TextChanged="CheckKeyNum"
                                 Margin="25 0 0 0" MinWidth="100" MaxLength="6"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                                 </StackPanel>
@@ -514,13 +517,13 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0 15 0 0">
-                                    <TextBox
+                                    <TextBox Name="RAMSlots" 
                                   materialDesign:HintAssist.Hint="Ram slots" Margin="0 5 0 0"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                   Name="RAMSlots" MaxLength="3" MaxWidth="215" 
-                                        MinWidth="50" KeyDown="CheckKeyNum"/>
+                                  MaxLength="3" MaxWidth="215" 
+                                        MinWidth="50" TextChanged="CheckKeyNum"/>
 
-                                    <TextBox Name="PCISlots" FontSize="13" KeyDown="CheckKeyNum"
+                                    <TextBox Name="PCISlots" FontSize="13" TextChanged="CheckKeyNum"
                                 materialDesign:HintAssist.Hint="PCI slots"
                                 Margin="20 4 0 0" MinWidth="50" MaxLength="2"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
@@ -913,92 +916,114 @@
         <Grid Name="ManagePage" Grid.Column="1" Background="AliceBlue"
                   Visibility="Hidden">
 
-            <ScrollViewer
-                Height="auto" VerticalAlignment="Center" Width="auto"
-                HorizontalAlignment="Center" Margin="50 0 640 0"
+            <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
+                materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
+                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer Grid.Column="2" Grid.Row="1"
+                Height="400" VerticalAlignment="Center" HorizontalAlignment="Center"
                 materialDesign:ScrollViewerAssist.IsAutoHideEnabled="true"
                 materialDesign:ScrollViewerAssist.CornerRectangleVisibility="Collapsed"
-                HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                <WrapPanel Name="ManageUsersWrapPanel"
+                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel Name="ManageUsersWrapPanel" Orientation="Vertical"
                     HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            </ScrollViewer>
+                    </ScrollViewer>
 
-            <materialDesign:Card Height="400" Width="500" Margin="0 0 -50 0">
-                
-                <Grid>
+                    <materialDesign:Card Height="400" Width="500"
+                 Grid.Column="3" Grid.Row="1" Margin="0 0 0 0">
 
-                    <TextBlock Text="Manage Cection" Margin="50 40 0 0" FontSize="24"/>
+                        <Grid>
 
-                    <Separator Margin="10 90 10 0" VerticalAlignment="Top"/>
+                            <TextBlock Text="Manage Cection" Margin="50 40 0 0" FontSize="24"/>
 
-                    <ComboBox Name="ManageAction" Width="150" Height="50" Padding="2 15 0 0"
+                            <Separator Margin="10 90 10 0" VerticalAlignment="Top"/>
+
+                            <ComboBox Name="ManageAction" Width="150" Height="50" Padding="0 15 0 0"
                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                         Margin="0 -60 0 0" materialDesign:HintAssist.Hint="Action">
-                        <ComboBoxItem Foreground="#FF27A1EC">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountArrowUp"
+                                <ComboBoxItem Foreground="#FF27A1EC">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountArrowUp"
                                     Height="14" Margin="0 0 2 0"/>
-                                <TextBlock Text="Promote"/>
-                            </StackPanel>
-                        </ComboBoxItem>
-                        <ComboBoxItem Foreground="#FF9EB405">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountArrowDown"
+                                        <TextBlock Text="Promote"/>
+                                    </StackPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem Foreground="#FF9EB405">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountArrowDown"
                                     Height="14" Margin="0 0 2 0"/>
-                                <TextBlock Text="Demote"/>
-                            </StackPanel>
-                        </ComboBoxItem>
-                        <ComboBoxItem Foreground="#FFF35748">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountMinus"
+                                        <TextBlock Text="Demote"/>
+                                    </StackPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem Foreground="#FFF35748">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountMinus"
                                     Height="14" Margin="0 0 2 0"/>
-                                <TextBlock Text="Delete"/>
-                            </StackPanel>
-                        </ComboBoxItem>
-                        <ComboBoxItem Foreground="#FF2DE10A">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountPlus"
+                                        <TextBlock Text="Delete"/>
+                                    </StackPanel>
+                                </ComboBoxItem>
+                                <ComboBoxItem Foreground="#FF2DE10A">
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="AccountPlus"
                                     Height="14" Margin="0 0 2 0"/>
-                                <TextBlock Text="Restore"/>
-                            </StackPanel>
-                        </ComboBoxItem>
-                    </ComboBox>
+                                        <TextBlock Text="Restore"/>
+                                    </StackPanel>
+                                </ComboBoxItem>
+                            </ComboBox>
 
-                    <ComboBox Name="ManageUsernameOrId" Width="110" Height="50"
+                            <ComboBox Name="ManageUsernameOrId" Width="110" Height="50"
                           Style="{StaticResource MaterialDesignOutlinedComboBox}"
                           Margin="-150 90 0 0" materialDesign:HintAssist.Hint="Find by"
                         SelectionChanged="ManageUsernameOrId_SelectionChanged">
-                        <ComboBoxItem Content="Username"/>
-                        <ComboBoxItem Content="ID" IsSelected="True"/>
-                    </ComboBox>
+                                <ComboBoxItem Content="Username" IsSelected="True"/>
+                                <ComboBoxItem Content="ID"/>
+                            </ComboBox>
 
-                    <TextBox Name="ManageUsername" MaxWidth="120" Height="40"
+                            <TextBox Name="ManageUsername" MaxWidth="120" Height="40"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="Username" Padding="0 10 0 0"
-                         Margin="150 90 0 0" Visibility="Collapsed"/>
+                         Margin="150 90 0 0"/>
 
-                    <TextBox Name="ManageUserId" MaxWidth="110" Height="40"
+                            <TextBox Name="ManageUserId" MaxWidth="110" Height="40"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          materialDesign:HintAssist.Hint="ID" Padding="0 10 0 0"
-                         Margin="150 90 0 0" TextChanged="ManageUserId_TextChanged"/>
+                         Margin="150 90 0 0" TextChanged="CheckKeyNum"
+                         Visibility="Collapsed" MaxLength="5"/>
 
-                    <Button Name="ManageOkBtn"
+                            <Button Name="ManageOkBtn"
                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         Click="ManageOkBtn_Click" Margin="0 0 70 50" Foreground="#DDFFFFFF"
                         Background="#FF00E2F3" BorderBrush="#FF01D4E0" IsDefault="True">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="GestureTap" Margin="-5 0 2 0"/>
-                            <TextBlock Text="Ok"/>
-                        </StackPanel>
-                    </Button>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="GestureTap" Margin="-5 0 2 0"/>
+                                    <TextBlock Text="Ok"/>
+                                </StackPanel>
+                            </Button>
 
-                    <TextBlock Name="ManageText" Margin="0 0 143 58"
+                            <TextBlock Name="ManageText" Margin="0 0 143 58"
                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         Text="* select action" Foreground="Red"/>
 
+                        </Grid>
+
+                    </materialDesign:Card>
+
                 </Grid>
-                
-            </materialDesign:Card>
+            </ScrollViewer>
 
         </Grid>
 

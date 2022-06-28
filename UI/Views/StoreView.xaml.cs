@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System;
 using Microsoft.Win32;
+using System.Windows.Controls;
 
 namespace UI.Views
 {
@@ -70,20 +71,23 @@ namespace UI.Views
 			Data_Access.WriteAllData();
 		}
 
-		private void CheckKeyNum(object sender, System.Windows.Input.KeyEventArgs e)
+		private void CheckKeyNum(object? sender, TextChangedEventArgs e)
 		{
-			e.Handled = !(new System.Text.RegularExpressions.Regex("[0-9]").IsMatch(e.Key.ToString())
-				|| e.Key.ToString() == "Escape" || e.Key.ToString() == "Return");
-		}
-
-		private static bool CheckKeyAlph(char c)
-		{
-			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-		}
-
-		private static bool CheckKeyNum(char c)
-		{
-			return (c >= '0' && c <= '9');
+			var ThisTextBox = sender as TextBox;
+			if (!string.IsNullOrEmpty(ThisTextBox.Text))
+			{
+				int CaretIndex = ThisTextBox.CaretIndex;
+				for (int i = 0; i < ThisTextBox.Text.Length; i++)
+				{
+					if (ThisTextBox.Text[i] is not (>= '0' and <= '9'))
+					{
+						ThisTextBox.Text = ThisTextBox.Text.Remove(i, 1);
+						if (i <= CaretIndex)
+							CaretIndex--;
+					}
+				}
+				ThisTextBox.CaretIndex = CaretIndex;
+			}
 		}
 
 		#region Main Buttons
@@ -669,7 +673,8 @@ namespace UI.Views
 
 		private void NameTextBox_LostFocus(object sender, RoutedEventArgs e)
 		{
-			RefreshPreview();
+			if (DiscountError.Visibility != Visibility.Visible)
+				RefreshPreview();
 		}
 
 		private void PriceTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -1173,7 +1178,7 @@ namespace UI.Views
 				int CaretIndex = AccountFirstName.CaretIndex;
 				for (int i = 0; i < AccountFirstName.Text.Length; i++)
 				{
-					if (!CheckKeyAlph(AccountFirstName.Text[i]))
+					if (AccountFirstName.Text[i] is not (>= 'a' and <= 'z' or >= 'A' and <= 'Z'))
 					{
 						AccountFirstName.Text = AccountFirstName.Text.Remove(i, 1);
 						if(i <= CaretIndex)
@@ -1191,7 +1196,7 @@ namespace UI.Views
 				int CaretIndex = AccountLastName.CaretIndex;
 				for (int i = 0; i < AccountLastName.Text.Length; i++)
 				{
-					if (!CheckKeyAlph(AccountLastName.Text[i]))
+					if (AccountLastName.Text[i] is not (>= 'a' and <= 'z' or >= 'A' and <= 'Z'))
 					{
 						AccountLastName.Text = AccountLastName.Text.Remove(i, 1);
 						if (i <= CaretIndex)
@@ -1209,8 +1214,23 @@ namespace UI.Views
 			ManageUsersWrapPanel.Children.Clear();
 			foreach(var x in UserRepository.User_List)
 			{
-				UserView temp = new(x);
-				ManageUsersWrapPanel.Children.Add(temp);
+				if(x.Role == UserRole.admin)
+				{
+					UserView temp = new(x);
+					ManageUsersWrapPanel.Children.Add(temp);
+				}
+
+				else if(x.Role == UserRole.moderator)
+				{
+					UserView temp = new(x);
+					ManageUsersWrapPanel.Children.Add(temp);
+				}
+
+				else
+				{
+					UserView temp = new(x);
+					ManageUsersWrapPanel.Children.Add(temp);
+				}
 			}
 		}
 
@@ -1222,15 +1242,21 @@ namespace UI.Views
 				{
 					case true:
 						{
-							ManageUsername.Visibility = Visibility.Collapsed;
-							ManageUserId.Visibility = Visibility.Visible;
+							if(ManageUsername != null)
+							{
+								ManageUsername.Visibility = Visibility.Collapsed;
+								ManageUserId.Visibility = Visibility.Visible;
+							}
 							ActionTypeOfFind = "ID";
 							break;
 						}
 					case false:
 						{
-							ManageUserId.Visibility = Visibility.Collapsed;
-							ManageUsername.Visibility = Visibility.Visible;
+							if (ManageUsername != null)
+							{
+								ManageUserId.Visibility = Visibility.Collapsed;
+								ManageUsername.Visibility = Visibility.Visible;
+							}
 							ActionTypeOfFind = "Username";
 							break;
 						}
@@ -1239,27 +1265,9 @@ namespace UI.Views
 			catch { }
 		}
 
-		private void ManageUserId_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-		{
-			if (!string.IsNullOrEmpty(ManageUserId.Text))
-			{
-				int CaretIndex = ManageUserId.CaretIndex;
-				for (int i = 0; i < ManageUserId.Text.Length; i++)
-				{
-					if (!CheckKeyNum(ManageUserId.Text[i]))
-					{
-						ManageUserId.Text = ManageUserId.Text.Remove(i, 1);
-						if (i <= CaretIndex)
-							CaretIndex--;
-					}
-				}
-				ManageUserId.CaretIndex = CaretIndex;
-			}
-		}
-
 		private void ManageOkBtn_Click(object sender, RoutedEventArgs e)
 		{
-			bool res = false;
+			bool res = true;
 			if(ManageAction.SelectedIndex == -1)
 			{
 				ManageText.Text = "* select action";
@@ -1267,105 +1275,147 @@ namespace UI.Views
 				ManageText.Visibility = Visibility.Visible;
 				return;
 			}
+			if (ManageUsername.Text == null)
+				ManageUsername.Text = "";
+
 			User? temp = null;
 			switch(ActionTypeOfFind)
 			{
 				case "Username":
 					{
-						if (UserRepository.SearchUser(ManageUsername.Text) == null)
+						var x = UserRepository.SearchUser(ManageUsername.Text);
+						if (x == null)
 						{
 							ManageText.Text = "* user not found";
 							ManageText.Foreground = Brushes.Red;
 							ManageText.Visibility = Visibility.Visible;
+							return;
 						}
 						else
-							temp = UserRepository.SearchUser(ManageUsername.Text);
+							temp = x;
 						break;
 					}
 				case "ID":
 					{
-						if (UserRepository.GetUserById(ushort.Parse(ManageUserId.Text)) == null)
+						User? x = null;
+						if(!(string.IsNullOrEmpty(ManageUserId.Text) || int.Parse(ManageUserId.Text) > 65535))
+							x = UserRepository.GetUserById(ushort.Parse(ManageUserId.Text));
+
+						if (x == null)
 						{
 							ManageText.Text = "* user not found";
 							ManageText.Foreground = Brushes.Red;
 							ManageText.Visibility = Visibility.Visible;
+							return;
 						}
 						else
-							temp = UserRepository.GetUserById(ushort.Parse(ManageUserId.Text));
+							temp = x;
 						break;
 					}
 			}
 
-			switch(ManageAction.SelectedItem.ToString())
+			try
 			{
-				case "System.Windows.Controls.ComboBoxItem: Promote":
-					{
-						try
+				switch (ManageAction.SelectedIndex.ToString())
+				{
+					case "0":
 						{
+							if(temp.IsDeleted)
+							{
+								ManageText.Text = "* this user is deleted";
+								ManageText.Foreground = Brushes.Red;
+								ManageText.Visibility = Visibility.Visible;
+								res = false;
+							}
+
 							if (!UserRepository.PromoteUser(CurrentUser, temp))
 							{
-								var Result = MessageBox.Show("You are about to transfer the adminship to another user!", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Stop, MessageBoxResult.Yes);
+								var Result = MessageBox.Show("You are about to transfer the adminship to another user!\nContinue?", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
 								switch (Result)
 								{
 									case MessageBoxResult.Yes:
 										{
 											UserRepository.TransferAdmin(CurrentUser, temp);
 											LogOutBtn_Click(sender, e);
-											res = true;
 											break;
 										}
 									default:
 										{
+											ManageText.Visibility = Visibility.Collapsed;
+											res = false;
 											break;
 										}
 								}
 							}
-							else
-								res = true;
+							break;
 						}
-						catch (Exception ex)
+
+					case "1":
 						{
-							MessageBox.Show(ex.Message, "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error);
-						}
-						break;
-					}
-				case "System.Windows.Controls.ComboBoxItem: Demote":
-					{
-						try
-						{
+							if (temp.IsDeleted)
+							{
+								ManageText.Text = "* this user is deleted";
+								ManageText.Foreground = Brushes.Red;
+								ManageText.Visibility = Visibility.Visible;
+								res = false;
+							}
+
 							UserRepository.DemoteUser(CurrentUser, temp);
-							res = true;
+							break;
 						}
-						catch (Exception ex)
+
+					case "2":
 						{
-							MessageBox.Show(ex.Message, "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error);
+							if (temp.IsDeleted)
+							{
+								ManageText.Text = "* this user is already deleted";
+								ManageText.Foreground = Brushes.Red;
+								ManageText.Visibility = Visibility.Visible;
+								res = false;
+							}
+
+							if (!UserRepository.DeleteUser(CurrentUser, temp.Id))
+							{
+								var Result = MessageBox.Show("You are about to delete yuor account!\nContinue?", "Are you sure?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
+								switch (Result)
+								{
+									case MessageBoxResult.Yes:
+										{
+											UserRepository.SelfDelete(temp);
+											LogOutBtn_Click(sender, e);
+											break;
+										}
+									default:
+										{
+											ManageText.Visibility = Visibility.Collapsed;
+											res = false;
+											break;
+										}
+								}
+							}
+							break;
 						}
-						break;
-					}
-				case "System.Windows.Controls.ComboBoxItem: Delete":
-					{
-						if (!UserRepository.DeleteUser(temp.Id))
+
+					case "3":
 						{
-							MessageBox.Show("User already deleted", "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+							if (!UserRepository.RestoreUser(CurrentUser, temp.Id))
+							{
+								ManageText.Text = "* this user is not deleted";
+								ManageText.Foreground = Brushes.Red;
+								ManageText.Visibility = Visibility.Visible;
+								res = false;
+							}
+							break;
 						}
-						else
-							res = true;
-						break;
-					}
-				case "System.Windows.Controls.ComboBoxItem: Restore":
-					{
-						if (!UserRepository.RestoreUser(temp.Id))
-						{
-							MessageBox.Show("User already deleted", "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-						}
-						else
-							res = true;
-						break;
-					}
-					default: break;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Invalid action", MessageBoxButton.OK, MessageBoxImage.Error);
+				res = false;
 			}
 
-			if(res)
+			if (res)
 			{
 				ManageText.Text = "🗸 action completed";
 				ManageText.Foreground = Brushes.Green;
